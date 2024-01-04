@@ -7,7 +7,7 @@ import 'package:safebump/src/router/route_name.dart';
 class AppRouter {
   final router = GoRouter(
     navigatorKey: AppCoordinator.navigatorKey,
-    initialLocation: AppRouteNames.dashboard.path,
+    initialLocation: AppRouteNames.home.path,
     debugLogDiagnostics: kDebugMode,
     routes: <RouteBase>[
     ],

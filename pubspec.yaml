@@ -48,10 +48,16 @@ dependencies:
   json_annotation: 4.8.1
   json_serializable: 6.7.1
 
+  # Helper
   equatable: 2.0.5
   rename: 3.0.1
   logger: 2.0.2+1
   intl: 0.19.0
+  package_info_plus: 5.0.1
+  device_info_plus: 9.1.1
+  
+  # Widget
+  smooth_page_indicator: 1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -78,9 +84,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/images/
+    - assets/svg/
+    - assets/jsons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/value.dart';
 
 class XTextButton extends StatelessWidget {
@@ -18,7 +19,10 @@ class XTextButton extends StatelessWidget {
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(AppRadius.r4)))),
-      child: Text(label),
+      child: Text(
+        label,
+        style: const TextStyle(fontFamily: FontFamily.inter),
+      ),
     );
   }
 }

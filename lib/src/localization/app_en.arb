@@ -1,0 +1,26 @@
+{
+    "safe" : "Safe",
+    "bump" : "Bump",
+    "tracking" : "Tracking",
+    "tools" : "Tools",
+    "educational" : "Educational",
+    "resources" : "Resources",
+    "community" : "Community",
+    "support" : "Support",
+    "appointment" : "Appointment",
+    "scheduler" : "Scheduler",
+    "welcome" : "Welcome",
+    "skip" : "Skip",
+    "next" : "Next",
+    "welcomeToSafeBump" :
+        "Welcome to SafeBump, your trusted partner for a safe and healthy pregnancy journey.",
+    "theAppWillProvideTracking" :
+        "The app will provide tracking tools to help users monitor their pregnancy and postpartum progress, including weight tracking, contraction timing, and breastfeeding tracker.",
+    "theAppWillProvideEducational" :
+        "The app will provide educational resources to help users learn about maternal health, including articles, videos, and podcasts.",
+    "theAppWillProvideACommunity" :
+        "The app will provide a community support feature to help users connect with other users, share experiences, and receive support.",
+    "theAppWillAllowUser" :
+        "The app will allow users to schedule and manage their appointments with healthcare providers, such as doctors and midwives.",
+    "getStarted" : "Get Started"
+}

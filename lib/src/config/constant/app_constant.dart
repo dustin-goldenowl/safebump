@@ -1,33 +1,33 @@
+import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
-import 'package:safebump/src/theme/images.dart';
-import 'package:safebump/src/theme/text.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 
 class AppConstant {
   static final listDataOfOnBoarding = <OnBoardingModel>[
     OnBoardingModel(
-        fistTitle: AppString.safe,
-        secondTitle: AppString.bump,
-        image: AppImage.welcomeSafeBump,
-        content: AppString.welcomeToSafeBump),
+        fistTitle: S.text.safe,
+        secondTitle: S.text.bump,
+        image: Assets.images.images.welcomeSafebump.path,
+        content: S.text.welcomeToSafeBump),
     OnBoardingModel(
-        fistTitle: AppString.tracking,
-        secondTitle: AppString.tools,
-        image: AppImage.provideTracking,
-        content: AppString.theAppWillProvideTracking),
+        fistTitle: S.text.tracking,
+        secondTitle: S.text.tools,
+        image: Assets.images.images.provideTracking.path,
+        content: S.text.theAppWillProvideTracking),
     OnBoardingModel(
-        fistTitle: AppString.educational,
-        secondTitle: AppString.resources,
-        image: AppImage.proviceEducational,
-        content: AppString.theAppWillProvideEducational),
+        fistTitle: S.text.educational,
+        secondTitle: S.text.resources,
+        image: Assets.images.images.proviceEducational.path,
+        content: S.text.theAppWillProvideEducational),
     OnBoardingModel(
-        fistTitle: AppString.community,
-        secondTitle: AppString.support,
-        image: AppImage.provideCommunity,
-        content: AppString.theAppWillProvideACommunity),
+        fistTitle: S.text.community,
+        secondTitle: S.text.support,
+        image: Assets.images.images.provideCommunity.path,
+        content: S.text.theAppWillProvideACommunity),
     OnBoardingModel(
-        fistTitle: AppString.appointment,
-        secondTitle: AppString.scheduler,
-        image: AppImage.scheduleManager,
-        content: AppString.theAppWillAllowUser),
+        fistTitle: S.text.appointment,
+        secondTitle: S.text.scheduler,
+        image: Assets.images.images.scheduleManager.path,
+        content: S.text.theAppWillAllowUser),
   ];
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/locator.dart';
 import 'package:safebump/src/router/router.dart';
 import 'package:safebump/src/theme/themes.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   await initializeApp();
@@ -19,6 +21,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'SafeBump',
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+      ],
+      onGenerateTitle: (BuildContext context) => "SafeBump",
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       routerConfig: appRouter.router,

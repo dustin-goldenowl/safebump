@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/theme/colors.dart';
-import 'package:safebump/src/theme/text.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/page/title_and_content_page.dart';
@@ -20,6 +20,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   void initState() {
     super.initState();
     _controller = PageController();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -72,9 +78,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget _renderFirstPageContent() {
     return Column(
       children: [
-        const Text(
-          AppString.welcome,
-          style: TextStyle(fontSize: AppFontSize.f20),
+        Text(
+          S.text.welcome,
+          style: const TextStyle(fontSize: AppFontSize.f20),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p15),
         Text(
@@ -110,13 +116,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
             backgroundColor: MaterialStateProperty.all(AppColors.primary)),
-        child: const Row(
+        child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              AppString.getStarted,
-              style: TextStyle(color: AppColors.white),
+              S.text.getStarted,
+              style: const TextStyle(color: AppColors.white),
             ),
           ],
         ),
@@ -148,7 +154,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return TextButton(
         onPressed: () {},
         child: Text(
-          AppString.skip.toUpperCase(),
+          S.text.skip.toUpperCase(),
           style: const TextStyle(
               fontSize: AppFontSize.f20, color: AppColors.black),
         ));
@@ -178,7 +184,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               curve: Curves.linear);
         },
         child: Text(
-          AppString.next.toUpperCase(),
+          S.text.next.toUpperCase(),
           style: const TextStyle(
               fontSize: AppFontSize.f20, color: AppColors.black),
         ));

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/network/model/on_boarding_model.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -16,6 +17,8 @@ class OnBoardingView extends StatefulWidget {
 
 class _OnBoardingViewState extends State<OnBoardingView> {
   late PageController _controller;
+  late List<OnBoardingModel> _listOnBoardingData;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +29,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _listOnBoardingData = AppConstant.getListDataOfOnBoarding(context);
   }
 
   @override
@@ -45,10 +54,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget _renderPageView() {
     return PageView.builder(
       controller: _controller,
-      itemCount: AppConstant.listDataOfOnBoarding.length,
+      itemCount: _listOnBoardingData.length,
       itemBuilder: (context, index) => XTitleAndContentPage(
-        firstTitle: AppConstant.listDataOfOnBoarding[index].fistTitle,
-        secondTitle: AppConstant.listDataOfOnBoarding[index].secondTitle,
+        firstTitle: _listOnBoardingData[index].fistTitle,
+        secondTitle: _listOnBoardingData[index].secondTitle,
         firstStyle: const TextStyle(
             color: AppColors.black,
             fontWeight: FontWeight.bold,
@@ -58,7 +67,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             fontWeight: FontWeight.bold,
             fontSize: AppFontSize.f30),
         hasImage: true,
-        image: AppConstant.listDataOfOnBoarding[index].image,
+        image: _listOnBoardingData[index].image,
         content: _renderPageContent(index),
       ),
     );
@@ -79,12 +88,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Column(
       children: [
         Text(
-          S.text.welcome,
+          S.of(context).welcome,
           style: const TextStyle(fontSize: AppFontSize.f20),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p15),
         Text(
-          AppConstant.listDataOfOnBoarding[0].content,
+          _listOnBoardingData[0].content,
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: AppFontSize.f14),
         )
@@ -96,9 +105,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Column(
       children: [
         Text(
-          AppConstant
-              .listDataOfOnBoarding[AppConstant.listDataOfOnBoarding.length - 1]
-              .content,
+          _listOnBoardingData[_listOnBoardingData.length - 1].content,
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: AppFontSize.f14),
         ),
@@ -121,7 +128,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              S.text.getStarted,
+              S.of(context).getStarted,
               style: const TextStyle(color: AppColors.white),
             ),
           ],
@@ -132,7 +139,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   Widget _renderOtherPageContent(int pageNumber) {
     return Text(
-      AppConstant.listDataOfOnBoarding[pageNumber].content,
+      _listOnBoardingData[pageNumber].content,
       textAlign: TextAlign.center,
       style: const TextStyle(fontSize: AppFontSize.f14),
     );
@@ -154,7 +161,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return TextButton(
         onPressed: () {},
         child: Text(
-          S.text.skip.toUpperCase(),
+          S.of(context).skip.toUpperCase(),
           style: const TextStyle(
               fontSize: AppFontSize.f20, color: AppColors.black),
         ));
@@ -184,7 +191,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               curve: Curves.linear);
         },
         child: Text(
-          S.text.next.toUpperCase(),
+          S.of(context).next.toUpperCase(),
           style: const TextStyle(
               fontSize: AppFontSize.f20, color: AppColors.black),
         ));

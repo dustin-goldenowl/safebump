@@ -4,22 +4,24 @@ import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 
 class XTextFieldWithLabel extends StatelessWidget {
-  const XTextFieldWithLabel(
-      {super.key,
-      required this.label,
-      this.labelStyle = const TextStyle(
-          fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans),
-      required this.hintText,
-      this.hintStyle = const TextStyle(
-          fontSize: AppFontSize.f14,
-          fontFamily: FontFamily.inter,
-          color: AppColors.hintTextColor),
-      this.errorText,
-      this.errorStyle,
-      this.prefix,
-      this.suffix,
-      this.radius = AppRadius.r10,
-      this.borderColor = AppColors.hintTextColor});
+  const XTextFieldWithLabel({
+    super.key,
+    required this.label,
+    this.labelStyle = const TextStyle(
+        fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans),
+    required this.hintText,
+    this.hintStyle = const TextStyle(
+        fontSize: AppFontSize.f14,
+        fontFamily: FontFamily.inter,
+        color: AppColors.hintTextColor),
+    this.errorText,
+    this.errorStyle,
+    this.prefix,
+    this.suffix,
+    this.radius = AppRadius.r10,
+    this.borderColor = AppColors.hintTextColor,
+    required this.onChanged,
+  });
   final String label;
   final TextStyle? labelStyle;
   final String hintText;
@@ -30,6 +32,7 @@ class XTextFieldWithLabel extends StatelessWidget {
   final Icon? suffix;
   final double radius;
   final Color borderColor;
+  final void Function(String) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +43,7 @@ class XTextFieldWithLabel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
+            onChanged: (value) => onChanged(value),
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: borderColor, width: 0.5),

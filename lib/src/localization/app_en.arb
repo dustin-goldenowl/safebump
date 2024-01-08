@@ -32,5 +32,7 @@
     "signUp" : "Sign Up",
     "or" : "Or",
     "signUpWithGG" : "Sign up with Google",
-    "signUpWithApple" : "Sign up with Apple"
+    "signUpWithApple" : "Sign up with Apple",
+    "emailInvalid": "Email Invalid",
+    "thisFieldIsNotEmpty": "This field is not empty"
 }

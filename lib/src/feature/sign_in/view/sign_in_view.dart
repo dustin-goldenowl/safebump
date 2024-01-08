@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
+import 'package:safebump/src/feature/sign_in/logic/sign_in_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
 import 'package:safebump/widget/button/text_button.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
@@ -62,25 +66,47 @@ class SignInView extends StatelessWidget {
   }
 
   Widget _renderEmailField(BuildContext context) {
-    return XTextFieldWithLabel(
-        label: S.of(context).email,
-        hintText: S.of(context).enterHere,
-        suffix: const Icon(
-          Icons.mail_outline,
-          size: AppSize.s14,
-          color: AppColors.hintTextColor,
-        ));
+    return BlocBuilder<SignInBloc, SignInState>(
+      buildWhen: (previous, current) =>
+          previous.emailValidated != current.emailValidated,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            onChanged: (email) =>
+                context.read<SignInBloc>().onChangedEmail(email),
+            label: S.of(context).email,
+            hintText: S.of(context).enterHere,
+            errorText: StringUtils.isNullOrEmpty(state.emailValidated)
+                ? null
+                : state.emailValidated,
+            suffix: const Icon(
+              Icons.mail_outline,
+              size: AppSize.s14,
+              color: AppColors.hintTextColor,
+            ));
+      },
+    );
   }
 
   Widget _renderPasswordField(BuildContext context) {
-    return XTextFieldWithLabel(
-        label: S.of(context).password,
-        hintText: S.of(context).enterHere,
-        suffix: const Icon(
-          Icons.remove_red_eye,
-          size: AppSize.s14,
-          color: AppColors.hintTextColor,
-        ));
+    return BlocBuilder<SignInBloc, SignInState>(
+      buildWhen: (previous, current) =>
+          previous.passwordValidated != current.passwordValidated,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            onChanged: (pass) =>
+                context.read<SignInBloc>().onChangedPassword(pass),
+            label: S.of(context).password,
+            errorText: StringUtils.isNullOrEmpty(state.passwordValidated)
+                ? null
+                : state.passwordValidated,
+            hintText: S.of(context).enterHere,
+            suffix: const Icon(
+              Icons.remove_red_eye,
+              size: AppSize.s14,
+              color: AppColors.hintTextColor,
+            ));
+      },
+    );
   }
 
   Widget _renderForgotPasswordButton(BuildContext context) {
@@ -91,13 +117,31 @@ class SignInView extends StatelessWidget {
   }
 
   Widget _renderLoginButton(BuildContext context) {
-    return XFillButton(
-        borderRadius: AppRadius.r10,
-        label: Text(
-          S.of(context).login,
-          style: const TextStyle(
-              color: AppColors.white, fontFamily: FontFamily.productSans),
-        ));
+    return BlocSelector<SignInBloc, SignInState, SignInStatus>(
+      selector: (state) {
+        return state.status;
+      },
+      builder: (context, state) {
+        return XFillButton(
+            onPressed: () => context.read<SignInBloc>().loginWithEmail(context),
+            borderRadius: AppRadius.r10,
+            label: state == SignInStatus.signingIn
+                ? const SizedBox(
+                    width: AppSize.s20,
+                    height: AppSize.s20,
+                    child: CircularProgressIndicator(
+                      color: AppColors.white,
+                      strokeWidth: AppSize.s2,
+                    ),
+                  )
+                : Text(
+                    S.of(context).login,
+                    style: const TextStyle(
+                        color: AppColors.white,
+                        fontFamily: FontFamily.productSans),
+                  ));
+      },
+    );
   }
 
   Widget _renderSignUpSection(BuildContext context) {
@@ -129,23 +173,35 @@ class SignInView extends StatelessWidget {
   }
 
   Widget _renderGGSignUp(BuildContext context) {
-    return XFillButton(
-        bgColor: AppColors.white,
-        border: const BorderSide(color: AppColors.grey2, width: 0.5),
-        borderRadius: AppRadius.r10,
-        onPressed: () {},
-        label: Row(
-          children: [
-            Assets.images.images.ggLogo.image(),
-            XPaddingUtils.horizontalPadding(width: AppPadding.p15),
-            Text(
-              S.of(context).signUpWithGG,
-              style: const TextStyle(
-                  fontSize: AppFontSize.f16,
-                  fontFamily: FontFamily.productSans,
-                  color: AppColors.black),
-            )
-          ],
-        ));
+    return BlocSelector<SignInBloc, SignInState, SignInStatus>(
+        selector: (state) => state.status,
+        builder: (context, status) => XFillButton(
+            bgColor: AppColors.white,
+            border: const BorderSide(color: AppColors.grey2, width: 0.5),
+            borderRadius: AppRadius.r10,
+            onPressed: () =>
+                context.read<SignInBloc>().loginWithGoogle(context),
+            label: status == SignInStatus.signingIn
+                ? const SizedBox(
+                    width: AppSize.s20,
+                    height: AppSize.s20,
+                    child: CircularProgressIndicator(
+                      color: AppColors.black,
+                      strokeWidth: AppSize.s2,
+                    ),
+                  )
+                : Row(
+                    children: [
+                      Assets.images.images.ggLogo.image(),
+                      XPaddingUtils.horizontalPadding(width: AppPadding.p15),
+                      Text(
+                        S.of(context).signUpWithGG,
+                        style: const TextStyle(
+                            fontSize: AppFontSize.f16,
+                            fontFamily: FontFamily.productSans,
+                            color: AppColors.black),
+                      )
+                    ],
+                  )));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
+import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/theme/colors.dart';
@@ -15,6 +16,7 @@ class SignInView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white4,
       body: DismissKeyBoard(
         child: SingleChildScrollView(
             child: Padding(
@@ -28,7 +30,10 @@ class SignInView extends StatelessWidget {
               _renderSignUpSection(context),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppPadding.p23),
-                child: Text(S.of(context).or.toUpperCase()),
+                child: Text(
+                  S.of(context).or.toUpperCase(),
+                  style: const TextStyle(fontFamily: FontFamily.inter),
+                ),
               ),
               _renderSocialSignInSection(context),
             ],
@@ -90,7 +95,8 @@ class SignInView extends StatelessWidget {
         borderRadius: AppRadius.r10,
         label: Text(
           S.of(context).login,
-          style: const TextStyle(color: AppColors.white),
+          style: const TextStyle(
+              color: AppColors.white, fontFamily: FontFamily.productSans),
         ));
   }
 
@@ -99,7 +105,10 @@ class SignInView extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(S.of(context).dontHaveAccount),
+        Text(
+          S.of(context).dontHaveAccount,
+          style: const TextStyle(fontFamily: FontFamily.inter),
+        ),
         XTextButton(
           callback: () {},
           label: S.of(context).signUp,
@@ -114,7 +123,6 @@ class SignInView extends StatelessWidget {
       children: [
         _renderGGSignUp(context),
         XPaddingUtils.verticalPadding(height: AppPadding.p16),
-        _renderAppleSignUp(context),
         XPaddingUtils.verticalPadding(height: AppPadding.p16),
       ],
     );
@@ -123,35 +131,18 @@ class SignInView extends StatelessWidget {
   Widget _renderGGSignUp(BuildContext context) {
     return XFillButton(
         bgColor: AppColors.white,
+        border: const BorderSide(color: AppColors.grey2, width: 0.5),
+        borderRadius: AppRadius.r10,
         onPressed: () {},
         label: Row(
           children: [
             Assets.images.images.ggLogo.image(),
-            XPaddingUtils.horizontalPadding(width: AppPadding.p10),
+            XPaddingUtils.horizontalPadding(width: AppPadding.p15),
             Text(
               S.of(context).signUpWithGG,
               style: const TextStyle(
-                  fontWeight: FontWeight.bold,
                   fontSize: AppFontSize.f16,
-                  color: AppColors.black),
-            )
-          ],
-        ));
-  }
-
-  Widget _renderAppleSignUp(BuildContext context) {
-    return XFillButton(
-        bgColor: AppColors.white,
-        onPressed: () {},
-        label: Row(
-          children: [
-            Assets.images.images.appleLogo.image(),
-            XPaddingUtils.horizontalPadding(width: AppPadding.p10),
-            Text(
-              S.of(context).signUpWithApple,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppFontSize.f16,
+                  fontFamily: FontFamily.productSans,
                   color: AppColors.black),
             )
           ],

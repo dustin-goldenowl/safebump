@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 
@@ -7,11 +8,11 @@ class XTextFieldWithLabel extends StatelessWidget {
       {super.key,
       required this.label,
       this.labelStyle = const TextStyle(
-          fontSize: AppFontSize.f16, fontWeight: FontWeight.bold),
+          fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans),
       required this.hintText,
       this.hintStyle = const TextStyle(
           fontSize: AppFontSize.f14,
-          fontStyle: FontStyle.italic,
+          fontFamily: FontFamily.inter,
           color: AppColors.hintTextColor),
       this.errorText,
       this.errorStyle,
@@ -40,9 +41,19 @@ class XTextFieldWithLabel extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
             decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: borderColor, width: 0.5),
+                  borderRadius: BorderRadius.circular(radius),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide:
+                      const BorderSide(color: AppColors.primary, width: 0.5),
+                  borderRadius: BorderRadius.circular(radius),
+                ),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(radius),
-                    borderSide: BorderSide(color: borderColor, width: 2)),
+                  borderSide: BorderSide(color: borderColor, width: 0.5),
+                  borderRadius: BorderRadius.circular(radius),
+                ),
                 prefixIcon: prefix,
                 suffixIcon: suffix,
                 hintText: hintText,

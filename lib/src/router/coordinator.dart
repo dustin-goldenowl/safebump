@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safebump/src/router/route_name.dart';
 
 import 'router.dart';
 
@@ -24,4 +25,9 @@ class AppCoordinator {
         queryParameters: queryParams,
         extra: extra,
       );
+
+  static void showHomeScreen() => context.goNamed(AppRouteNames.home.name);
+
+  static void showSignInScreen() =>
+      context.pushReplacementNamed(AppRouteNames.signIn.name);
 }

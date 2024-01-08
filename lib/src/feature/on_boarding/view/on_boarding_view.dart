@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/widget/button/fill_button.dart';
 import 'package:safebump/widget/page/title_and_content_page.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -116,25 +118,13 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   Widget _renderGetStartedButton() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppPadding.p45),
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ButtonStyle(
-            shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-            backgroundColor: MaterialStateProperty.all(AppColors.primary)),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
+        padding: const EdgeInsets.symmetric(vertical: AppPadding.p45),
+        child: XFillButton(
+            onPressed: () => AppCoordinator.showSignInScreen(),
+            label: Text(
               S.of(context).getStarted,
               style: const TextStyle(color: AppColors.white),
-            ),
-          ],
-        ),
-      ),
-    );
+            )));
   }
 
   Widget _renderOtherPageContent(int pageNumber) {
@@ -159,7 +149,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   Widget _renderSkipButton() {
     return TextButton(
-        onPressed: () {},
+        onPressed: () => AppCoordinator.showSignInScreen(),
         child: Text(
           S.of(context).skip.toUpperCase(),
           style: const TextStyle(

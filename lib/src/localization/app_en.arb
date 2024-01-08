@@ -22,5 +22,15 @@
         "The app will provide a community support feature to help users connect with other users, share experiences, and receive support.",
     "theAppWillAllowUser" :
         "The app will allow users to schedule and manage their appointments with healthcare providers, such as doctors and midwives.",
-    "getStarted" : "Get Started"
+    "getStarted" : "Get Started",
+    "email" : "E Mail",
+    "enterHere" : "Enter here...",
+    "password" : "Password",
+    "forgotPassword" : "Forgot password?",
+    "login" : "Login",
+    "dontHaveAccount" : "Dont't have account?",
+    "signUp" : "Sign Up",
+    "or" : "Or",
+    "signUpWithGG" : "Sign up with Google",
+    "signUpWithApple" : "Sign up with Apple"
 }

@@ -98,7 +98,17 @@ class SignRepositoryImpl extends SignRepository {
 
   @override
   Future<MResult<MUser>> signUpWithEmail(
-      {required String email, required String password, required String name}) {
-    throw UnimplementedError();
+      {required String email,
+      required String password,
+      required String name}) async {
+    final result =
+        await AuthenticationHelper().signUp(email: email, password: password);
+
+    if (result == null) {
+      return MResult.success(const MUser(id: 'result'));
+    } else {
+      xLog.e(result);
+      return MResult.error(MErrorCode.unknown);
+    }
   }
 }

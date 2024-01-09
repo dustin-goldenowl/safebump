@@ -39,5 +39,9 @@
     "enterYourEmail": "Enter your email",
     "createYourPassword": "Create your password",
     "alreadyHaveAccount": "Already have account?",
-    "pk3076889": "pk3076889@gmail.co"
+    "pk3076889": "pk3076889@gmail.co",
+    "passwordMustBeSixOrMore" : "Password must be six or more characters",
+    "close" : "close",
+    "no" : "No",
+    "yes": "Yes"
 }

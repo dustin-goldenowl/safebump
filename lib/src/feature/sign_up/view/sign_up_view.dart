@@ -3,6 +3,7 @@ import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -78,7 +79,7 @@ class SignUpView extends StatelessWidget {
     return XTextFieldWithLabel(
         onChanged: (email) {},
         label: S.of(context).enterYourEmail,
-        hintText: S.of(context).enterHere,
+        hintText: S.of(context).pk3076889,
         suffix: const Icon(
           Icons.mail_outline,
           size: AppSize.s14,
@@ -91,10 +92,14 @@ class SignUpView extends StatelessWidget {
         onChanged: (pass) {},
         label: S.of(context).createYourPassword,
         hintText: S.of(context).enterHere,
-        suffix: const Icon(
-          Icons.remove_red_eye,
-          size: AppSize.s14,
-          color: AppColors.hintTextColor,
+        isObscureText: true,
+        suffix: IconButton(
+          icon: const Icon(
+            Icons.visibility,
+            size: AppSize.s14,
+            color: AppColors.hintTextColor,
+          ),
+          onPressed: () {},
         ));
   }
 
@@ -119,7 +124,7 @@ class SignUpView extends StatelessWidget {
           style: const TextStyle(fontFamily: FontFamily.inter),
         ),
         XTextButton(
-          callback: () {},
+          callback: () => AppCoordinator.showSignInScreen(),
           label: S.of(context).login,
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
         )

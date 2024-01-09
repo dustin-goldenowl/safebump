@@ -30,4 +30,7 @@ class AppCoordinator {
 
   static void showSignInScreen() =>
       context.pushReplacementNamed(AppRouteNames.signIn.name);
+
+  static void showSignUpScreen() =>
+      context.pushNamed(AppRouteNames.signUp.name);
 }

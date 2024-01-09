@@ -55,57 +55,66 @@ class _XLoadingProgress {
               }
               return Center(
                 child: Container(
-                  width: _dialogMessage.isEmpty ? 80 : 130,
-                  decoration: BoxDecoration(
-                    color: Colors.black87,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                        height: _dialogMessage.isEmpty ? 80 : null,
-                        padding: const EdgeInsets.all(20),
-                        alignment: Alignment.center,
-                        child: kIsWeb || Platform.isAndroid
-                            ? SizedBox(
-                                width: 30,
-                                height: 30,
-                                child: CircularProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation(
-                                      Theme.of(context).primaryColor),
-                                ),
-                              )
-                            : const CupertinoActivityIndicator(
-                                radius: 15,
-                              ),
-                      ),
-                      if (_dialogMessage.isNotEmpty)
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
-                          width: double.infinity,
-                          child: Text(
-                            _dialogMessage,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+                    width: _dialogMessage.isEmpty ? 80 : 130,
+                    decoration: BoxDecoration(
+                      color: Colors.black87,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: _renderDialogSection(context)),
               );
             },
           ),
         );
       },
+    );
+  }
+
+  Widget _renderCircularAndroid(BuildContext context) {
+    return SizedBox(
+      width: 30,
+      height: 30,
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.white,
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+      ),
+    );
+  }
+
+  Widget _renderDialogMessage() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 20),
+      width: double.infinity,
+      child: Text(
+        _dialogMessage,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 12,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _renderDialogSection(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          height: _dialogMessage.isEmpty ? 80 : null,
+          padding: const EdgeInsets.all(20),
+          alignment: Alignment.center,
+          child: kIsWeb || Platform.isAndroid
+              ? _renderCircularAndroid(context)
+              : const CupertinoActivityIndicator(
+                  radius: 15,
+                ),
+        ),
+        if (_dialogMessage.isNotEmpty) _renderDialogMessage()
+      ],
     );
   }
 }

@@ -91,4 +91,8 @@ class SignInBloc extends Cubit<SignInState> {
   void onChangedPassword(String pass) {
     emit(state.copyWith(password: pass, passwordValidated: ''));
   }
+
+  void isShowPassword() {
+    emit(state.copyWith(isShowPassword: !state.isShowPassword));
+  }
 }

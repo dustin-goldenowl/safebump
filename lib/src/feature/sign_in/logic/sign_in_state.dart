@@ -10,7 +10,8 @@ class SignInState with EquatableMixin {
       this.emailValidated,
       this.password,
       this.loginType,
-      this.passwordValidated});
+      this.passwordValidated,
+      this.isShowPassword = true});
 
   final String? email;
   final String? emailValidated;
@@ -18,10 +19,18 @@ class SignInState with EquatableMixin {
   final String? passwordValidated;
   final SignInStatus status;
   final MSocialType? loginType;
+  final bool isShowPassword;
 
   @override
-  List<Object?> get props =>
-      [email, emailValidated, password, passwordValidated, status, loginType];
+  List<Object?> get props => [
+        email,
+        emailValidated,
+        password,
+        passwordValidated,
+        status,
+        loginType,
+        isShowPassword
+      ];
 
   SignInState copyWith(
       {String? email,
@@ -29,13 +38,15 @@ class SignInState with EquatableMixin {
       String? password,
       MSocialType? loginType,
       String? passwordValidated,
-      SignInStatus? status}) {
+      SignInStatus? status,
+      bool? isShowPassword}) {
     return SignInState(
         email: email ?? this.email,
         emailValidated: emailValidated ?? this.emailValidated,
         password: password ?? this.password,
         passwordValidated: passwordValidated ?? this.passwordValidated,
         loginType: loginType ?? this.loginType,
-        status: status ?? this.status);
+        status: status ?? this.status,
+        isShowPassword: isShowPassword ?? this.isShowPassword);
   }
 }

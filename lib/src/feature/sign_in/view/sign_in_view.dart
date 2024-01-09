@@ -90,7 +90,8 @@ class SignInView extends StatelessWidget {
   Widget _renderPasswordField(BuildContext context) {
     return BlocBuilder<SignInBloc, SignInState>(
       buildWhen: (previous, current) =>
-          previous.passwordValidated != current.passwordValidated,
+          previous.passwordValidated != current.passwordValidated ||
+          previous.isShowPassword != current.isShowPassword,
       builder: (context, state) {
         return XTextFieldWithLabel(
             onChanged: (pass) =>
@@ -100,10 +101,14 @@ class SignInView extends StatelessWidget {
                 ? null
                 : state.passwordValidated,
             hintText: S.of(context).enterHere,
-            suffix: const Icon(
-              Icons.remove_red_eye,
-              size: AppSize.s14,
-              color: AppColors.hintTextColor,
+            isObscureText: state.isShowPassword,
+            suffix: IconButton(
+              icon: Icon(
+                state.isShowPassword ? Icons.visibility : Icons.visibility_off,
+                size: AppSize.s14,
+                color: AppColors.hintTextColor,
+              ),
+              onPressed: () => context.read<SignInBloc>().isShowPassword(),
             ));
       },
     );

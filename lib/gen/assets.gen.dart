@@ -18,6 +18,14 @@ class $AssetsImagesGen {
 class $AssetsImagesImagesGen {
   const $AssetsImagesImagesGen();
 
+  /// File path: assets/images/images/apple_logo.png
+  AssetGenImage get appleLogo =>
+      const AssetGenImage('assets/images/images/apple_logo.png');
+
+  /// File path: assets/images/images/gg_logo.png
+  AssetGenImage get ggLogo =>
+      const AssetGenImage('assets/images/images/gg_logo.png');
+
   /// File path: assets/images/images/logo.png
   AssetGenImage get logo =>
       const AssetGenImage('assets/images/images/logo.png');
@@ -44,6 +52,8 @@ class $AssetsImagesImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+        appleLogo,
+        ggLogo,
         logo,
         proviceEducational,
         provideCommunity,

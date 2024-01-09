@@ -34,5 +34,10 @@
     "signUpWithGG" : "Sign up with Google",
     "signUpWithApple" : "Sign up with Apple",
     "emailInvalid": "Email Invalid",
-    "thisFieldIsNotEmpty": "This field is not empty"
+    "thisFieldIsNotEmpty": "This field is not empty",
+    "enterYourName": "Enter your name",
+    "enterYourEmail": "Enter your email",
+    "createYourPassword": "Create your password",
+    "alreadyHaveAccount": "Already have account?",
+    "pk3076889": "pk3076889@gmail.co"
 }

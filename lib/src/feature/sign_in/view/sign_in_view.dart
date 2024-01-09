@@ -6,6 +6,7 @@ import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -159,7 +160,7 @@ class SignInView extends StatelessWidget {
           style: const TextStyle(fontFamily: FontFamily.inter),
         ),
         XTextButton(
-          callback: () {},
+          callback: () => AppCoordinator.showSignUpScreen(),
           label: S.of(context).signUp,
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
         )

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_state.dart';
@@ -7,7 +9,6 @@ import 'package:safebump/src/network/model/domain_manager.dart';
 import 'package:safebump/src/network/model/social_type.dart';
 import 'package:safebump/src/network/model/social_user/social_user.dart';
 import 'package:safebump/src/network/model/user/user.dart';
-import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 
 class SignInBloc extends Cubit<SignInState> {
@@ -29,7 +30,7 @@ class SignInBloc extends Cubit<SignInState> {
     final password = state.password;
     final result =
         await domain.sign.loginWithEmail(email: email!, password: password!);
-    return loginDecision(result);
+    return loginDecision(context, result);
   }
 
   Future loginWithGoogle(BuildContext context) async {
@@ -39,7 +40,7 @@ class SignInBloc extends Cubit<SignInState> {
       loginType: MSocialType.google,
     ));
     final result = await domain.sign.loginWithGoogle();
-    return loginSocialDecision(result, MSocialType.google);
+    return loginSocialDecision(context, result, MSocialType.google);
   }
 
   bool isValidatedInput(BuildContext context) {
@@ -51,30 +52,36 @@ class SignInBloc extends Cubit<SignInState> {
         StringUtils.isNullOrEmpty(passError);
   }
 
-  Future loginDecision(MResult<MUser> result, {MSocialType? socialType}) async {
+  Future loginDecision(BuildContext context, MResult<MUser> result,
+      {MSocialType? socialType}) async {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignInStatus.successed));
-      AppCoordinator.pop(true);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Successed"),
+      ));
     } else {
       emit(state.copyWith(status: SignInStatus.failed));
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text("Failed"),
+      ));
     }
   }
 
-  Future loginSocialDecision(MResult<MSocialUser> result,
+  Future loginSocialDecision(BuildContext context, MResult<MSocialUser> result,
       MSocialType socialType) async {
     if (result.isSuccess) {
       final data = result.data!;
       if (socialType == MSocialType.google) {
-        connectBEWithGoogle(data);
+        connectBEWithGoogle(context, data);
       }
     } else {
       emit(state.copyWith(status: SignInStatus.failed));
     }
   }
 
-  Future connectBEWithGoogle(MSocialUser user) async {
+  Future connectBEWithGoogle(BuildContext context, MSocialUser user) async {
     final result = await domain.sign.connectBEWithGoogle(user);
-    return loginDecision(result, socialType: user.type);
+    return loginDecision(context, result, socialType: user.type);
   }
 
   void onChangedEmail(String email) {

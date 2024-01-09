@@ -17,13 +17,19 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -46,30 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBDV5jGHIGFgVBv-Y3D4TwNfB4-6v-4CPs',
-    appId: '1:276870058509:web:a9aa10813605a220dafb44',
-    messagingSenderId: '276870058509',
-    projectId: 'safebump-90881',
-    authDomain: 'safebump-90881.firebaseapp.com',
-    storageBucket: 'safebump-90881.appspot.com',
-    measurementId: 'G-S50LZGNTDX',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAJaKLUNAOCPajZVnx5SQi3vNVXhLyfHDQ',
     appId: '1:276870058509:android:6efac6fa07cb3339dafb44',
     messagingSenderId: '276870058509',
     projectId: 'safebump-90881',
     storageBucket: 'safebump-90881.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAIf8gjgqlr7RD0GepW1kmsH5_pFVl4Nu0',
-    appId: '1:276870058509:ios:d3e146a22dfd05f7dafb44',
-    messagingSenderId: '276870058509',
-    projectId: 'safebump-90881',
-    storageBucket: 'safebump-90881.appspot.com',
-    iosBundleId: 'com.example.safebump',
   );
 }

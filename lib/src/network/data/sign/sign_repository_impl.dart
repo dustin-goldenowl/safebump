@@ -56,7 +56,7 @@ class SignRepositoryImpl extends SignRepository {
         await AuthenticationHelper().signIn(email: email, password: password);
 
     if (result == null) {
-      return MResult.success(MUser(id: result));
+      return MResult.success(const MUser(id: 'result'));
     } else {
       xLog.e(result);
       return MResult.error(MErrorCode.unknown);

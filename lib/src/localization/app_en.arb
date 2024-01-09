@@ -39,5 +39,18 @@
     "enterYourEmail": "Enter your email",
     "createYourPassword": "Create your password",
     "alreadyHaveAccount": "Already have account?",
-    "pk3076889": "pk3076889@gmail.co"
+    "pk3076889": "pk3076889@gmail.co",
+    "forgotPasswordUppercase": "Forgot Password?",
+    "enterYourEmailWe": "Enter your Email, we will send you a vertification code",
+    "yourEmail": "Your Email",
+    "sendCode": "Send Code",
+    "vertifyCode": "Vertify Code",
+    "enterTheCode": "Enter the code\nwe just sent you on your registered Email",
+    "createNewPassword": "Create New Password",
+    "yourNewPasswordMustBe" : "Your new password must be different from previously used password",
+    "verify": "Verify",
+    "didntGetTheCode": "Didn't get the Code?",
+    "resend": "Resend",
+    "confirmPassword": "Confirm Password",
+    "resetPassword": "Reset Password"
 }

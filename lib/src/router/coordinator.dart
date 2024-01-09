@@ -33,4 +33,13 @@ class AppCoordinator {
 
   static void showSignUpScreen() =>
       context.pushNamed(AppRouteNames.signUp.name);
+
+  static void showEnterMailScreen() =>
+      context.pushNamed(AppRouteNames.enterMail.name);
+
+  static void showVerifyCodeScreen() =>
+      context.pushNamed(AppRouteNames.verifyCode.name);
+      
+  static void showResetPasswordScreen() =>
+      context.pushReplacementNamed(AppRouteNames.resetPassword.name);
 }

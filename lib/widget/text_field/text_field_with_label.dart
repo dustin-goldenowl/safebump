@@ -15,6 +15,7 @@ class XTextFieldWithLabel extends StatelessWidget {
         fontFamily: FontFamily.inter,
         color: AppColors.hintTextColor),
     this.errorText,
+    this.isObscureText = false,
     this.errorStyle,
     this.prefix,
     this.suffix,
@@ -28,10 +29,11 @@ class XTextFieldWithLabel extends StatelessWidget {
   final TextStyle? hintStyle;
   final String? errorText;
   final TextStyle? errorStyle;
-  final Icon? prefix;
-  final Icon? suffix;
+  final Widget? prefix;
+  final Widget? suffix;
   final double radius;
   final Color borderColor;
+  final bool isObscureText;
   final void Function(String) onChanged;
 
   @override
@@ -43,7 +45,9 @@ class XTextFieldWithLabel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
+            textInputAction: TextInputAction.next,
             onChanged: (value) => onChanged(value),
+            obscureText: isObscureText,
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: borderColor, width: 0.5),
@@ -63,6 +67,7 @@ class XTextFieldWithLabel extends StatelessWidget {
                 hintText: hintText,
                 hintStyle: hintStyle,
                 errorText: errorText,
+                focusColor: AppColors.primary,
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: AppPadding.p20, vertical: AppPadding.p10)),
           ),

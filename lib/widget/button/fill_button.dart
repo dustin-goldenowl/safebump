@@ -8,13 +8,17 @@ class XFillButton extends StatelessWidget {
       required this.label,
       this.bgColor = AppColors.primary,
       this.onPressed,
+      this.isLoading = false,
       this.borderRadius = AppRadius.r8,
+      this.circularColor = AppColors.white,
       this.border});
   final Widget label;
   final Color bgColor;
   final double borderRadius;
   final BorderSide? border;
   final void Function()? onPressed;
+  final bool isLoading;
+  final Color circularColor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +32,18 @@ class XFillButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [label],
+        children: [
+          isLoading
+              ? SizedBox(
+                  width: AppSize.s20,
+                  height: AppSize.s20,
+                  child: CircularProgressIndicator(
+                    color: circularColor,
+                    strokeWidth: AppSize.s2,
+                  ),
+                )
+              : label
+        ],
       ),
     );
   }

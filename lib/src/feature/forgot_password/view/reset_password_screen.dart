@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_bloc.dart';
+import 'package:safebump/src/feature/forgot_password/logic/state/reset_password_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
@@ -37,10 +38,8 @@ class VerifyCodeScreen extends StatelessWidget {
               _renderTitle(context),
               XPaddingUtils.verticalPadding(height: AppPadding.p20),
               _renderSubTitle(context),
-              XPaddingUtils.verticalPadding(height: AppPadding.p10),
-              _renderOTPCodeField(context),
               XPaddingUtils.verticalPadding(height: AppPadding.p30),
-              _renderVerifyButton(context),
+              _renderBack2LogInButton(context),
               XPaddingUtils.verticalPadding(height: AppPadding.p15),
               _renderResendCodeButton(context),
               XPaddingUtils.verticalPadding(height: AppPadding.p15),
@@ -57,7 +56,7 @@ class VerifyCodeScreen extends StatelessWidget {
 
   Widget _renderTitle(BuildContext context) {
     return Text(
-      S.of(context).vertifyCode,
+      S.of(context).resetPassword,
       style: const TextStyle(
           fontFamily: FontFamily.productSans,
           fontSize: AppFontSize.f30,
@@ -66,36 +65,52 @@ class VerifyCodeScreen extends StatelessWidget {
   }
 
   Widget _renderSubTitle(BuildContext context) {
-    return Text(
-      S.of(context).enterTheCode,
-      textAlign: TextAlign.center,
-      style: const TextStyle(
-          color: AppColors.grey2,
-          fontFamily: FontFamily.productSans,
-          fontSize: AppFontSize.f16),
-    );
+    return BlocSelector<ResetPasswordBloc, ResetPasswordState, String>(
+        selector: (state) => state.email,
+        builder: (context, mail) {
+          return Column(
+            children: [
+              Wrap(
+                alignment: WrapAlignment.center,
+                children: [
+                  Text(
+                    S.of(context).weJustSentYou,
+                    style: const TextStyle(
+                        color: AppColors.grey2,
+                        fontFamily: FontFamily.productSans,
+                        fontSize: AppFontSize.f16),
+                  ),
+                  Text(
+                    mail,
+                    style: const TextStyle(
+                        color: AppColors.primary,
+                        fontFamily: FontFamily.productSans,
+                        fontWeight: FontWeight.bold,
+                        fontSize: AppFontSize.f16),
+                  )
+                ],
+              ),
+              XPaddingUtils.verticalPadding(height: AppPadding.p15),
+              Text(
+                S.of(context).pleseCheckYourMail,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                    color: AppColors.grey2,
+                    fontFamily: FontFamily.productSans,
+                    fontSize: AppFontSize.f16),
+              )
+            ],
+          );
+        });
   }
 
-  Widget _renderOTPCodeField(BuildContext context) {
-    return OTPTextField(
-      length: 6,
-      width: MediaQuery.of(context).size.width,
-      otpFieldStyle: OtpFieldStyle(focusBorderColor: AppColors.primary),
-      fieldWidth: AppSize.s40,
-      style: const TextStyle(
-          fontFamily: FontFamily.inter, fontSize: AppFontSize.f16),
-      textFieldAlignment: MainAxisAlignment.spaceAround,
-      fieldStyle: FieldStyle.box,
-      onCompleted: (pin) {},
-    );
-  }
-
-  Widget _renderVerifyButton(BuildContext context) {
+  Widget _renderBack2LogInButton(BuildContext context) {
     return XFillButton(
-        onPressed: () => AppCoordinator.showResetPasswordScreen(),
+        onPressed: () =>
+            context.read<ResetPasswordBloc>().onTapBack2LogInButton(),
         borderRadius: AppRadius.r10,
         label: Text(
-          S.of(context).verify,
+          S.of(context).login,
           style: const TextStyle(
               fontSize: AppFontSize.f16,
               color: AppColors.white,
@@ -109,13 +124,23 @@ class VerifyCodeScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          S.of(context).didntGetTheCode,
+          S.of(context).didntGetTheMail,
           style: const TextStyle(fontFamily: FontFamily.inter),
         ),
-        XTextButton(
-          callback: () => AppCoordinator.showSignUpScreen(),
-          label: S.of(context).resend,
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+        BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
+          buildWhen: (previous, current) =>
+              previous.isTimeOut != current.isTimeOut ||
+              previous.timeCounter != current.timeCounter,
+          builder: (context, state) {
+            return XTextButton(
+              callback: () =>
+                  context.read<ResetPasswordBloc>().onTapResendButton(),
+              label: state.isTimeOut
+                  ? S.of(context).resend
+                  : "${state.timeCounter}s",
+              padding: const EdgeInsets.symmetric(horizontal: AppPadding.p8),
+            );
+          },
         )
       ],
     );

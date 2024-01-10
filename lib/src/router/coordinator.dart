@@ -37,9 +37,9 @@ class AppCoordinator {
   static void showEnterMailScreen() =>
       context.pushNamed(AppRouteNames.enterMail.name);
 
-  static void showVerifyCodeScreen() =>
-      context.pushNamed(AppRouteNames.verifyCode.name);
-      
+  static void showVerifyCodeScreen(String mail) => context
+      .pushNamed(AppRouteNames.verifyCode.name, pathParameters: {'mail': mail});
+
   static void showResetPasswordScreen() =>
       context.pushReplacementNamed(AppRouteNames.resetPassword.name);
 }

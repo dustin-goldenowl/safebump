@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc.dart';
+import 'package:safebump/src/feature/forgot_password/logic/state/enter_mail_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
 
@@ -73,26 +77,43 @@ class EnterMailScreen extends StatelessWidget {
   }
 
   Widget _renderEmailField(BuildContext context) {
-    return XTextFieldWithLabel(
-        onChanged: (email) {},
-        hintText: S.of(context).yourEmail,
-        prefix: const Icon(
-          Icons.mail_outline,
-          size: AppSize.s14,
-          color: AppColors.hintTextColor,
-        ));
+    return BlocBuilder<EnterMailBloc, EnterMailState>(
+      buildWhen: (previous, current) =>
+          previous.mailValidated != current.mailValidated,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            onChanged: (email) =>
+                context.read<EnterMailBloc>().onEmailChanged(email),
+            hintText: S.of(context).yourEmail,
+            errorText: StringUtils.isNullOrEmpty(state.mailValidated)
+                ? null
+                : state.mailValidated,
+            prefix: const Icon(
+              Icons.mail_outline,
+              size: AppSize.s14,
+              color: AppColors.hintTextColor,
+            ));
+      },
+    );
   }
 
   Widget _renderSendButton(BuildContext context) {
-    return XFillButton(
-        onPressed: () => AppCoordinator.showVerifyCodeScreen(),
-        borderRadius: AppRadius.r10,
-        label: Text(
-          S.of(context).sendCode,
-          style: const TextStyle(
-              fontSize: AppFontSize.f16,
-              color: AppColors.white,
-              fontFamily: FontFamily.productSans),
-        ));
+    return BlocSelector<EnterMailBloc, EnterMailState, EnterMailStatus>(
+      selector: (state) => state.status,
+      builder: (context, status) {
+        return XFillButton(
+            onPressed: () =>
+                context.read<EnterMailBloc>().onTapSendEmail(context),
+            borderRadius: AppRadius.r10,
+            isLoading: status == EnterMailStatus.onProcess,
+            label: Text(
+              S.of(context).sendCode,
+              style: const TextStyle(
+                  fontSize: AppFontSize.f16,
+                  color: AppColors.white,
+                  fontFamily: FontFamily.productSans),
+            ));
+      },
+    );
   }
 }

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
+import 'package:safebump/src/feature/sign_up/logic/sign_up_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
 import 'package:safebump/widget/button/text_button.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
@@ -64,54 +68,93 @@ class SignUpView extends StatelessWidget {
   }
 
   Widget _renderNameField(BuildContext context) {
-    return XTextFieldWithLabel(
-        onChanged: (name) {},
-        label: S.of(context).enterYourName,
-        hintText: S.of(context).enterHere,
-        suffix: const Icon(
-          Icons.person_outline,
-          size: AppSize.s14,
-          color: AppColors.hintTextColor,
-        ));
+    return BlocBuilder<SignUpBloc, SignUpState>(
+      buildWhen: (pre, cur) => pre.nameValidated != cur.nameValidated,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            onChanged: (name) => context.read<SignUpBloc>().onChangedName(name),
+            label: S.of(context).enterYourName,
+            hintText: S.of(context).enterHere,
+            errorText: StringUtils.isNullOrEmpty(state.nameValidated)
+                ? null
+                : state.nameValidated,
+            suffix: const Icon(
+              Icons.person_outline,
+              size: AppSize.s14,
+              color: AppColors.hintTextColor,
+            ));
+      },
+    );
   }
 
   Widget _renderEmailField(BuildContext context) {
-    return XTextFieldWithLabel(
-        onChanged: (email) {},
-        label: S.of(context).enterYourEmail,
-        hintText: S.of(context).pk3076889,
-        suffix: const Icon(
-          Icons.mail_outline,
-          size: AppSize.s14,
-          color: AppColors.hintTextColor,
-        ));
+    return BlocBuilder<SignUpBloc, SignUpState>(
+      buildWhen: (pre, cur) => pre.emailValidated != cur.emailValidated,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            onChanged: (email) =>
+                context.read<SignUpBloc>().onChangedEmail(email),
+            label: S.of(context).enterYourEmail,
+            hintText: S.of(context).pk3076889,
+            errorText: StringUtils.isNullOrEmpty(state.emailValidated)
+                ? null
+                : state.emailValidated,
+            suffix: const Icon(
+              Icons.mail_outline,
+              size: AppSize.s14,
+              color: AppColors.hintTextColor,
+            ));
+      },
+    );
   }
 
   Widget _renderPasswordField(BuildContext context) {
-    return XTextFieldWithLabel(
-        onChanged: (pass) {},
-        label: S.of(context).createYourPassword,
-        hintText: S.of(context).enterHere,
-        isObscureText: true,
-        suffix: IconButton(
-          icon: const Icon(
-            Icons.visibility,
-            size: AppSize.s14,
-            color: AppColors.hintTextColor,
-          ),
-          onPressed: () {},
-        ));
+    return BlocBuilder<SignUpBloc, SignUpState>(
+      buildWhen: (pre, cur) =>
+          pre.passwordValidated != cur.passwordValidated ||
+          pre.isShowPassword != cur.isShowPassword,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            onChanged: (pass) =>
+                context.read<SignUpBloc>().onChangedPassword(pass),
+            label: S.of(context).createYourPassword,
+            hintText: S.of(context).enterHere,
+            errorText: StringUtils.isNullOrEmpty(state.passwordValidated)
+                ? null
+                : state.passwordValidated,
+            isObscureText: state.isShowPassword,
+            suffix: IconButton(
+              icon: Icon(
+                state.isShowPassword ? Icons.visibility_off : Icons.visibility,
+                size: AppSize.s14,
+                color: AppColors.hintTextColor,
+              ),
+              onPressed: () => context.read<SignUpBloc>().isShowPassword(),
+            ));
+      },
+    );
   }
 
   Widget _renderSignUpButton(BuildContext context) {
-    return XFillButton(
-        onPressed: () {},
-        borderRadius: AppRadius.r10,
-        label: Text(
-          S.of(context).signUp,
-          style: const TextStyle(
-              color: AppColors.white, fontFamily: FontFamily.productSans),
-        ));
+    return BlocSelector<SignUpBloc, SignUpState, SignUpStatus>(
+      selector: (state) {
+        return state.status;
+      },
+      builder: (context, status) {
+        return XFillButton(
+            onPressed: () =>
+                context.read<SignUpBloc>().signupWithEmail(context),
+            borderRadius: AppRadius.r10,
+            label: status == SignUpStatus.signingIn
+                ? _renderCircularProgressIndicator(AppColors.white)
+                : Text(
+                    S.of(context).signUp,
+                    style: const TextStyle(
+                        color: AppColors.white,
+                        fontFamily: FontFamily.productSans),
+                  ));
+      },
+    );
   }
 
   Widget _renderSignInSection(BuildContext context) {
@@ -143,23 +186,44 @@ class SignUpView extends StatelessWidget {
   }
 
   Widget _renderGGSignUp(BuildContext context) {
-    return XFillButton(
-        bgColor: AppColors.white,
-        border: const BorderSide(color: AppColors.grey2, width: 0.5),
-        borderRadius: AppRadius.r10,
-        onPressed: () {},
-        label: Row(
-          children: [
-            Assets.images.images.ggLogo.image(),
-            XPaddingUtils.horizontalPadding(width: AppPadding.p15),
-            Text(
-              S.of(context).signUpWithGG,
-              style: const TextStyle(
-                  fontSize: AppFontSize.f16,
-                  fontFamily: FontFamily.productSans,
-                  color: AppColors.black),
-            )
-          ],
-        ));
+    return BlocSelector<SignUpBloc, SignUpState, SignUpStatus>(
+      selector: (state) {
+        return state.status;
+      },
+      builder: (context, status) {
+        return XFillButton(
+            bgColor: AppColors.white,
+            border: const BorderSide(color: AppColors.grey2, width: 0.5),
+            borderRadius: AppRadius.r10,
+            onPressed: () =>
+                context.read<SignUpBloc>().signUpWithGoogle(context),
+            label: status == SignUpStatus.signingIn
+                ? _renderCircularProgressIndicator(AppColors.black)
+                : Row(
+                    children: [
+                      Assets.images.images.ggLogo.image(),
+                      XPaddingUtils.horizontalPadding(width: AppPadding.p15),
+                      Text(
+                        S.of(context).signUpWithGG,
+                        style: const TextStyle(
+                            fontSize: AppFontSize.f16,
+                            fontFamily: FontFamily.productSans,
+                            color: AppColors.black),
+                      )
+                    ],
+                  ));
+      },
+    );
+  }
+
+  Widget _renderCircularProgressIndicator(Color strokeColor) {
+    return SizedBox(
+      width: AppSize.s20,
+      height: AppSize.s20,
+      child: CircularProgressIndicator(
+        color: strokeColor,
+        strokeWidth: AppSize.s2,
+      ),
+    );
   }
 }

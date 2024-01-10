@@ -2,7 +2,10 @@ enum AppRouteNames {
   home(path: '/'),
   onBoarding(path: '/onBoarding'),
   signIn(path: '/signIn'),
-  signUp(path: '/signUp');
+  signUp(path: '/signUp'),
+  enterMail(path: '/enterMail'),
+  verifyCode(path: '/verifyCode'),
+  resetPassword(path: '/resetPassword');
 
   const AppRouteNames({
     required this.path,

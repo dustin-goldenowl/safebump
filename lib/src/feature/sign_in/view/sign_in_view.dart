@@ -118,7 +118,7 @@ class SignInView extends StatelessWidget {
   Widget _renderForgotPasswordButton(BuildContext context) {
     return XTextButton(
       label: S.of(context).forgotPassword,
-      callback: () {},
+      callback: () => AppCoordinator.showEnterMailScreen(),
     );
   }
 

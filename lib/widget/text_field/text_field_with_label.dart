@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 
 class XTextFieldWithLabel extends StatelessWidget {
   const XTextFieldWithLabel({
     super.key,
-    required this.label,
+    this.label,
     this.labelStyle = const TextStyle(
         fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans),
     required this.hintText,
@@ -23,7 +24,7 @@ class XTextFieldWithLabel extends StatelessWidget {
     this.borderColor = AppColors.hintTextColor,
     required this.onChanged,
   });
-  final String label;
+  final String? label;
   final TextStyle? labelStyle;
   final String hintText;
   final TextStyle? hintStyle;
@@ -41,7 +42,9 @@ class XTextFieldWithLabel extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: labelStyle),
+        StringUtils.isNullOrEmpty(label)
+            ? const SizedBox.shrink()
+            : Text(label!, style: labelStyle),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(

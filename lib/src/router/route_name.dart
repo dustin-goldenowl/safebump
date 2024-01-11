@@ -6,13 +6,18 @@ enum AppRouteNames {
   dashboard(path: '/dashboard'),
   calendar(path: '/calendar'),
   profile(path: '/profile'),
-  medicineProfile(path: '/medicineProfile');
+  medicineProfile(path: '/medicineProfile'),
+  enterMail(path: '/enterMail'),
+  verifyCode(path: 'verifyCode', param: "mail"),
+  resetPassword(path: '/resetPassword');
 
   const AppRouteNames({
     required this.path,
+    this.param,
   });
 
   final String path;
+  final String? param;
 
   String get name => path;
 
@@ -22,4 +27,7 @@ enum AppRouteNames {
     }
     return path.replaceFirst('/', '');
   }
+
+  String get buildPathParam => '$path:$param';
+  String get buildSubPathParam => '$subPath:$param';
 }

@@ -5,9 +5,14 @@ import 'package:go_router/go_router.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
 import 'package:safebump/src/feature/home/view/home_screen.dart';
+import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc.dart';
+import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_bloc.dart';
+import 'package:safebump/src/feature/forgot_password/view/enter_mail_screen.dart';
+import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.dart';
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
+import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
@@ -37,7 +42,10 @@ class AppRouter {
         parentNavigatorKey: AppCoordinator.navigatorKey,
         path: AppRouteNames.signUp.path,
         name: AppRouteNames.signUp.name,
-        builder: (_, __) => const SignUpView(),
+        builder: (_, __) => BlocProvider(
+          create: (context) => SignUpBloc(),
+          child: const SignUpView(),
+        ),
       ),
       ShellRoute(
         navigatorKey: AppCoordinator.shellKey,
@@ -76,6 +84,35 @@ class AppRouter {
           ),
         ],
       ),
+      GoRoute(
+          parentNavigatorKey: AppCoordinator.navigatorKey,
+          path: AppRouteNames.enterMail.path,
+          name: AppRouteNames.enterMail.name,
+          builder: (_, __) => BlocProvider(
+                create: (context) => EnterMailBloc(),
+                child: const EnterMailScreen(),
+              ),
+          routes: <RouteBase>[
+            GoRoute(
+              parentNavigatorKey: AppCoordinator.navigatorKey,
+              path: AppRouteNames.verifyCode.buildSubPathParam,
+              name: AppRouteNames.verifyCode.name,
+              builder: (_, state) {
+                final mail =
+                    state.pathParameters[AppRouteNames.verifyCode.param]!;
+                return BlocProvider(
+                  create: (context) => ResetPasswordBloc(mail),
+                  child: const VerifyCodeScreen(),
+                );
+              },
+            ),
+          ]),
+      GoRoute(
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        path: AppRouteNames.home.path,
+        name: AppRouteNames.home.name,
+        builder: (_, __) => const OnBoardingView(),
+      )
     ],
     errorBuilder: (_, __) => Container(),
   );

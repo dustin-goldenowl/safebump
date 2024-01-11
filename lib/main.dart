@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         Locale('en', ''),
       ],
       onGenerateTitle: (BuildContext context) => "SafeBump",
+      builder: BotToastInit(),
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),
       routerConfig: appRouter.router,

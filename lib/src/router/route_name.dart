@@ -2,7 +2,11 @@ enum AppRouteNames {
   home(path: '/'),
   onBoarding(path: '/onBoarding'),
   signIn(path: '/signIn'),
-  signUp(path: '/signUp');
+  signUp(path: '/signUp'),
+  dashboard(path: '/dashboard'),
+  calendar(path: '/calendar'),
+  profile(path: '/profile'),
+  medicineProfile(path: '/medicineProfile');
 
   const AppRouteNames({
     required this.path,

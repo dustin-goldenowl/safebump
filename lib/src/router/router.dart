@@ -107,12 +107,6 @@ class AppRouter {
               },
             ),
           ]),
-      GoRoute(
-        parentNavigatorKey: AppCoordinator.navigatorKey,
-        path: AppRouteNames.home.path,
-        name: AppRouteNames.home.name,
-        builder: (_, __) => const OnBoardingView(),
-      )
     ],
     errorBuilder: (_, __) => Container(),
   );

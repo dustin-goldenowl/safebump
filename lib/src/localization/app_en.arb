@@ -61,5 +61,17 @@
     "someThingWentWrong" : "Some thing went wrong, Please try again.",
     "home": "Home",
     "hello": "Hello",
-    "weekOfPregnancy": "Week of Pregnancy"
+    "weekOfPregnancy": "Week of Pregnancy",
+    "babyHeight" : "Baby Height",
+    "babyWeight": "Baby Weight",
+    "daysLeft": "Days Left",
+    "cm": "cm",
+    "gr": "gr",
+    "days": "days",
+    "medicines": "Medicines",
+    "exercises": "Exercises",
+    "quiz": "Quiz",
+    "articles": "Articles",
+    "videos": "Videos",
+    "food": "Food"
 }

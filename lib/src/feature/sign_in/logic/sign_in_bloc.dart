@@ -45,7 +45,7 @@ class SignInBloc extends Cubit<SignInState> {
 
   bool isValidatedInput(BuildContext context) {
     final emailError = Validator.emailValidated(state.email, context);
-    final passError = Validator.passwordValidated(state.password, context);
+    final passError = Validator.emptyFieldValidated(state.password, context);
     emit(state.copyWith(
         emailValidated: emailError, passwordValidated: passError));
     return StringUtils.isNullOrEmpty(emailError) &&

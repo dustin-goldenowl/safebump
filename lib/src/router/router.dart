@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/forgot_password/view/verify_code_screen.dar
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
+import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
@@ -37,7 +38,10 @@ class AppRouter {
         parentNavigatorKey: AppCoordinator.navigatorKey,
         path: AppRouteNames.signUp.path,
         name: AppRouteNames.signUp.name,
-        builder: (_, __) => const SignUpView(),
+        builder: (_, __) => BlocProvider(
+          create: (context) => SignUpBloc(),
+          child: const SignUpView(),
+        ),
       ),
       GoRoute(
           parentNavigatorKey: AppCoordinator.navigatorKey,

@@ -16,10 +16,20 @@ class Validator {
         : S.of(context).emailInvalid;
   }
 
-  static String? passwordValidated(String? value, BuildContext context) {
+  static String? emptyFieldValidated(String? value, BuildContext context) {
     if (StringUtils.isNullOrEmpty(value)) {
       return S.of(context).thisFieldIsNotEmpty;
     }
     return null;
+  }
+
+  static String? passwordCreateValidated(String? value, BuildContext context) {
+    if (StringUtils.isNullOrEmpty(value)) {
+      return S.of(context).thisFieldIsNotEmpty;
+    } else if (value!.length < 6) {
+      return S.of(context).passwordMustBeSixOrMore;
+    } else {
+      return null;
+    }
   }
 }

@@ -35,8 +35,16 @@ class SignRepositoryImpl extends SignRepository {
   }
 
   @override
-  Future<MResult<String>> forgotPassword(String email) {
-    throw UnimplementedError();
+  Future<MResult<bool>> forgotPassword(String email) async{
+    final result =
+        await AuthenticationHelper().sendVerifyCodeThoughEmail(email: email);
+
+    if (result == null) {
+      return MResult.success(true);
+    } else {
+      xLog.e(result);
+      return MResult.error(MErrorCode.unknown);
+    }
   }
 
   @override
@@ -88,7 +96,7 @@ class SignRepositoryImpl extends SignRepository {
   @override
   Future<MResult> removeAccount(MUser user) async {
     try {
-      final user = FirebaseAuth.instance.currentUser;
+      final user = AuthenticationHelper().user;
       user?.delete();
       return MResult.success(user);
     } catch (e) {

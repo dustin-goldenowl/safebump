@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc.dart';
+import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_bloc.dart';
+import 'package:safebump/src/feature/forgot_password/view/enter_mail_screen.dart';
+import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.dart';
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
@@ -40,6 +44,29 @@ class AppRouter {
           child: const SignUpView(),
         ),
       ),
+      GoRoute(
+          parentNavigatorKey: AppCoordinator.navigatorKey,
+          path: AppRouteNames.enterMail.path,
+          name: AppRouteNames.enterMail.name,
+          builder: (_, __) => BlocProvider(
+                create: (context) => EnterMailBloc(),
+                child: const EnterMailScreen(),
+              ),
+          routes: <RouteBase>[
+            GoRoute(
+              parentNavigatorKey: AppCoordinator.navigatorKey,
+              path: AppRouteNames.verifyCode.buildSubPathParam,
+              name: AppRouteNames.verifyCode.name,
+              builder: (_, state) {
+                final mail =
+                    state.pathParameters[AppRouteNames.verifyCode.param]!;
+                return BlocProvider(
+                  create: (context) => ResetPasswordBloc(mail),
+                  child: const VerifyCodeScreen(),
+                );
+              },
+            ),
+          ]),
       GoRoute(
         parentNavigatorKey: AppCoordinator.navigatorKey,
         path: AppRouteNames.home.path,

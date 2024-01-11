@@ -9,6 +9,7 @@ class AppSize {
   static const s14 = 14.0;
   static const s20 = 20.0;
   static const s30 = 30.0;
+  static const s40 = 40.0;
   static const s150 = 150.0;
   static const s200 = 200.0;
 }

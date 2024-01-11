@@ -49,12 +49,14 @@
     "yourEmail": "Your Email",
     "sendCode": "Send Code",
     "vertifyCode": "Vertify Code",
-    "enterTheCode": "Enter the code\nwe just sent you on your registered Email",
+    "weJustSentYou": "We just sent you on ",
+    "pleseCheckYourMail": "Please check your mail and click our link to reset your password",
     "createNewPassword": "Create New Password",
     "yourNewPasswordMustBe" : "Your new password must be different from previously used password",
     "verify": "Verify",
-    "didntGetTheCode": "Didn't get the Code?",
+    "didntGetTheMail": "Didn't get the mail?",
     "resend": "Resend",
     "confirmPassword": "Confirm Password",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "someThingWentWrong" : "Some thing went wrong, Please try again."
 }

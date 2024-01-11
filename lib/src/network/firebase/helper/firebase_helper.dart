@@ -31,4 +31,14 @@ class AuthenticationHelper {
   Future signOut() async {
     await _auth.signOut();
   }
+
+  //FORGOT PASSWORD METHOD
+  Future sendVerifyCodeThoughEmail({required String email}) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return null;
+    } on FirebaseAuthException catch (e) {
+      return e.message;
+    }
+  }
 }

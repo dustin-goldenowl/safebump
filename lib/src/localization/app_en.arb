@@ -53,5 +53,6 @@
     "didntGetTheMail": "Didn't get the mail?",
     "resend": "Resend",
     "confirmPassword": "Confirm Password",
-    "resetPassword": "Reset Password"
+    "resetPassword": "Reset Password",
+    "someThingWentWrong" : "Some thing went wrong, Please try again."
 }

@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/feature/forgot_password/logic/state/enter_mail_state.dart';
 import 'package:safebump/src/feature/sign_in/validated/validator.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/sign/sign_repository.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -28,10 +31,10 @@ class EnterMailBloc extends Cubit<EnterMailState> {
       return;
     }
     emit(state.copyWith(status: EnterMailStatus.onProcess));
-    sendDecision();
+    sendDecision(context);
   }
 
-  void sendDecision() async {
+  void sendDecision(BuildContext context) async {
     try {
       final result =
           await GetIt.I<SignRepository>().forgotPassword(state.mail!);
@@ -40,6 +43,8 @@ class EnterMailBloc extends Cubit<EnterMailState> {
         AppCoordinator.showVerifyCodeScreen(state.mail!);
       }
     } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(S.of(context).someThingWentWrong)));
       xLog.e(e);
     }
   }

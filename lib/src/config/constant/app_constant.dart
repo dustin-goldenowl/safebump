@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
+import 'package:safebump/src/network/model/extension_model.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/route_name.dart';
 
 class AppConstant {
   static List<OnBoardingModel> getListDataOfOnBoarding(BuildContext context) =>
@@ -31,5 +33,32 @@ class AppConstant {
             secondTitle: S.of(context).scheduler,
             image: Assets.images.images.scheduleManager.path,
             content: S.of(context).theAppWillAllowUser),
+      ];
+
+  static List<ExtensionModel> getListExtensionData(BuildContext context) => [
+        ExtensionModel(
+            label: S.of(context).medicines,
+            routeName: AppRouteNames.dashboard.name,
+            icon: Icons.medical_information),
+        ExtensionModel(
+            label: S.of(context).exercises,
+            routeName: AppRouteNames.dashboard.name,
+            icon: Icons.pregnant_woman_outlined),
+        ExtensionModel(
+            label: S.of(context).quiz,
+            routeName: AppRouteNames.dashboard.name,
+            icon: Icons.quiz),
+        ExtensionModel(
+            label: S.of(context).articles,
+            routeName: AppRouteNames.dashboard.name,
+            icon: Icons.article),
+        ExtensionModel(
+            label: S.of(context).videos,
+            routeName: AppRouteNames.dashboard.name,
+            icon: Icons.video_collection_rounded),
+        ExtensionModel(
+            label: S.of(context).food,
+            routeName: AppRouteNames.dashboard.name,
+            icon: Icons.food_bank)
       ];
 }

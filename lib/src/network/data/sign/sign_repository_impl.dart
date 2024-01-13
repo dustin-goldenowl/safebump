@@ -6,6 +6,7 @@ import 'package:safebump/src/network/model/common/error_code.dart';
 import 'package:safebump/src/network/model/domain_manager.dart';
 import 'package:safebump/src/network/model/social_user/social_user.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 import '../../model/common/result.dart';
@@ -35,7 +36,7 @@ class SignRepositoryImpl extends SignRepository {
   }
 
   @override
-  Future<MResult<bool>> forgotPassword(String email) async{
+  Future<MResult<bool>> forgotPassword(String email) async {
     final result =
         await AuthenticationHelper().sendVerifyCodeThoughEmail(email: email);
 
@@ -63,8 +64,21 @@ class SignRepositoryImpl extends SignRepository {
     final result =
         await AuthenticationHelper().signIn(email: email, password: password);
 
-    if (result == null) {
-      return MResult.success(const MUser(id: 'result'));
+    if (result != null) {
+      final user = result.user;
+      final token = await result.user?.getIdToken();
+      final newUser = MUser(
+        id: user?.uid ?? '',
+        email: email,
+      );
+
+      final userResult = await DomainManager().user.getOrAddUser(newUser);
+
+      // save sharepref
+      UserPrefs.I.setToken(token);
+      UserPrefs.I.setUser(userResult.data);
+
+      return MResult.success(userResult.data ?? newUser);
     } else {
       xLog.e(result);
       return MResult.error(MErrorCode.unknown);
@@ -112,8 +126,21 @@ class SignRepositoryImpl extends SignRepository {
     final result =
         await AuthenticationHelper().signUp(email: email, password: password);
 
-    if (result == null) {
-      return MResult.success(const MUser(id: 'result'));
+    if (result != null) {
+      final user = result.user;
+      final token = await result.user?.getIdToken();
+      final newUser = MUser(
+        id: user?.uid ?? '',
+        email: email,
+        name: name,
+      );
+
+      // save sharepref
+      UserPrefs.I.setUser(newUser);
+      UserPrefs.I.setToken(token);
+
+      final userResult = await DomainManager().user.getOrAddUser(newUser);
+      return MResult.success(userResult.data ?? newUser);
     } else {
       xLog.e(result);
       return MResult.error(MErrorCode.unknown);

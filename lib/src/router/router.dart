@@ -2,8 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
+import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/view/home_screen.dart';
 import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc.dart';
 import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_bloc.dart';
@@ -49,16 +52,27 @@ class AppRouter {
       ),
       ShellRoute(
         navigatorKey: AppCoordinator.shellKey,
-        builder: (context, state, child) => DashBoardScreen(
-          currentItem: XNavigationBarItems.fromLocation(state.uri.toString()),
-          body: child,
+        builder: (context, state, child) => MultiBlocProvider(
+          providers: [
+            BlocProvider<AccountBloc>(
+              create: (BuildContext context) => AccountBloc(),
+            ),
+          ],
+          child: DashBoardScreen(
+            currentItem: XNavigationBarItems.fromLocation(state.uri.toString()),
+            body: child,
+          ),
         ),
         routes: <RouteBase>[
           GoRoute(
             path: AppRouteNames.home.path,
             name: AppRouteNames.home.name,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomeScreen(),
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: BlocProvider(
+                create: (context) =>
+                    HomeBloc(AppConstant.getBabyFactsData(context)),
+                child: const HomeScreen(),
+              ),
             ),
           ),
           GoRoute(

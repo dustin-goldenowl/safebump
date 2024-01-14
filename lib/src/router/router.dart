@@ -14,13 +14,15 @@ import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
+import 'package:safebump/src/feature/sync_data/logic/sync_data_bloc.dart';
+import 'package:safebump/src/feature/sync_data/view/sync_data_view.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
 
 class AppRouter {
   final router = GoRouter(
     navigatorKey: AppCoordinator.navigatorKey,
-    initialLocation: AppRouteNames.home.path,
+    initialLocation: _initalPath(),
     debugLogDiagnostics: kDebugMode,
     routes: <RouteBase>[
       GoRoute(
@@ -47,6 +49,15 @@ class AppRouter {
           child: const SignUpView(),
         ),
       ),
+      GoRoute(
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        path: AppRouteNames.syncData.path,
+        name: AppRouteNames.syncData.name,
+        builder: (_, __) => BlocProvider(
+          create: (context) => SyncDataBloc(),
+          child: const SyncDataScreen(),
+        ),
+      ),
       ShellRoute(
         navigatorKey: AppCoordinator.shellKey,
         builder: (context, state, child) => DashBoardScreen(
@@ -58,7 +69,7 @@ class AppRouter {
             path: AppRouteNames.home.path,
             name: AppRouteNames.home.name,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomeScreen(),
+              child: SyncDataScreen(),
             ),
           ),
           GoRoute(
@@ -110,4 +121,8 @@ class AppRouter {
     ],
     errorBuilder: (_, __) => Container(),
   );
+
+  static String _initalPath() {
+    return AppRouteNames.home.path;
+  }
 }

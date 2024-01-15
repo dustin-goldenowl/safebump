@@ -48,4 +48,7 @@ class AppCoordinator {
 
   static void showAddPregnancyBabyScreen() =>
       context.pushNamed(AppRouteNames.addPregnancyBaby.name);
+
+  static void showOptionsAddBaby() =>
+      context.pushNamed(AppRouteNames.optionAddBaby.name);
 }

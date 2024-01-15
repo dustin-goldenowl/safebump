@@ -58,6 +58,7 @@ class XLabelButton<T> extends StatelessWidget {
             width: 0.5,
           )),
       child: GestureDetector(
+        onTap: () => onTapped(),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

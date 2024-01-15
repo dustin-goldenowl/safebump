@@ -1,11 +1,14 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/bottom_buttons.dart';
+import 'package:safebump/widget/button/button_with_label.dart';
 import 'package:safebump/widget/button/circle_button.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
 
@@ -94,20 +97,32 @@ class AddPreggyScreen extends StatelessWidget {
     return Expanded(
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-      child: XTextFieldWithLabel(
-          labelStyle: const TextStyle(
-              fontSize: AppFontSize.f16,
-              fontFamily: FontFamily.productSans,
-              color: AppColors.grey2),
-          hintStyle: const TextStyle(
-              fontSize: AppFontSize.f14,
-              fontFamily: FontFamily.inter,
-              color: AppColors.grey4),
-          hintText: S.of(context).dueDate,
-          label: S.of(context).addDueDate,
-          onChanged: (tetx) {
-            // TODO: on changed
-          }),
+      child: XLabelButton(
+        onTapped: () async {
+          await showBoardDateTimePicker(
+            context: context,
+            pickerType: DateTimePickerType.date,
+            minimumDate: DateTime.now().subtract(const Duration(days: 280)),
+            maximumDate: DateTime.now().add(const Duration(days: 280)),
+            options: BoardDateTimeOptions(
+              boardTitle: S.of(context).selectDate,
+              activeColor: AppColors.primary,
+              showDateButton: false,
+            ),
+          );
+        },
+        hint: S.of(context).dueDate,
+        labelStyle: const TextStyle(
+            fontSize: AppFontSize.f16,
+            fontFamily: FontFamily.productSans,
+            color: AppColors.grey2),
+        hintStyle: const TextStyle(
+            fontSize: AppFontSize.f14,
+            fontFamily: FontFamily.inter,
+            color: AppColors.grey4),
+        label: S.of(context).addDueDate,
+        icon: Icons.calendar_today_outlined,
+      ),
     ));
   }
 
@@ -119,7 +134,7 @@ class AddPreggyScreen extends StatelessWidget {
           //TODO: Ontap Save
         },
         onTappedCancel: () {
-          // TODO: On tap cancel
+          AppCoordinator.pop();
         });
   }
 }

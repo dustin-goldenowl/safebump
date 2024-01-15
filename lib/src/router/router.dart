@@ -61,7 +61,7 @@ class AppRouter {
             path: AppRouteNames.home.path,
             name: AppRouteNames.home.name,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: SelectBabyOptionScreen(),
+              child: HomeScreen(),
             ),
           ),
           GoRoute(
@@ -111,19 +111,24 @@ class AppRouter {
             ),
           ]),
       GoRoute(
-        path: AppRouteNames.addBaby.path,
-        name: AppRouteNames.addBaby.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: AddBabyScreen(),
-        ),
-      ),
-      GoRoute(
-        path: AppRouteNames.addPregnancyBaby.path,
-        name: AppRouteNames.addPregnancyBaby.name,
-        pageBuilder: (context, state) => const NoTransitionPage(
-          child: AddPreggyScreen(),
-        ),
-      ),
+          parentNavigatorKey: AppCoordinator.navigatorKey,
+          path: AppRouteNames.optionAddBaby.path,
+          name: AppRouteNames.optionAddBaby.name,
+          builder: (context, state) => const SelectBabyOptionScreen(),
+          routes: <RouteBase>[
+            GoRoute(
+              parentNavigatorKey: AppCoordinator.navigatorKey,
+              path: AppRouteNames.addBaby.subPath,
+              name: AppRouteNames.addBaby.name,
+              builder: (context, state) => const AddBabyScreen(),
+            ),
+            GoRoute(
+              parentNavigatorKey: AppCoordinator.navigatorKey,
+              path: AppRouteNames.addPregnancyBaby.subPath,
+              name: AppRouteNames.addPregnancyBaby.name,
+              builder: (context, state) => const AddPreggyScreen(),
+            ),
+          ]),
     ],
     errorBuilder: (_, __) => Container(),
   );

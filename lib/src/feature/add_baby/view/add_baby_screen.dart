@@ -1,7 +1,9 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -37,6 +39,9 @@ class AddBabyScreen extends StatelessWidget {
                 _renderBirthDateTime(context),
                 XPaddingUtils.verticalPadding(height: AppPadding.p20),
                 _renderBabyBody(context),
+                XPaddingUtils.verticalPadding(height: AppPadding.p20),
+                _renderBirthExperience(context),
+                XPaddingUtils.verticalPadding(height: AppPadding.p10),
                 _renderBottomButton(context),
               ],
             ),
@@ -106,7 +111,7 @@ class AddBabyScreen extends StatelessWidget {
                 fontFamily: FontFamily.productSans,
                 color: AppColors.grey2),
             label: S.of(context).gender,
-            items: const [DropdownMenuItem(child: Text('Gender'))],
+            items: [DropdownMenuItem(child: Text(S.of(context).male))],
             onChanged: (value) {}));
   }
 
@@ -131,15 +136,22 @@ class AddBabyScreen extends StatelessWidget {
           //TODO: Ontap Save
         },
         onTappedCancel: () {
-          // TODO: On tap cancel
+          AppCoordinator.pop();
         });
   }
 
   Widget _renderBirthDate(BuildContext context) {
     return Expanded(
         child: XLabelButton(
-      onTapped: () {
-        // TODO: change date
+      onTapped: () async {
+        await showBoardDateTimePicker(
+          context: context,
+          pickerType: DateTimePickerType.date,
+          options: BoardDateTimeOptions(
+            boardTitle: S.of(context).selectDate,
+            activeColor: AppColors.primary,
+          ),
+        );
       },
       hint: S.of(context).selectDate,
       label: S.of(context).dateOfBirth,
@@ -154,8 +166,16 @@ class AddBabyScreen extends StatelessWidget {
   Widget _renderBirthTime(BuildContext context) {
     return Expanded(
         child: XLabelButton(
-      onTapped: () {
-        // TODO: change date
+      onTapped: () async {
+        await showBoardDateTimePicker(
+          context: context,
+          pickerType: DateTimePickerType.time,
+          options: BoardDateTimeOptions(
+            boardTitle: S.of(context).selectTime,
+            activeColor: AppColors.primary,
+            showDateButton: false,
+          ),
+        );
       },
       hint: S.of(context).selectTime,
       label: S.of(context).timeOfBirth,
@@ -232,5 +252,18 @@ class AddBabyScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget _renderBirthExperience(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+        child: XDropdownButton(
+            labelStyle: const TextStyle(
+                fontSize: AppFontSize.f16,
+                fontFamily: FontFamily.productSans,
+                color: AppColors.grey2),
+            label: S.of(context).birthExperience,
+            items: [DropdownMenuItem(child: Text(S.of(context).cSection))],
+            onChanged: (value) {}));
   }
 }

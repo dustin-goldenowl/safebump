@@ -80,7 +80,6 @@ class SignRepositoryImpl extends SignRepository {
 
       return MResult.success(userResult.data ?? newUser);
     } else {
-      xLog.e(result);
       return MResult.error(MErrorCode.unknown);
     }
   }
@@ -142,7 +141,6 @@ class SignRepositoryImpl extends SignRepository {
       final userResult = await DomainManager().user.getOrAddUser(newUser);
       return MResult.success(userResult.data ?? newUser);
     } else {
-      xLog.e(result);
       return MResult.error(MErrorCode.unknown);
     }
   }

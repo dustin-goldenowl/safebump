@@ -2,7 +2,6 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/sign_in/validated/validator.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_state.dart';
 import 'package:safebump/src/network/model/common/result.dart';
@@ -89,11 +88,9 @@ class SignUpBloc extends Cubit<SignUpState> {
       {MSocialType? socialType}) async {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignUpStatus.successed));
-      XToast.success("Success");
       AppCoordinator.showSyncDataScreen();
     } else {
       emit(state.copyWith(status: SignUpStatus.failed));
-      XToast.error("Failed");
     }
   }
 

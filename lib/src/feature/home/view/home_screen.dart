@@ -89,7 +89,7 @@ class HomeScreen extends StatelessWidget {
           previous.selectedDate.compareTo(current.selectedDate) != 0,
       builder: (context, state) {
         return XDayOfWeekListView(
-          week: "16th ",
+          week: S.of(context).no,
           listDayOfWeek: DateTimeUtils.createWeekOfToday(
               DateTimeUtils.convertToStartedDay(today)),
           today: DateTimeUtils.convertToStartedDay(today),

@@ -72,7 +72,7 @@ class AppConstant {
     for (int i = 0; i < 7; i++) {
       babyFacts.addEntries({
         pergnancyDate.add(Duration(days: i)): BabyFactModel(
-            fact: "Your baby is the size of a pear",
+            fact: S.of(context).yourBabySizeofpear,
             height: 105 - i + 17,
             weight: 105 - i + 110,
             daysLeft: 280 - i),

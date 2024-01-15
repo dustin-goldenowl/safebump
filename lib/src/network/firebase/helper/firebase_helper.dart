@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class AuthenticationHelper {
@@ -15,7 +16,7 @@ class AuthenticationHelper {
       );
       return result;
     } on FirebaseAuthException catch (e) {
-      xLog.e(e);
+      XToast.error(e.message);
       return null;
     }
   }

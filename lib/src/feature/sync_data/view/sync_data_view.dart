@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/router/coordinator.dart';
@@ -60,7 +61,7 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
       });
     } catch (e) {
       xLog.e(e);
-      XToast.error('Your sign in is invalid');
+      XToast.error(S.of(context).yourSignInIsSInvalid);
       AppCoordinator.showSignInScreen();
     }
   }

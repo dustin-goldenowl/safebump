@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AccountBloc()),
       ],
       child: MaterialApp.router(
-        title: 'SafeBump',
+        title: S.of(context).safeBump,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           S.delegate,
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: const [
           Locale('en', ''),
         ],
-        onGenerateTitle: (BuildContext context) => "SafeBump",
+        onGenerateTitle: (BuildContext context) => S.of(context).safeBump,
         builder: BotToastInit(),
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),

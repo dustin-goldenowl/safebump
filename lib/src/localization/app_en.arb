@@ -73,5 +73,9 @@
     "quiz": "Quiz",
     "articles": "Articles",
     "videos": "Videos",
-    "food": "Food"
+    "food": "Food",
+    "safeBump": "SafeBump",
+    "failed":"Failed",
+    "yourBabySizeofpear": "Your baby is the size of a pear",
+    "yourSignInIsSInvalid": "Your sign in is invalid"
 }

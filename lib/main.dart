@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('en', ''),
       ],
-      onGenerateTitle: (BuildContext context) => "SafeBump",
+      onGenerateTitle: (BuildContext context) => S.of(context).safeBump,
       builder: BotToastInit(),
       theme: AppTheme.light(),
       darkTheme: AppTheme.dark(),

@@ -2,7 +2,6 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/sign_in/validated/validator.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_state.dart';
 import 'package:safebump/src/network/model/common/result.dart';
@@ -10,6 +9,7 @@ import 'package:safebump/src/network/model/domain_manager.dart';
 import 'package:safebump/src/network/model/social_type.dart';
 import 'package:safebump/src/network/model/social_user/social_user.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 
@@ -88,10 +88,9 @@ class SignUpBloc extends Cubit<SignUpState> {
       {MSocialType? socialType}) async {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignUpStatus.successed));
-      XToast.success("Success");
+      AppCoordinator.showDashboardScreen();
     } else {
       emit(state.copyWith(status: SignUpStatus.failed));
-      XToast.error("Failed");
     }
   }
 

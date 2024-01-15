@@ -2,6 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_state.dart';
 import 'package:safebump/src/feature/sign_in/validated/validator.dart';
 import 'package:safebump/src/network/model/common/result.dart';
@@ -9,6 +10,7 @@ import 'package:safebump/src/network/model/domain_manager.dart';
 import 'package:safebump/src/network/model/social_type.dart';
 import 'package:safebump/src/network/model/social_user/social_user.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 
 class SignInBloc extends Cubit<SignInState> {
@@ -56,14 +58,10 @@ class SignInBloc extends Cubit<SignInState> {
       {MSocialType? socialType}) async {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignInStatus.successed));
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Successed"),
-      ));
+      AppCoordinator.showDashboardScreen();
     } else {
       emit(state.copyWith(status: SignInStatus.failed));
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text("Failed"),
-      ));
+      XToast.error(result.error);
     }
   }
 

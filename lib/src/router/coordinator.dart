@@ -42,4 +42,7 @@ class AppCoordinator {
 
   static void showResetPasswordScreen() =>
       context.pushReplacementNamed(AppRouteNames.resetPassword.name);
+
+  static void showSyncDataScreen() =>
+      context.pushReplacementNamed(AppRouteNames.syncData.name);
 }

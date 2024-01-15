@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
+import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/view/home_screen.dart';
 import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc.dart';
 import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_bloc.dart';
@@ -14,10 +16,10 @@ import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
-import 'package:safebump/src/feature/sync_data/logic/sync_data_bloc.dart';
 import 'package:safebump/src/feature/sync_data/view/sync_data_view.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
+import 'package:safebump/src/services/user_prefs.dart';
 
 class AppRouter {
   final router = GoRouter(
@@ -53,10 +55,7 @@ class AppRouter {
         parentNavigatorKey: AppCoordinator.navigatorKey,
         path: AppRouteNames.syncData.path,
         name: AppRouteNames.syncData.name,
-        builder: (_, __) => BlocProvider(
-          create: (context) => SyncDataBloc(),
-          child: const SyncDataScreen(),
-        ),
+        builder: (_, __) => const SyncDataScreen(),
       ),
       ShellRoute(
         navigatorKey: AppCoordinator.shellKey,
@@ -68,8 +67,12 @@ class AppRouter {
           GoRoute(
             path: AppRouteNames.home.path,
             name: AppRouteNames.home.name,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: SyncDataScreen(),
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: BlocProvider(
+                create: (context) =>
+                    HomeBloc(AppConstant.getBabyFactsData(context)),
+                child: const HomeScreen(),
+              ),
             ),
           ),
           GoRoute(
@@ -123,6 +126,11 @@ class AppRouter {
   );
 
   static String _initalPath() {
-    return AppRouteNames.home.path;
+    final userPref = UserPrefs.I.getIsFirstOpenApp();
+    if (userPref) {
+      UserPrefs.I.setIsFirstOpenApp(false);
+      return AppRouteNames.onBoarding.path;
+    }
+    return AppRouteNames.syncData.path;
   }
 }

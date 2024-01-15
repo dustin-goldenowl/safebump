@@ -14,13 +14,15 @@ class XDayOfWeekListView extends StatelessWidget {
       this.isShowDetail = true,
       required this.today,
       this.week,
-      this.selectedDay});
+      this.selectedDay,
+      required this.onTappedDay});
   final bool? isShowWeek;
   final List<DateTime> listDayOfWeek;
   final bool? isShowDetail;
   final DateTime today;
   final DateTime? selectedDay;
   final String? week;
+  final void Function(DateTime) onTappedDay;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class XDayOfWeekListView extends StatelessWidget {
           color: AppColors.black),
       child: Row(
         children: [
-          Text(week ?? "0"),
+          Text(week ?? ""),
           Text(S.of(context).weekOfPregnancy),
         ],
       ),
@@ -68,14 +70,18 @@ class XDayOfWeekListView extends StatelessWidget {
     return Expanded(
       child: GestureDetector(
         onTap: () {
-          // TODO: Add function
+          onTappedDay.call(day);
         },
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 2),
           padding: const EdgeInsets.all(AppPadding.p10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.r5),
-            color: isToday ? AppColors.primary : AppColors.white,
+            color: isToday
+                ? AppColors.primary
+                : isSelected
+                    ? AppColors.subPrimary
+                    : AppColors.white,
           ),
           child: Column(
             children: [

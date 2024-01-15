@@ -10,6 +10,7 @@ import 'package:safebump/src/network/model/domain_manager.dart';
 import 'package:safebump/src/network/model/social_type.dart';
 import 'package:safebump/src/network/model/social_user/social_user.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 
@@ -89,6 +90,7 @@ class SignUpBloc extends Cubit<SignUpState> {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignUpStatus.successed));
       XToast.success("Success");
+      AppCoordinator.showSyncDataScreen();
     } else {
       emit(state.copyWith(status: SignUpStatus.failed));
       XToast.error("Failed");

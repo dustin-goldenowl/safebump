@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
+import 'package:safebump/src/network/model/baby_fact_model.dart';
 import 'package:safebump/src/network/model/extension_model.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/route_name.dart';
+import 'package:safebump/src/services/user_prefs.dart';
+import 'package:safebump/src/utils/datetime_utils.dart';
 
 class AppConstant {
   static List<OnBoardingModel> getListDataOfOnBoarding(BuildContext context) =>
@@ -61,4 +64,20 @@ class AppConstant {
             routeName: AppRouteNames.dashboard.name,
             icon: Icons.food_bank)
       ];
+
+  static Map<DateTime, BabyFactModel> getBabyFactsData(BuildContext context) {
+    final pergnancyDate =
+        DateTimeUtils.convertToStartedDay(UserPrefs.I.getPergnancyDay());
+    Map<DateTime, BabyFactModel> babyFacts = {};
+    for (int i = 0; i < 7; i++) {
+      babyFacts.addEntries({
+        pergnancyDate.add(Duration(days: i)): BabyFactModel(
+            fact: "Your baby is the size of a pear",
+            height: 105 - i + 17,
+            weight: 105 - i + 110,
+            daysLeft: 280 - i),
+      }.entries);
+    }
+    return babyFacts;
+  }
 }

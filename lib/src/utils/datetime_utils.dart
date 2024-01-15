@@ -10,4 +10,9 @@ class DateTimeUtils {
     }
     return listDays;
   }
+
+  // year - month - day 00:00:00
+  static DateTime convertToStartedDay(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
 }

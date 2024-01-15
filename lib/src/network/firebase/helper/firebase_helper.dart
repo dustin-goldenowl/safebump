@@ -1,29 +1,35 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:safebump/src/utils/utils.dart';
 
 class AuthenticationHelper {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   get user => _auth.currentUser;
 
   //SIGN UP METHOD
-  Future signUp({required String email, required String password}) async {
+  Future<UserCredential?> signUp(
+      {required String email, required String password}) async {
     try {
-      await _auth.createUserWithEmailAndPassword(
+      final result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-      return null;
+      return result;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      xLog.e(e);
+      return null;
     }
   }
 
   //SIGN IN METHOD
-  Future signIn({required String email, required String password}) async {
+  Future<UserCredential?> signIn(
+      {required String email, required String password}) async {
     try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      return null;
+      final result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return result;
     } on FirebaseAuthException catch (e) {
-      return e.message;
+      xLog.e(e.message);
+      return null;
     }
   }
 

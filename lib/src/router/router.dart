@@ -2,6 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
+import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dart';
+import 'package:safebump/src/feature/add_baby/view/select_option_add_screen.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
 import 'package:safebump/src/feature/home/view/home_screen.dart';
@@ -58,7 +61,7 @@ class AppRouter {
             path: AppRouteNames.home.path,
             name: AppRouteNames.home.name,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomeScreen(),
+              child: SelectBabyOptionScreen(),
             ),
           ),
           GoRoute(
@@ -107,6 +110,20 @@ class AppRouter {
               },
             ),
           ]),
+      GoRoute(
+        path: AppRouteNames.addBaby.path,
+        name: AppRouteNames.addBaby.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: AddBabyScreen(),
+        ),
+      ),
+      GoRoute(
+        path: AppRouteNames.addPregnancyBaby.path,
+        name: AppRouteNames.addPregnancyBaby.name,
+        pageBuilder: (context, state) => const NoTransitionPage(
+          child: AddPreggyScreen(),
+        ),
+      ),
     ],
     errorBuilder: (_, __) => Container(),
   );

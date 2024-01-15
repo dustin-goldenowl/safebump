@@ -9,7 +9,10 @@ enum AppRouteNames {
   medicineProfile(path: '/medicineProfile'),
   enterMail(path: '/enterMail'),
   verifyCode(path: 'verifyCode', param: "mail"),
-  resetPassword(path: '/resetPassword');
+  resetPassword(path: '/resetPassword'),
+  optionAddBaby(path: '/optionAddBaby'),
+  addBaby(path: '/addBaby'),
+  addPregnancyBaby(path: '/addPregnancyBaby');
 
   const AppRouteNames({
     required this.path,

@@ -23,6 +23,7 @@ class XTextFieldWithLabel extends StatelessWidget {
     this.radius = AppRadius.r10,
     this.borderColor = AppColors.hintTextColor,
     required this.onChanged,
+    this.keyboardType,
   });
   final String? label;
   final TextStyle? labelStyle;
@@ -35,6 +36,7 @@ class XTextFieldWithLabel extends StatelessWidget {
   final double radius;
   final Color borderColor;
   final bool isObscureText;
+  final TextInputType? keyboardType;
   final void Function(String) onChanged;
 
   @override
@@ -48,6 +50,7 @@ class XTextFieldWithLabel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
+            keyboardType: keyboardType,
             textInputAction: TextInputAction.next,
             onChanged: (value) => onChanged(value),
             obscureText: isObscureText,

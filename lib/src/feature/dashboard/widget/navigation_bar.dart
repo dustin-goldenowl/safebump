@@ -39,6 +39,6 @@ class XBottomNavigationBar extends StatelessWidget {
 class Builder extends DelegateBuilder {
   @override
   Widget build(BuildContext context, int index, bool active) {
-    return Text('TAB $index');
+    return Text(index.toString());
   }
 }

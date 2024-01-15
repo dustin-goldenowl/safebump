@@ -7,7 +7,7 @@ import 'package:safebump/src/network/model/user/user.dart';
 class UserRepositoryImpl extends UserRepository {
   final usersRef = UserReference();
   @override
-  Future<MResult<MUser>> getUser(String id) async {
+  Future<MResult<MUser>> getUser() async {
     try {
       final result = FirebaseAuth.instance.currentUser;
       if (result == null) {

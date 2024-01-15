@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_bloc.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/widget/navigation_bar.dart';
@@ -20,11 +19,6 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<AccountBloc>().inital(context);
-  }
 
   @override
   Widget build(BuildContext context) {

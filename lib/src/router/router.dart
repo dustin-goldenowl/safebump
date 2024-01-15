@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
-import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
@@ -17,13 +16,15 @@ import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
+import 'package:safebump/src/feature/sync_data/view/sync_data_view.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
+import 'package:safebump/src/services/user_prefs.dart';
 
 class AppRouter {
   final router = GoRouter(
     navigatorKey: AppCoordinator.navigatorKey,
-    initialLocation: AppRouteNames.home.path,
+    initialLocation: _initalPath(),
     debugLogDiagnostics: kDebugMode,
     routes: <RouteBase>[
       GoRoute(
@@ -50,18 +51,17 @@ class AppRouter {
           child: const SignUpView(),
         ),
       ),
+      GoRoute(
+        parentNavigatorKey: AppCoordinator.navigatorKey,
+        path: AppRouteNames.syncData.path,
+        name: AppRouteNames.syncData.name,
+        builder: (_, __) => const SyncDataScreen(),
+      ),
       ShellRoute(
         navigatorKey: AppCoordinator.shellKey,
-        builder: (context, state, child) => MultiBlocProvider(
-          providers: [
-            BlocProvider<AccountBloc>(
-              create: (BuildContext context) => AccountBloc(),
-            ),
-          ],
-          child: DashBoardScreen(
-            currentItem: XNavigationBarItems.fromLocation(state.uri.toString()),
-            body: child,
-          ),
+        builder: (context, state, child) => DashBoardScreen(
+          currentItem: XNavigationBarItems.fromLocation(state.uri.toString()),
+          body: child,
         ),
         routes: <RouteBase>[
           GoRoute(
@@ -124,4 +124,13 @@ class AppRouter {
     ],
     errorBuilder: (_, __) => Container(),
   );
+
+  static String _initalPath() {
+    final userPref = UserPrefs.I.getIsFirstOpenApp();
+    if (userPref) {
+      UserPrefs.I.setIsFirstOpenApp(false);
+      return AppRouteNames.onBoarding.path;
+    }
+    return AppRouteNames.syncData.path;
+  }
 }

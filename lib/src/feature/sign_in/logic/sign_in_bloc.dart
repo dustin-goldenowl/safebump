@@ -58,7 +58,7 @@ class SignInBloc extends Cubit<SignInState> {
       {MSocialType? socialType}) async {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignInStatus.successed));
-      AppCoordinator.showDashboardScreen();
+      AppCoordinator.showSyncDataScreen();
     } else {
       emit(state.copyWith(status: SignInStatus.failed));
       XToast.error(result.error);

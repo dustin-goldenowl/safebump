@@ -12,6 +12,7 @@ class _keys {
   static const String user = 'user';
   static const String token = 'token';
   static const String pergnancyDay = 'pergnancyDay';
+  static const String firstOpen = 'firstOpen';
 }
 
 class UserPrefs {
@@ -93,5 +94,21 @@ class UserPrefs {
 
   void setPergnancyDay(DateTime date) {
     _prefs.setString(_keys.pergnancyDay, DateFormat("y/M/d").format(date));
+  }
+
+  //First open App
+  bool getIsFirstOpenApp() {
+    try {
+      final isFirst = _prefs.getBool(_keys.firstOpen);
+      if (isFirst == null) return true;
+      return isFirst;
+    } catch (e) {
+      xLog.e(e);
+      return true;
+    }
+  }
+
+  void setIsFirstOpenApp(bool isFirst) {
+    _prefs.setBool(_keys.firstOpen, isFirst);
   }
 }

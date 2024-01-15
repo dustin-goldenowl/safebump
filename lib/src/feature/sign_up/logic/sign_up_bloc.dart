@@ -88,7 +88,7 @@ class SignUpBloc extends Cubit<SignUpState> {
       {MSocialType? socialType}) async {
     if (result.isSuccess) {
       emit(state.copyWith(status: SignUpStatus.successed));
-      AppCoordinator.showDashboardScreen();
+      AppCoordinator.showSyncDataScreen();
     } else {
       emit(state.copyWith(status: SignUpStatus.failed));
     }

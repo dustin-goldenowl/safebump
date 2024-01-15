@@ -76,5 +76,6 @@
     "food": "Food",
     "safeBump": "SafeBump",
     "failed":"Failed",
-    "yourBabySizeofpear": "Your baby is the size of a pear"
+    "yourBabySizeofpear": "Your baby is the size of a pear",
+    "yourSignInIsSInvalid": "Your sign in is invalid"
 }

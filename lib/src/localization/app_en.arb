@@ -99,5 +99,9 @@
     "cSection": "C section",
     "normal": "Normal",
     "kg": "kg",
-    "pleaseAddYourBaby": "Please add information about your baby!!"
+    "pleaseAddYourBaby": "Please add information about your baby!!",
+    "safeBump": "SafeBump",
+    "failed":"Failed",
+    "yourBabySizeofpear": "Your baby is the size of a pear",
+    "yourSignInIsSInvalid": "Your sign in is invalid"
 }

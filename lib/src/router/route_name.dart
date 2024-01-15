@@ -3,6 +3,7 @@ enum AppRouteNames {
   onBoarding(path: '/onBoarding'),
   signIn(path: '/signIn'),
   signUp(path: '/signUp'),
+  syncData(path: '/syncData'),
   dashboard(path: '/dashboard'),
   calendar(path: '/calendar'),
   profile(path: '/profile'),

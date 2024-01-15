@@ -19,6 +19,7 @@ class DashBoardScreen extends StatefulWidget {
 }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

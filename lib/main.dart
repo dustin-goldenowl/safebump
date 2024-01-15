@@ -1,6 +1,8 @@
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/locator.dart';
 import 'package:safebump/src/router/router.dart';
@@ -19,23 +21,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appRouter = GetIt.I<AppRouter>();
-    return MaterialApp.router(
-      title: 'SafeBump',
-      debugShowCheckedModeBanner: false,
-      localizationsDelegates: [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AccountBloc()),
       ],
-      supportedLocales: const [
-        Locale('en', ''),
-      ],
-      onGenerateTitle: (BuildContext context) => "SafeBump",
-      builder: BotToastInit(),
-      theme: AppTheme.light(),
-      darkTheme: AppTheme.dark(),
-      routerConfig: appRouter.router,
+      child: MaterialApp.router(
+        title: S.of(context).safeBump,
+        debugShowCheckedModeBanner: false,
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+        ],
+        onGenerateTitle: (BuildContext context) => S.of(context).safeBump,
+        builder: BotToastInit(),
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        routerConfig: appRouter.router,
+      ),
     );
   }
 }

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
+import 'package:safebump/src/feature/account/bloc/account_state.dart';
+import 'package:safebump/src/feature/home/logic/home_bloc.dart';
+import 'package:safebump/src/feature/home/logic/home_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
+import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
@@ -60,24 +66,41 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _renderHelloUser(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppPadding.p10),
-      child: Text(
-        "${S.of(context).hello} Lance",
-        style: const TextStyle(
-            fontFamily: FontFamily.productSans,
-            fontSize: AppFontSize.f14,
-            color: AppColors.hintTextColor),
-      ),
+    return BlocSelector<AccountBloc, AccountState, MUser?>(
+      selector: (state) {
+        return state.account;
+      },
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: AppPadding.p10),
+          child: Text(
+            "${S.of(context).hello} ${state?.name}",
+            style: const TextStyle(
+                fontFamily: FontFamily.productSans,
+                fontSize: AppFontSize.f14,
+                color: AppColors.hintTextColor),
+          ),
+        );
+      },
     );
   }
 
   Widget _renderListWeek(BuildContext context) {
     final today = DateTime.now();
-    return XDayOfWeekListView(
-      week: "16th ",
-      listDayOfWeek: DateTimeUtils.createWeekOfToday(today),
-      today: today,
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.selectedDate.compareTo(current.selectedDate) != 0,
+      builder: (context, state) {
+        return XDayOfWeekListView(
+          week: S.of(context).no,
+          listDayOfWeek: DateTimeUtils.createWeekOfToday(
+              DateTimeUtils.convertToStartedDay(today)),
+          today: DateTimeUtils.convertToStartedDay(today),
+          selectedDay: state.selectedDate,
+          onTappedDay: (date) =>
+              context.read<HomeBloc>().onChangedSelectedDate(date),
+        );
+      },
     );
   }
 
@@ -87,28 +110,40 @@ class HomeScreen extends StatelessWidget {
           fontFamily: FontFamily.abel,
           fontSize: AppFontSize.f16,
           color: AppColors.hintTextColor),
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: AppMargin.m20),
-        padding: const EdgeInsets.all(AppPadding.p15),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.r10),
-            color: AppColors.white),
-        child: Column(
-          children: [
-            _renderBabyFact(context),
-            XPaddingUtils.verticalPadding(height: AppPadding.p20),
-            _renderBabyInfor(context),
-          ],
-        ),
+      child: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) =>
+            previous.selectedDate.compareTo(current.selectedDate) != 0,
+        builder: (context, state) {
+          return Container(
+            margin: const EdgeInsets.symmetric(vertical: AppMargin.m20),
+            padding: const EdgeInsets.all(AppPadding.p15),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(AppRadius.r10),
+                color: AppColors.white),
+            child: Column(
+              children: [
+                _renderBabyFact(
+                    context, state.babyFacts[state.selectedDate]?.fact),
+                XPaddingUtils.verticalPadding(height: AppPadding.p20),
+                _renderBabyInfor(
+                  context,
+                  height: state.babyFacts[state.selectedDate]?.height,
+                  weight: state.babyFacts[state.selectedDate]?.weight,
+                  daysLeft: state.babyFacts[state.selectedDate]?.daysLeft,
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _renderBabyFact(BuildContext context) {
+  Widget _renderBabyFact(BuildContext context, String? content) {
     return Row(children: [
       _renderBabyIcon(),
       XPaddingUtils.horizontalPadding(width: AppPadding.p20),
-      _renderBabyFactContent(context)
+      _renderBabyFactContent(context, content)
     ]);
   }
 
@@ -129,26 +164,27 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _renderBabyFactContent(BuildContext context) {
-    return const Text("Your baby is the size of a pear");
+  Widget _renderBabyFactContent(BuildContext context, String? content) {
+    return Text(content ?? "");
   }
 
-  Widget _renderBabyInfor(BuildContext context) {
+  Widget _renderBabyInfor(BuildContext context,
+      {int? height, int? weight, int? daysLeft}) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _renderInforData(context,
             titleInfor: S.of(context).babyHeight,
-            dataInfor: 17,
+            dataInfor: height ?? 0,
             unit: S.of(context).cm),
         _renderInforData(context,
             titleInfor: S.of(context).babyWeight,
-            dataInfor: 110,
+            dataInfor: weight ?? 0,
             unit: S.of(context).gr),
         _renderInforData(context,
             titleInfor: S.of(context).daysLeft,
-            dataInfor: 168,
+            dataInfor: daysLeft ?? 0,
             unit: S.of(context).days),
       ],
     );

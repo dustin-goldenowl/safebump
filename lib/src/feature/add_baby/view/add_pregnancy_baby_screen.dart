@@ -1,12 +1,18 @@
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
+import 'package:safebump/src/feature/add_baby/logic/state/add_fetus_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
+import 'package:safebump/src/utils/utils.dart';
 import 'package:safebump/widget/button/bottom_buttons.dart';
 import 'package:safebump/widget/button/button_with_label.dart';
 import 'package:safebump/widget/button/circle_button.dart';
@@ -76,20 +82,29 @@ class AddPreggyScreen extends StatelessWidget {
   Widget _renderNameField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-      child: XTextFieldWithLabel(
-          labelStyle: const TextStyle(
-              fontSize: AppFontSize.f16,
-              fontFamily: FontFamily.productSans,
-              color: AppColors.grey2),
-          hintStyle: const TextStyle(
-              fontSize: AppFontSize.f14,
-              fontFamily: FontFamily.inter,
-              color: AppColors.grey4),
-          hintText: S.of(context).babysName,
-          label: S.of(context).name,
-          onChanged: (tetx) {
-            // TODO: on changed
-          }),
+      child: BlocBuilder<AddFetusBloc, AddFetusState>(
+        buildWhen: (previous, current) =>
+            previous.errorFetusName != current.errorFetusName,
+        builder: (context, state) {
+          return XTextFieldWithLabel(
+              labelStyle: const TextStyle(
+                  fontSize: AppFontSize.f16,
+                  fontFamily: FontFamily.productSans,
+                  color: AppColors.grey2),
+              hintStyle: const TextStyle(
+                  fontSize: AppFontSize.f14,
+                  fontFamily: FontFamily.inter,
+                  color: AppColors.grey4),
+              errorText: StringUtils.isNullOrEmpty(state.errorFetusName)
+                  ? null
+                  : state.errorFetusName,
+              hintText: S.of(context).babysName,
+              label: S.of(context).name,
+              onChanged: (text) {
+                context.read<AddFetusBloc>().onChangedFetusName(text);
+              });
+        },
+      ),
     );
   }
 
@@ -97,44 +112,68 @@ class AddPreggyScreen extends StatelessWidget {
     return Expanded(
         child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-      child: XLabelButton(
-        onTapped: () async {
-          await showBoardDateTimePicker(
-            context: context,
-            pickerType: DateTimePickerType.date,
-            minimumDate: DateTime.now().subtract(const Duration(days: 280)),
-            maximumDate: DateTime.now().add(const Duration(days: 280)),
-            options: BoardDateTimeOptions(
-              boardTitle: S.of(context).selectDate,
-              activeColor: AppColors.primary,
-              showDateButton: false,
-            ),
+      child: BlocBuilder<AddFetusBloc, AddFetusState>(
+        buildWhen: (previous, current) =>
+            previous.fetusDueDate != current.fetusDueDate ||
+            previous.errorFetusDueDate != current.errorFetusDueDate,
+        builder: (context, state) {
+          return XLabelButton(
+            onTapped: () async {
+              _showDateTimeBottomSheet(context);
+            },
+            hint: S.of(context).dueDate,
+            value: isNullOrEmpty(state.fetusDueDate)
+                ? null
+                : DateFormat('MMM d, y').format(state.fetusDueDate!),
+            labelStyle: const TextStyle(
+                fontSize: AppFontSize.f16,
+                fontFamily: FontFamily.productSans,
+                color: AppColors.grey2),
+            hintStyle: const TextStyle(
+                fontSize: AppFontSize.f14,
+                fontFamily: FontFamily.inter,
+                color: AppColors.grey4),
+            label: S.of(context).addDueDate,
+            icon: Icons.calendar_today_outlined,
           );
         },
-        hint: S.of(context).dueDate,
-        labelStyle: const TextStyle(
-            fontSize: AppFontSize.f16,
-            fontFamily: FontFamily.productSans,
-            color: AppColors.grey2),
-        hintStyle: const TextStyle(
-            fontSize: AppFontSize.f14,
-            fontFamily: FontFamily.inter,
-            color: AppColors.grey4),
-        label: S.of(context).addDueDate,
-        icon: Icons.calendar_today_outlined,
       ),
     ));
   }
 
+  Future<void> _showDateTimeBottomSheet(BuildContext context) async {
+    await showBoardDateTimePicker(
+      context: context,
+      pickerType: DateTimePickerType.date,
+      minimumDate: DateTime.now().subtract(const Duration(days: 280)),
+      maximumDate: DateTime.now().add(const Duration(days: 280)),
+      onChanged: (date) =>
+          context.read<AddFetusBloc>().onChangedFetusDueDate(date),
+      options: BoardDateTimeOptions(
+        boardTitle: S.of(context).selectDate,
+        activeColor: AppColors.primary,
+        showDateButton: false,
+      ),
+    );
+  }
+
   Widget _renderBottomButton(BuildContext context) {
-    return XBottomButtons(
-        positiveButtonText: S.of(context).save,
-        cancelButtonText: S.of(context).cancel,
-        onTappedPositive: () {
-          //TODO: Ontap Save
-        },
-        onTappedCancel: () {
-          AppCoordinator.pop();
-        });
+    return BlocSelector<AddFetusBloc, AddFetusState, AddFetusScreenStatus>(
+      selector: (state) {
+        return state.status;
+      },
+      builder: (context, status) {
+        return XBottomButtons(
+            positiveButtonText: S.of(context).save,
+            cancelButtonText: S.of(context).cancel,
+            isLoading: status == AddFetusScreenStatus.saving,
+            onTappedPositive: () {
+              context.read<AddFetusBloc>().saveFetusInfor();
+            },
+            onTappedCancel: () {
+              AppCoordinator.pop();
+            });
+      },
+    );
   }
 }

@@ -65,14 +65,14 @@ class AppConstant {
             icon: Icons.food_bank)
       ];
 
-  static Map<DateTime, BabyFactModel> getBabyFactsData(BuildContext context) {
+  static Map<DateTime, BabyFactModel> getBabyFactsData() {
     final pergnancyDate =
         DateTimeUtils.convertToStartedDay(UserPrefs.I.getPergnancyDay());
     Map<DateTime, BabyFactModel> babyFacts = {};
     for (int i = 0; i < 7; i++) {
       babyFacts.addEntries({
         pergnancyDate.add(Duration(days: i)): BabyFactModel(
-            fact: S.of(context).yourBabySizeofpear,
+            fact: S.text.yourBabySizeofpear,
             height: 105 - i + 17,
             weight: 105 - i + 110,
             daysLeft: 280 - i),

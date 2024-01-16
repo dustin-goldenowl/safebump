@@ -19,8 +19,19 @@ import 'package:safebump/widget/appbar/appbar_dashboard.dart';
 import 'package:safebump/widget/button/circle_button.dart';
 import 'package:safebump/widget/list_view/day_of_week_list_view.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<HomeBloc>().initData(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +40,24 @@ class HomeScreen extends StatelessWidget {
         child: Container(
           color: AppColors.white4,
           padding: const EdgeInsets.symmetric(horizontal: AppPadding.p20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _renderAppbar(context),
-              _renderHelloUser(context),
-              _renderListWeek(context),
-              // _renderBabySection(context),
-              _renderEmptyBaby(context),
-              _renderExtensionSection(context),
-            ],
+          child: BlocSelector<HomeBloc, HomeState, bool>(
+            selector: (state) {
+              return state.hasBaby;
+            },
+            builder: (context, hasBaby) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _renderAppbar(context),
+                  _renderHelloUser(context),
+                  hasBaby ? _renderListWeek(context) : const SizedBox.shrink(),
+                  hasBaby
+                      ? _renderBabySection(context)
+                      : _renderEmptyBaby(context),
+                  _renderExtensionSection(context),
+                ],
+              );
+            },
           ),
         ),
       ),
@@ -89,10 +108,11 @@ class HomeScreen extends StatelessWidget {
     final today = DateTime.now();
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (previous, current) =>
-          previous.selectedDate.compareTo(current.selectedDate) != 0,
+          previous.selectedDate.compareTo(current.selectedDate) != 0 ||
+          previous.weekCounter != current.weekCounter,
       builder: (context, state) {
         return XDayOfWeekListView(
-          week: S.of(context).no,
+          week: state.weekCounter,
           listDayOfWeek: DateTimeUtils.createWeekOfToday(
               DateTimeUtils.convertToStartedDay(today)),
           today: DateTimeUtils.convertToStartedDay(today),

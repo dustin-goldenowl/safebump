@@ -13,6 +13,7 @@ class XBottomButtons extends StatelessWidget {
       required this.onTappedPositive,
       required this.onTappedCancel,
       this.positiveButtonColor,
+      this.isLoading = false,
       this.cancelButtonColor});
   final String positiveButtonText;
   final String cancelButtonText;
@@ -20,6 +21,7 @@ class XBottomButtons extends StatelessWidget {
   final Function onTappedCancel;
   final Color? positiveButtonColor;
   final Color? cancelButtonColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -66,13 +68,18 @@ class XBottomButtons extends StatelessWidget {
           borderRadius: AppRadius.r30,
           label: Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-            child: Text(
-              positiveButtonText,
-              style: const TextStyle(
-                  fontFamily: FontFamily.abel,
-                  fontSize: AppFontSize.f16,
-                  color: AppColors.white),
-            ),
+            child: isLoading
+                ? const SizedBox(
+                    width: AppSize.s20,
+                    height: AppSize.s20,
+                    child: CircularProgressIndicator(color: AppColors.white))
+                : Text(
+                    positiveButtonText,
+                    style: const TextStyle(
+                        fontFamily: FontFamily.abel,
+                        fontSize: AppFontSize.f16,
+                        color: AppColors.white),
+                  ),
           )),
     );
   }

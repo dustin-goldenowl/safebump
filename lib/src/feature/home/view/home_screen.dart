@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/account/bloc/account_state.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/logic/home_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
@@ -15,6 +16,7 @@ import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
+import 'package:safebump/widget/button/circle_button.dart';
 import 'package:safebump/widget/list_view/day_of_week_list_view.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -33,7 +35,8 @@ class HomeScreen extends StatelessWidget {
               _renderAppbar(context),
               _renderHelloUser(context),
               _renderListWeek(context),
-              _renderBabySection(context),
+              // _renderBabySection(context),
+              _renderEmptyBaby(context),
               _renderExtensionSection(context),
             ],
           ),
@@ -251,5 +254,43 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget _renderEmptyBaby(BuildContext context) {
+    return DefaultTextStyle(
+      style: const TextStyle(
+          fontFamily: FontFamily.abel,
+          fontSize: AppFontSize.f16,
+          color: AppColors.hintTextColor),
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: AppMargin.m20),
+        padding: const EdgeInsets.all(AppPadding.p15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.r10),
+            color: AppColors.white),
+        child: Row(
+          children: [
+            _renderAddBabyButton(),
+            XPaddingUtils.horizontalPadding(width: AppPadding.p10),
+            _renderAddBabyText(context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _renderAddBabyButton() {
+    return XCircleButton(
+      onTapped: () {
+        AppCoordinator.showOptionsAddBaby();
+      },
+      color: AppColors.subPrimary,
+      iconColor: AppColors.primary,
+      buttonSize: AppSize.s60,
+    );
+  }
+
+  Widget _renderAddBabyText(BuildContext context) {
+    return Text(S.of(context).pleaseAddYourBaby);
   }
 }

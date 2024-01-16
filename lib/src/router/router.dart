@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
+import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dart';
+import 'package:safebump/src/feature/add_baby/view/select_option_add_screen.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
@@ -119,6 +122,25 @@ class AppRouter {
                   child: const VerifyCodeScreen(),
                 );
               },
+            ),
+          ]),
+      GoRoute(
+          parentNavigatorKey: AppCoordinator.navigatorKey,
+          path: AppRouteNames.optionAddBaby.path,
+          name: AppRouteNames.optionAddBaby.name,
+          builder: (context, state) => const SelectBabyOptionScreen(),
+          routes: <RouteBase>[
+            GoRoute(
+              parentNavigatorKey: AppCoordinator.navigatorKey,
+              path: AppRouteNames.addBaby.subPath,
+              name: AppRouteNames.addBaby.name,
+              builder: (context, state) => const AddBabyScreen(),
+            ),
+            GoRoute(
+              parentNavigatorKey: AppCoordinator.navigatorKey,
+              path: AppRouteNames.addPregnancyBaby.subPath,
+              name: AppRouteNames.addPregnancyBaby.name,
+              builder: (context, state) => const AddPreggyScreen(),
             ),
           ]),
     ],

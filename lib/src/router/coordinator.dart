@@ -43,6 +43,14 @@ class AppCoordinator {
   static void showResetPasswordScreen() =>
       context.pushReplacementNamed(AppRouteNames.resetPassword.name);
 
+  static void showAddBabyScreen() =>
+      context.pushNamed(AppRouteNames.addBaby.name);
+
+  static void showAddPregnancyBabyScreen() =>
+      context.pushNamed(AppRouteNames.addPregnancyBaby.name);
+
+  static void showOptionsAddBaby() =>
+      context.pushNamed(AppRouteNames.optionAddBaby.name);
   static void showSyncDataScreen() =>
       context.pushReplacementNamed(AppRouteNames.syncData.name);
 }

@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => AccountBloc()),
       ],
       child: MaterialApp.router(
-        title: S.of(context).safeBump,
+        title: "SafeBump",
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [
           S.delegate,

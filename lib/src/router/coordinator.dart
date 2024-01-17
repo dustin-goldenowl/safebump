@@ -53,4 +53,7 @@ class AppCoordinator {
       context.pushNamed(AppRouteNames.optionAddBaby.name);
   static void showSyncDataScreen() =>
       context.pushReplacementNamed(AppRouteNames.syncData.name);
+
+  static void showExtensionScreen(String routeName) =>
+      context.pushNamed(routeName);
 }

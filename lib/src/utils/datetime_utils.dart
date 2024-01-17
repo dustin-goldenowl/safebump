@@ -36,4 +36,9 @@ class DateTimeUtils {
     }
     return woy;
   }
+
+  static DateTime addTimeIntoDate({required DateTime date, required DateTime time}) {
+    return DateTime(
+        date.year, date.month, date.day, time.hour, time.minute, time.second);
+  }
 }

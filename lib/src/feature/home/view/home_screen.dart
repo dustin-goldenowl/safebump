@@ -7,7 +7,9 @@ import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
 import 'package:safebump/src/feature/account/bloc/account_state.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/logic/home_state.dart';
+import 'package:safebump/src/feature/home/widget/daily_quiz/daily_quiz_section.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/theme/colors.dart';
@@ -54,6 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   hasBaby
                       ? _renderBabySection(context)
                       : _renderEmptyBaby(context),
+                  _renderDailyQuizSection(context),
                   _renderExtensionSection(context),
                 ],
               );
@@ -312,5 +315,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _renderAddBabyText(BuildContext context) {
     return Text(S.of(context).pleaseAddYourBaby);
+  }
+
+  Widget _renderDailyQuizSection(BuildContext context) {
+    return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.isAnswerDailyQuiz != current.isAnswerDailyQuiz ||
+          previous.quiz != current.quiz ||
+          previous.isAnswerCorrect != current.isAnswerCorrect ||
+          previous.correctPercent != current.correctPercent,
+      builder: (context, state) {
+        return DailyQuizSection(
+          quiz: state.quiz ?? DailyQuiz.empty(),
+          isAnswer: state.isAnswerDailyQuiz,
+          correctPercent: state.correctPercent,
+          isCorrect: state.isAnswerCorrect,
+          onTapAnswer: (userAnswer) {
+            context.read<HomeBloc>().onTapAnswerButton(userAnswer);
+          },
+        );
+      },
+    );
   }
 }

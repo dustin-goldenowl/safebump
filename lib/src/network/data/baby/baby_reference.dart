@@ -1,21 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safebump/src/network/firebase/base_collection.dart';
+import 'package:safebump/src/network/firebase/collection/collection.dart';
 import 'package:safebump/src/network/model/baby/baby.dart';
 import 'package:safebump/src/network/model/common/result.dart';
-import 'package:safebump/src/network/model/user/user.dart';
-import 'package:safebump/src/services/user_prefs.dart';
 
 class BabyReference extends BaseCollectionReference<MBaby> {
   BabyReference()
       : super(
-          FirebaseFirestore.instance
-              .collection(
-                  'users/${(UserPrefs.I.getUser() ?? MUser.empty()).id}/baby')
-              .withConverter<MBaby>(
-                fromFirestore: (snapshot, options) =>
-                    MBaby.fromJson(snapshot.data() as Map<String, dynamic>),
-                toFirestore: (chatRoom, _) => chatRoom.toJson(),
-              ),
+          XCollection.baby,
           getObjectId: (e) => e.id,
           setObjectId: (e, id) => e.copyWith(id: id),
         );

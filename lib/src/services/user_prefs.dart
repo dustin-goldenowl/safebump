@@ -14,6 +14,9 @@ class _keys {
   static const String token = 'token';
   static const String pergnancyDay = 'pergnancyDay';
   static const String firstOpen = 'firstOpen';
+  static const String doDailyQuiz = 'doDailyQuiz';
+  static const String isUserCorrect = 'isUserCorrect';
+  static const String percentCorrectDailyQuiz = 'percentCorrectDailyQuiz';
 }
 
 class UserPrefs {
@@ -114,5 +117,38 @@ class UserPrefs {
 
   void setIsFirstOpenApp(bool isFirst) {
     _prefs.setBool(_keys.firstOpen, isFirst);
+  }
+
+  bool getDoDailyQuiz() {
+    try {
+      return _prefs.getBool(_keys.doDailyQuiz) ?? false;
+    } catch (_) {}
+    return false;
+  }
+
+  void setDoDailyQuiz(bool isAnswer) {
+    _prefs.setBool(_keys.doDailyQuiz, isAnswer);
+  }
+
+  bool getIsUserCorrect() {
+    try {
+      return _prefs.getBool(_keys.isUserCorrect) ?? false;
+    } catch (_) {}
+    return false;
+  }
+
+  void setIsUserCorrect(bool isCorrect) {
+    _prefs.setBool(_keys.isUserCorrect, isCorrect);
+  }
+
+  int getPercentCorrectDailyQuiz() {
+    try {
+      return _prefs.getInt(_keys.percentCorrectDailyQuiz) ?? 0;
+    } catch (_) {}
+    return 0;
+  }
+
+  void setPercentCorrectDailyQuiz(int percent) {
+    _prefs.setInt(_keys.percentCorrectDailyQuiz, percent);
   }
 }

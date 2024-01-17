@@ -11,6 +11,7 @@ class XFillButton extends StatelessWidget {
       this.isLoading = false,
       this.borderRadius = AppRadius.r8,
       this.circularColor = AppColors.white,
+      this.aligmentRowLabel = MainAxisAlignment.center,
       this.border});
   final Widget label;
   final Color bgColor;
@@ -19,19 +20,21 @@ class XFillButton extends StatelessWidget {
   final void Function()? onPressed;
   final bool isLoading;
   final Color circularColor;
+  final MainAxisAlignment aligmentRowLabel;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
+          surfaceTintColor: MaterialStateProperty.all(Colors.transparent),
           shape: MaterialStateProperty.all(RoundedRectangleBorder(
               side: border ?? BorderSide.none,
               borderRadius: BorderRadius.circular(borderRadius))),
           backgroundColor: MaterialStateProperty.all(bgColor)),
       child: Row(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: aligmentRowLabel,
         children: [
           isLoading
               ? SizedBox(

@@ -8,9 +8,13 @@ import 'package:safebump/widget/button/fill_button.dart';
 
 class DailyQuizSection extends StatelessWidget {
   const DailyQuizSection(
-      {super.key, required this.quiz, required this.isAnswer});
+      {super.key,
+      required this.quiz,
+      required this.isAnswer,
+      required this.onTapAnswer});
   final DailyQuiz quiz;
   final bool isAnswer;
+  final Function(String) onTapAnswer;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,7 @@ class DailyQuizSection extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.r10),
             color: AppColors.white),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _renderTitleOfSection(context),
             isAnswer
@@ -38,7 +43,16 @@ class DailyQuizSection extends StatelessWidget {
   }
 
   Widget _renderTitleOfSection(BuildContext context) {
-    return Text(S.of(context).testYourKnowledge);
+    return Row(
+      children: [
+        const Icon(
+          Icons.question_answer_rounded,
+          color: AppColors.primary,
+          size: AppSize.s20,
+        ),
+        Text(S.of(context).testYourKnowledge),
+      ],
+    );
   }
 
   Widget _renderResultSection(BuildContext context) {
@@ -55,14 +69,46 @@ class DailyQuizSection extends StatelessWidget {
   }
 
   Widget _renderQuestion() {
-    return Text(quiz.question);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppPadding.p15),
+      child: Text(
+        quiz.question,
+        style: const TextStyle(
+            fontSize: AppFontSize.f30,
+            fontWeight: FontWeight.bold,
+            color: AppColors.black),
+      ),
+    );
   }
 
   Widget _renderListAnswers() {
     return Column(
       children: [
-        for (final answer in quiz.answers) XFillButton(label: Text(answer))
+        for (int index = 0; index < quiz.answers.length; index++)
+          Padding(
+            padding: const EdgeInsets.only(bottom: AppPadding.p10),
+            child: XFillButton(
+                onPressed: () => onTapAnswer(quiz.answers[index]),
+                bgColor: AppColors.grey5,
+                aligmentRowLabel: MainAxisAlignment.start,
+                label: _renderAnswer(index)),
+          )
       ],
+    );
+  }
+
+  Widget _renderAnswer(int index) {
+    return DefaultTextStyle(
+      style: const TextStyle(
+          fontSize: AppFontSize.f20,
+          fontFamily: FontFamily.abel,
+          color: AppColors.black),
+      child: Row(
+        children: [
+          Text("${String.fromCharCodes([65 + index])}. "),
+          Text(quiz.answers[index])
+        ],
+      ),
     );
   }
 }

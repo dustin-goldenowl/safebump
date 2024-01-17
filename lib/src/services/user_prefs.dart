@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -86,7 +87,10 @@ class UserPrefs {
   DateTime getPergnancyDay() {
     try {
       final pergnancyDayStr = _prefs.getString(_keys.pergnancyDay);
-      return DateFormat("y/M/d").parse(pergnancyDayStr!);
+      if (!StringUtils.isNullOrEmpty(pergnancyDayStr)) {
+        return DateFormat("y/M/d").parse(pergnancyDayStr!);
+      }
+      return DateTime.now();
     } catch (e) {
       xLog.e(e);
       return DateTime.now();

@@ -1,7 +1,6 @@
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
@@ -12,6 +11,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -193,7 +193,7 @@ class AddBabyScreen extends StatelessWidget {
           label: S.of(context).dateOfBirth,
           value: isNullOrEmpty(state.babyBirthDate)
               ? null
-              : DateFormat("MMM d, y").format(state.babyBirthDate!),
+              : state.babyBirthDate!.toMMMdy,
           icon: Icons.calendar_today_outlined,
           labelStyle: const TextStyle(
               fontSize: AppFontSize.f16,
@@ -225,7 +225,7 @@ class AddBabyScreen extends StatelessWidget {
           icon: Icons.access_time,
           value: isNullOrEmpty(state.babyBirthTime)
               ? null
-              : DateFormat("HH : m").format(state.babyBirthTime!),
+              : state.babyBirthTime!.toHHm,
           labelStyle: const TextStyle(
               fontSize: AppFontSize.f16,
               fontFamily: FontFamily.productSans,

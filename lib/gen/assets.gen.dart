@@ -38,6 +38,14 @@ class $AssetsImagesImagesGen {
   AssetGenImage get ggLogo =>
       const AssetGenImage('assets/images/images/gg_logo.png');
 
+  /// File path: assets/images/images/ic_correct.png
+  AssetGenImage get icCorrect =>
+      const AssetGenImage('assets/images/images/ic_correct.png');
+
+  /// File path: assets/images/images/ic_wrong.png
+  AssetGenImage get icWrong =>
+      const AssetGenImage('assets/images/images/ic_wrong.png');
+
   /// File path: assets/images/images/logo.png
   AssetGenImage get logo =>
       const AssetGenImage('assets/images/images/logo.png');
@@ -66,6 +74,8 @@ class $AssetsImagesImagesGen {
   List<AssetGenImage> get values => [
         appleLogo,
         ggLogo,
+        icCorrect,
+        icWrong,
         logo,
         proviceEducational,
         provideCommunity,

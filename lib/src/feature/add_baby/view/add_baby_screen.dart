@@ -1,12 +1,20 @@
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/config/enum/baby_type_enum.dart';
+import 'package:safebump/src/feature/add_baby/logic/cubit/add_baby_bloc.dart';
+import 'package:safebump/src/feature/add_baby/logic/state/add_baby_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
+import 'package:safebump/src/utils/utils.dart';
 import 'package:safebump/widget/button/bottom_buttons.dart';
 import 'package:safebump/widget/button/button_with_label.dart';
 import 'package:safebump/widget/button/circle_button.dart';
@@ -85,34 +93,53 @@ class AddBabyScreen extends StatelessWidget {
   Widget _renderNameField(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-      child: XTextFieldWithLabel(
-          labelStyle: const TextStyle(
-              fontSize: AppFontSize.f16,
-              fontFamily: FontFamily.productSans,
-              color: AppColors.grey2),
-          hintStyle: const TextStyle(
-              fontSize: AppFontSize.f14,
-              fontFamily: FontFamily.inter,
-              color: AppColors.grey4),
-          hintText: S.of(context).babysName,
-          label: S.of(context).name,
-          onChanged: (tetx) {
-            // TODO: on changed
-          }),
+      child: BlocBuilder<AddBabyBloc, AddBabyState>(
+        buildWhen: (previous, current) =>
+            previous.errorBabyName != current.errorBabyName,
+        builder: (context, state) {
+          return XTextFieldWithLabel(
+              labelStyle: const TextStyle(
+                  fontSize: AppFontSize.f16,
+                  fontFamily: FontFamily.productSans,
+                  color: AppColors.grey2),
+              hintStyle: const TextStyle(
+                  fontSize: AppFontSize.f14,
+                  fontFamily: FontFamily.inter,
+                  color: AppColors.grey4),
+              errorText: StringUtils.isNullOrEmpty(state.errorBabyName)
+                  ? null
+                  : state.errorBabyName,
+              hintText: S.of(context).babysName,
+              label: S.of(context).name,
+              onChanged: (text) {
+                context.read<AddBabyBloc>().onChangedBabyName(text);
+              });
+        },
+      ),
     );
   }
 
   Widget _renderGender(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-        child: XDropdownButton(
-            labelStyle: const TextStyle(
-                fontSize: AppFontSize.f16,
-                fontFamily: FontFamily.productSans,
-                color: AppColors.grey2),
-            label: S.of(context).gender,
-            items: [DropdownMenuItem(child: Text(S.of(context).male))],
-            onChanged: (value) {}));
+        child: BlocSelector<AddBabyBloc, AddBabyState, Gender>(
+          selector: (state) => state.gender,
+          builder: (context, gender) {
+            return XDropdownButton<Gender>(
+                labelStyle: const TextStyle(
+                    fontSize: AppFontSize.f16,
+                    fontFamily: FontFamily.productSans,
+                    color: AppColors.grey2),
+                label: S.of(context).gender,
+                value: gender,
+                items: AppConstant.getListGender(context),
+                onChanged: (value) {
+                  context
+                      .read<AddBabyBloc>()
+                      .onChangedBabyGender(value ?? Gender.male);
+                });
+          },
+        ));
   }
 
   Widget _renderBirthDateTime(BuildContext context) {
@@ -129,61 +156,82 @@ class AddBabyScreen extends StatelessWidget {
   }
 
   Widget _renderBottomButton(BuildContext context) {
-    return XBottomButtons(
-        positiveButtonText: S.of(context).save,
-        cancelButtonText: S.of(context).cancel,
-        onTappedPositive: () {
-          //TODO: Ontap Save
-        },
-        onTappedCancel: () {
-          AppCoordinator.pop();
-        });
+    return BlocSelector<AddBabyBloc, AddBabyState, AddBabyScreenStatus>(
+      selector: (state) => state.status,
+      builder: (context, status) {
+        return XBottomButtons(
+            positiveButtonText: S.of(context).save,
+            cancelButtonText: S.of(context).cancel,
+            isLoading: status == AddBabyScreenStatus.saving,
+            onTappedPositive: () {
+              context.read<AddBabyBloc>().saveBabyInfor(context);
+            },
+            onTappedCancel: () {
+              AppCoordinator.pop();
+            });
+      },
+    );
   }
 
   Widget _renderBirthDate(BuildContext context) {
     return Expanded(
-        child: XLabelButton(
-      onTapped: () async {
-        await showBoardDateTimePicker(
-          context: context,
-          pickerType: DateTimePickerType.date,
-          options: BoardDateTimeOptions(
-            boardTitle: S.of(context).selectDate,
-            activeColor: AppColors.primary,
-          ),
+        child: BlocBuilder<AddBabyBloc, AddBabyState>(
+      buildWhen: (previous, current) =>
+          previous.babyBirthDate != current.babyBirthDate ||
+          previous.errorBabyBirthDate != current.errorBabyBirthDate,
+      builder: (context, state) {
+        return XLabelButton(
+          onTapped: () async {
+            context.read<AddBabyBloc>().showBottomSheetDateTimePicker(context,
+                title: S.of(context).selectDate,
+                type: DateTimePickerType.date,
+                onChanged: (babyBirthDate) => context
+                    .read<AddBabyBloc>()
+                    .onChangedBabyBirthDate(babyBirthDate));
+          },
+          hint: S.of(context).selectDate,
+          label: S.of(context).dateOfBirth,
+          value: isNullOrEmpty(state.babyBirthDate)
+              ? null
+              : state.babyBirthDate!.toMMMdy,
+          icon: Icons.calendar_today_outlined,
+          labelStyle: const TextStyle(
+              fontSize: AppFontSize.f16,
+              fontFamily: FontFamily.productSans,
+              color: AppColors.grey2),
         );
       },
-      hint: S.of(context).selectDate,
-      label: S.of(context).dateOfBirth,
-      icon: Icons.calendar_today_outlined,
-      labelStyle: const TextStyle(
-          fontSize: AppFontSize.f16,
-          fontFamily: FontFamily.productSans,
-          color: AppColors.grey2),
     ));
   }
 
   Widget _renderBirthTime(BuildContext context) {
     return Expanded(
-        child: XLabelButton(
-      onTapped: () async {
-        await showBoardDateTimePicker(
-          context: context,
-          pickerType: DateTimePickerType.time,
-          options: BoardDateTimeOptions(
-            boardTitle: S.of(context).selectTime,
-            activeColor: AppColors.primary,
-            showDateButton: false,
-          ),
+        child: BlocBuilder<AddBabyBloc, AddBabyState>(
+      buildWhen: (previous, current) =>
+          previous.babyBirthTime != current.babyBirthTime ||
+          previous.errorBabyBirthTime != current.errorBabyBirthTime,
+      builder: (context, state) {
+        return XLabelButton(
+          onTapped: () async {
+            context.read<AddBabyBloc>().showBottomSheetDateTimePicker(context,
+                title: S.of(context).selectTime,
+                type: DateTimePickerType.time,
+                onChanged: (babyBirthTime) => context
+                    .read<AddBabyBloc>()
+                    .onChangedBabyBirthTime(babyBirthTime));
+          },
+          hint: S.of(context).selectTime,
+          label: S.of(context).timeOfBirth,
+          icon: Icons.access_time,
+          value: isNullOrEmpty(state.babyBirthTime)
+              ? null
+              : state.babyBirthTime!.toHHm,
+          labelStyle: const TextStyle(
+              fontSize: AppFontSize.f16,
+              fontFamily: FontFamily.productSans,
+              color: AppColors.grey2),
         );
       },
-      hint: S.of(context).selectTime,
-      label: S.of(context).timeOfBirth,
-      icon: Icons.access_time,
-      labelStyle: const TextStyle(
-          fontSize: AppFontSize.f16,
-          fontFamily: FontFamily.productSans,
-          color: AppColors.grey2),
     ));
   }
 
@@ -202,39 +250,66 @@ class AddBabyScreen extends StatelessWidget {
 
   Widget _renderBabyWeight(BuildContext context) {
     return Expanded(
-      child: XTextFieldWithLabel(
-        label: S.of(context).birthWeight,
-        labelStyle: const TextStyle(
-            fontSize: AppFontSize.f16,
-            fontFamily: FontFamily.productSans,
-            color: AppColors.grey2),
-        hintText: S.of(context).birthWeight,
-        hintStyle: const TextStyle(
-            fontSize: AppFontSize.f14,
-            fontFamily: FontFamily.inter,
-            color: AppColors.grey4),
-        suffix: _renderUnit(S.of(context).kg),
-        onChanged: (value) {},
+      child: BlocBuilder<AddBabyBloc, AddBabyState>(
+        buildWhen: (previous, current) =>
+            previous.errorBirthWeight != current.errorBirthWeight,
+        builder: (context, state) {
+          return XTextFieldWithLabel(
+            label: S.of(context).birthWeight,
+            labelStyle: const TextStyle(
+                fontSize: AppFontSize.f16,
+                fontFamily: FontFamily.productSans,
+                color: AppColors.grey2),
+            hintText: S.of(context).birthWeight,
+            hintStyle: const TextStyle(
+                fontSize: AppFontSize.f14,
+                fontFamily: FontFamily.inter,
+                color: AppColors.grey4),
+            errorText: StringUtils.isNullOrEmpty(state.errorBirthWeight)
+                ? null
+                : state.errorBirthWeight,
+            suffix: _renderUnit(S.of(context).kg),
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              context
+                  .read<AddBabyBloc>()
+                  .onChangedBabyWeight(double.parse(value));
+            },
+          );
+        },
       ),
     );
   }
 
   Widget _renderBabyHeight(BuildContext context) {
     return Expanded(
-      child: XTextFieldWithLabel(
-        keyboardType: TextInputType.number,
-        label: S.of(context).birthHeight,
-        labelStyle: const TextStyle(
-            fontSize: AppFontSize.f16,
-            fontFamily: FontFamily.productSans,
-            color: AppColors.grey2),
-        hintText: S.of(context).birthHeight,
-        hintStyle: const TextStyle(
-            fontSize: AppFontSize.f14,
-            fontFamily: FontFamily.inter,
-            color: AppColors.grey4),
-        suffix: _renderUnit(S.of(context).cm),
-        onChanged: (value) {},
+      child: BlocBuilder<AddBabyBloc, AddBabyState>(
+        buildWhen: (previous, current) =>
+            previous.errorBirthHeight != current.errorBirthHeight,
+        builder: (context, state) {
+          return XTextFieldWithLabel(
+            keyboardType: TextInputType.number,
+            label: S.of(context).birthHeight,
+            labelStyle: const TextStyle(
+                fontSize: AppFontSize.f16,
+                fontFamily: FontFamily.productSans,
+                color: AppColors.grey2),
+            hintText: S.of(context).birthHeight,
+            hintStyle: const TextStyle(
+                fontSize: AppFontSize.f14,
+                fontFamily: FontFamily.inter,
+                color: AppColors.grey4),
+            errorText: StringUtils.isNullOrEmpty(state.errorBirthHeight)
+                ? null
+                : state.errorBirthHeight,
+            suffix: _renderUnit(S.of(context).cm),
+            onChanged: (value) {
+              context
+                  .read<AddBabyBloc>()
+                  .onChangedBabyHeight(double.parse(value));
+            },
+          );
+        },
       ),
     );
   }

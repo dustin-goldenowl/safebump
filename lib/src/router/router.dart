@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/add_baby/logic/cubit/add_baby_bloc.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
 import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dart';
@@ -142,7 +143,10 @@ class AppRouter {
               parentNavigatorKey: AppCoordinator.navigatorKey,
               path: AppRouteNames.addBaby.subPath,
               name: AppRouteNames.addBaby.name,
-              builder: (context, state) => const AddBabyScreen(),
+              builder: (context, state) => BlocProvider(
+                create: (context) => AddBabyBloc(),
+                child: const AddBabyScreen(),
+              ),
             ),
             GoRoute(
               parentNavigatorKey: AppCoordinator.navigatorKey,

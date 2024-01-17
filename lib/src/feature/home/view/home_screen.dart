@@ -7,6 +7,7 @@ import 'package:safebump/src/feature/account/bloc/account_bloc.dart';
 import 'package:safebump/src/feature/account/bloc/account_state.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/logic/home_state.dart';
+import 'package:safebump/src/feature/home/widget/daily_quiz/daily_quiz_section.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/network/model/user/user.dart';
@@ -37,6 +38,7 @@ class HomeScreen extends StatelessWidget {
               _renderListWeek(context),
               // _renderBabySection(context),
               _renderEmptyBaby(context),
+              _renderDailyQuizSection(context),
               _renderExtensionSection(context),
             ],
           ),
@@ -292,5 +294,9 @@ class HomeScreen extends StatelessWidget {
 
   Widget _renderAddBabyText(BuildContext context) {
     return Text(S.of(context).pleaseAddYourBaby);
+  }
+
+  Widget _renderDailyQuizSection(BuildContext context) {
+    return DailyQuizSection(quiz: quiz, isAnswer: false);
   }
 }

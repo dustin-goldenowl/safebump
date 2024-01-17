@@ -13,6 +13,7 @@ class _keys {
   static const String token = 'token';
   static const String pergnancyDay = 'pergnancyDay';
   static const String firstOpen = 'firstOpen';
+  static const String doDailyQuiz = 'doDailyQuiz';
 }
 
 class UserPrefs {
@@ -110,5 +111,16 @@ class UserPrefs {
 
   void setIsFirstOpenApp(bool isFirst) {
     _prefs.setBool(_keys.firstOpen, isFirst);
+  }
+
+  bool getDoDailyQuiz() {
+    try {
+      return _prefs.getBool(_keys.doDailyQuiz) ?? false;
+    } catch (_) {}
+    return false;
+  }
+
+  void setDoDailyQuiz(bool isAnswer) {
+    _prefs.setBool(_keys.doDailyQuiz, isAnswer);
   }
 }

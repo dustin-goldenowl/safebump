@@ -11,6 +11,8 @@ class HomeState with EquatableMixin {
   final String? weekCounter;
   final bool isAnswerDailyQuiz;
   final DailyQuiz? quiz;
+  final bool isAnswerCorrect;
+  final int correctPercent;
 
   HomeState(
       {required this.selectedDate,
@@ -19,6 +21,8 @@ class HomeState with EquatableMixin {
       this.isAnswerDailyQuiz = false,
       this.quiz,
       this.weekCounter,
+      this.correctPercent = 0,
+      this.isAnswerCorrect = false,
       this.hasBaby = false});
 
   HomeState copyWith(
@@ -27,7 +31,9 @@ class HomeState with EquatableMixin {
       MBaby? baby,
       String? weekCounter,
       bool? isAnswerDailyQuiz,
+      bool? isAnswerCorrect,
       DailyQuiz? quiz,
+      int? correctPercent,
       bool? hasBaby}) {
     return HomeState(
         selectedDate: selectedDate ?? this.selectedDate,
@@ -36,6 +42,8 @@ class HomeState with EquatableMixin {
         weekCounter: weekCounter ?? this.weekCounter,
         isAnswerDailyQuiz: isAnswerDailyQuiz ?? this.isAnswerDailyQuiz,
         quiz: quiz ?? this.quiz,
+        correctPercent: correctPercent ?? this.correctPercent,
+        isAnswerCorrect: isAnswerCorrect ?? this.isAnswerCorrect,
         babyFacts: babyFacts ?? this.babyFacts);
   }
 
@@ -47,6 +55,8 @@ class HomeState with EquatableMixin {
         baby,
         weekCounter,
         isAnswerDailyQuiz,
-        quiz
+        quiz,
+        isAnswerCorrect,
+        correctPercent
       ];
 }

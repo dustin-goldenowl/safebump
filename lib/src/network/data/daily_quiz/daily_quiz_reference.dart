@@ -21,7 +21,7 @@ class DailyQuizReference extends BaseCollectionReference<DailyQuiz> {
   Future<MResult<DailyQuiz>> getOrAddQuiz(DailyQuiz quiz) async {
     try {
       final result = await get(quiz.id);
-      if (result.isError == false) {
+      if (result.isError == true) {
         return result;
       } else {
         final MResult<DailyQuiz> result = await set(quiz);

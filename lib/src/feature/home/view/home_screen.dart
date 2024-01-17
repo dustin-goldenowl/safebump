@@ -321,12 +321,18 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocBuilder<HomeBloc, HomeState>(
       buildWhen: (previous, current) =>
           previous.isAnswerDailyQuiz != current.isAnswerDailyQuiz ||
-          previous.quiz != current.quiz,
+          previous.quiz != current.quiz ||
+          previous.isAnswerCorrect != current.isAnswerCorrect ||
+          previous.correctPercent != current.correctPercent,
       builder: (context, state) {
         return DailyQuizSection(
           quiz: state.quiz ?? DailyQuiz.empty(),
-          isAnswer: false,
-          onTapAnswer: (userAnswer) {},
+          isAnswer: state.isAnswerDailyQuiz,
+          correctPercent: state.correctPercent,
+          isCorrect: state.isAnswerCorrect,
+          onTapAnswer: (userAnswer) {
+            context.read<HomeBloc>().onTapAnswerButton(userAnswer);
+          },
         );
       },
     );

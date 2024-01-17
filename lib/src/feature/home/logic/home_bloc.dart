@@ -96,7 +96,63 @@ class HomeBloc extends Cubit<HomeState> {
 
   bool _isAnwserDailyQuiz() {
     final isAnswer = UserPrefs.I.getDoDailyQuiz();
+    _checkIsUserCorrect();
+    _getPercentCorrectAnswer();
     emit(state.copyWith(isAnswerDailyQuiz: isAnswer));
     return isAnswer;
+  }
+
+  void _checkIsUserCorrect() {
+    emit(state.copyWith(isAnswerCorrect: UserPrefs.I.getIsUserCorrect()));
+  }
+
+  void _getPercentCorrectAnswer() {
+    emit(state.copyWith(
+        correctPercent: UserPrefs.I.getPercentCorrectDailyQuiz()));
+  }
+
+  void onTapAnswerButton(String userAnswer) {
+    if (state.quiz == null) return;
+    emit(state.copyWith(isAnswerDailyQuiz: true));
+    DailyQuiz quiz =
+        state.quiz!.copyWith(totalAnswer: state.quiz!.totalAnswer + 1);
+    if (userAnswer == state.quiz!.correctAnswer) {
+      _setUserIsCorrect(true);
+      emit(state.copyWith(
+          quiz: quiz.copyWith(numberUserCorrect: quiz.numberUserCorrect + 1)));
+      _caculateCorrectPercent();
+      _syncAnswerToServer(state.quiz!);
+      _updateUserSharePref();
+      return;
+    }
+    _setUserIsCorrect(false);
+    emit(state.copyWith(quiz: quiz));
+    _syncAnswerToServer(state.quiz!);
+    _caculateCorrectPercent();
+    _updateUserSharePref();
+  }
+
+  void _setUserIsCorrect(bool isCorrect) {
+    emit(state.copyWith(isAnswerCorrect: isCorrect));
+  }
+
+  void _caculateCorrectPercent() {
+    final correctPercent =
+        (state.quiz!.numberUserCorrect / state.quiz!.totalAnswer) * 100;
+    emit(state.copyWith(correctPercent: correctPercent.toInt()));
+  }
+
+  void _syncAnswerToServer(DailyQuiz quiz) async {
+    try {
+      await GetIt.I.get<DailyQuizRepository>().saveUsersAnswer(quiz);
+    } catch (e) {
+      xLog.e(e);
+    }
+  }
+
+  void _updateUserSharePref() {
+    UserPrefs.I.setDoDailyQuiz(true);
+    UserPrefs.I.setIsUserCorrect(state.isAnswerCorrect);
+    UserPrefs.I.setPercentCorrectDailyQuiz(state.correctPercent);
   }
 }

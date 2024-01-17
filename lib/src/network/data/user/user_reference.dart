@@ -1,16 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safebump/src/network/firebase/base_collection.dart';
+import 'package:safebump/src/network/firebase/collection/collection.dart';
 import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 
 class UserReference extends BaseCollectionReference<MUser> {
   UserReference()
       : super(
-          FirebaseFirestore.instance.collection('users').withConverter<MUser>(
-                fromFirestore: (snapshot, options) =>
-                    MUser.fromJson(snapshot.data() as Map<String, dynamic>),
-                toFirestore: (chatRoom, _) => chatRoom.toJson(),
-              ),
+          XCollection.user,
           getObjectId: (e) => e.id,
           setObjectId: (e, id) => e.copyWith(id: id),
         );

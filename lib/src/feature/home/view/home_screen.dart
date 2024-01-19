@@ -244,6 +244,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context,
           label: AppConstant.getListExtensionData(context)[index].label,
           icon: AppConstant.getListExtensionData(context)[index].icon,
+          routeName: AppConstant.getListExtensionData(context)[index].routeName,
         ),
         itemCount: 6,
       ),
@@ -251,8 +252,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _renderExtensionButton(BuildContext context,
-      {required String label, required IconData icon}) {
+      {required String label,
+      required IconData icon,
+      required String routeName}) {
     return GestureDetector(
+      onTap: () => AppCoordinator.showExtensionScreen(routeName),
       child: Container(
         height: AppSize.s123,
         decoration: BoxDecoration(

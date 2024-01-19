@@ -13,7 +13,8 @@ enum AppRouteNames {
   resetPassword(path: '/resetPassword'),
   optionAddBaby(path: '/optionAddBaby'),
   addBaby(path: '/addBaby'),
-  addPregnancyBaby(path: '/addPregnancyBaby');
+  addPregnancyBaby(path: '/addPregnancyBaby'),
+  articles(path: '/articles');
 
   const AppRouteNames({
     required this.path,

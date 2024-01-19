@@ -10,6 +10,8 @@ import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dar
 import 'package:safebump/src/feature/add_baby/view/select_option_add_screen.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
 import 'package:safebump/src/feature/calendar/view/calendar_screen.dart';
+import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
+import 'package:safebump/src/feature/articles/view/articles_screen.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
@@ -72,15 +74,25 @@ class AppRouter {
         ),
         routes: <RouteBase>[
           GoRoute(
-            path: AppRouteNames.home.path,
-            name: AppRouteNames.home.name,
-            pageBuilder: (context, state) => NoTransitionPage(
-              child: BlocProvider(
-                create: (context) => HomeBloc(AppConstant.getBabyFactsData()),
-                child: const HomeScreen(),
-              ),
-            ),
-          ),
+              path: AppRouteNames.home.path,
+              name: AppRouteNames.home.name,
+              pageBuilder: (context, state) => NoTransitionPage(
+                    child: BlocProvider(
+                      create: (context) =>
+                          HomeBloc(AppConstant.getBabyFactsData()),
+                      child: const HomeScreen(),
+                    ),
+                  ),
+              routes: <RouteBase>[
+                GoRoute(
+                    parentNavigatorKey: AppCoordinator.navigatorKey,
+                    path: AppRouteNames.articles.subPath,
+                    name: AppRouteNames.articles.name,
+                    builder: (__, _) => BlocProvider(
+                          create: (context) => ArticlesBloc(),
+                          child: const ArticlesScreen(),
+                        ))
+              ]),
           GoRoute(
             path: AppRouteNames.calendar.path,
             name: AppRouteNames.calendar.name,

@@ -61,6 +61,7 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
         AppCoordinator.showHomeScreen();
         return;
       }
+      XToast.error(S.of(context).yourSignInIsSInvalid);
       AppCoordinator.showSignInScreen();
     } catch (e) {
       xLog.e(e);

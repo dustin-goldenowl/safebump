@@ -8,11 +8,23 @@
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
+import 'package:lottie/lottie.dart';
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   $AssetsImagesImagesGen get images => const $AssetsImagesImagesGen();
+}
+
+class $AssetsJsonsGen {
+  const $AssetsJsonsGen();
+
+  /// File path: assets/jsons/sync_data.json
+  LottieGenImage get syncData =>
+      const LottieGenImage('assets/jsons/sync_data.json');
+
+  /// List of all assets
+  List<LottieGenImage> get values => [syncData];
 }
 
 class $AssetsImagesImagesGen {
@@ -25,6 +37,14 @@ class $AssetsImagesImagesGen {
   /// File path: assets/images/images/gg_logo.png
   AssetGenImage get ggLogo =>
       const AssetGenImage('assets/images/images/gg_logo.png');
+
+  /// File path: assets/images/images/ic_correct.png
+  AssetGenImage get icCorrect =>
+      const AssetGenImage('assets/images/images/ic_correct.png');
+
+  /// File path: assets/images/images/ic_wrong.png
+  AssetGenImage get icWrong =>
+      const AssetGenImage('assets/images/images/ic_wrong.png');
 
   /// File path: assets/images/images/logo.png
   AssetGenImage get logo =>
@@ -54,6 +74,8 @@ class $AssetsImagesImagesGen {
   List<AssetGenImage> get values => [
         appleLogo,
         ggLogo,
+        icCorrect,
+        icWrong,
         logo,
         proviceEducational,
         provideCommunity,
@@ -67,6 +89,7 @@ class Assets {
   Assets._();
 
   static const $AssetsImagesGen images = $AssetsImagesGen();
+  static const $AssetsJsonsGen jsons = $AssetsJsonsGen();
 }
 
 class AssetGenImage {
@@ -135,6 +158,65 @@ class AssetGenImage {
       _assetName,
       bundle: bundle,
       package: package,
+    );
+  }
+
+  String get path => _assetName;
+
+  String get keyName => _assetName;
+}
+
+class LottieGenImage {
+  const LottieGenImage(this._assetName);
+
+  final String _assetName;
+
+  LottieBuilder lottie({
+    Animation<double>? controller,
+    bool? animate,
+    FrameRate? frameRate,
+    bool? repeat,
+    bool? reverse,
+    LottieDelegates? delegates,
+    LottieOptions? options,
+    void Function(LottieComposition)? onLoaded,
+    LottieImageProviderFactory? imageProviderFactory,
+    Key? key,
+    AssetBundle? bundle,
+    Widget Function(BuildContext, Widget, LottieComposition?)? frameBuilder,
+    ImageErrorWidgetBuilder? errorBuilder,
+    double? width,
+    double? height,
+    BoxFit? fit,
+    AlignmentGeometry? alignment,
+    String? package,
+    bool? addRepaintBoundary,
+    FilterQuality? filterQuality,
+    void Function(String)? onWarning,
+  }) {
+    return Lottie.asset(
+      _assetName,
+      controller: controller,
+      animate: animate,
+      frameRate: frameRate,
+      repeat: repeat,
+      reverse: reverse,
+      delegates: delegates,
+      options: options,
+      onLoaded: onLoaded,
+      imageProviderFactory: imageProviderFactory,
+      key: key,
+      bundle: bundle,
+      frameBuilder: frameBuilder,
+      errorBuilder: errorBuilder,
+      width: width,
+      height: height,
+      fit: fit,
+      alignment: alignment,
+      package: package,
+      addRepaintBoundary: addRepaintBoundary,
+      filterQuality: filterQuality,
+      onWarning: onWarning,
     );
   }
 

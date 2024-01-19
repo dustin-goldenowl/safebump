@@ -10,6 +10,9 @@
 class FontFamily {
   FontFamily._();
 
+  /// Font family: Abel
+  static const String abel = 'Abel';
+
   /// Font family: Inter
   static const String inter = 'Inter';
 

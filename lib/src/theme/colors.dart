@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   // primary
   static const primary = Color(0xffEC407A);
+  static const subPrimary = Color(0xFFFFCDD2);
   static const text = Color(0xFF404040);
   static const textSecondary = Color(0xFF444444);
   static const link = Color(0xFF0064FF);
@@ -10,6 +11,8 @@ class AppColors {
   static const scaffoldBackgroundColor = Color(0xFFF8F6EE);
   static const background = Color.fromARGB(255, 249, 247, 242);
   static const hintTextColor = Color(0xFF8C8A8A);
+  static const red = Color.fromARGB(255, 248, 103, 103);
+  static const green = Color.fromARGB(255, 61, 164, 61);
   // black
   static const black = Colors.black;
   static const black2 = Color(0xFF1E1E1E);

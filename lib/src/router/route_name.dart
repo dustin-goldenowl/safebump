@@ -3,9 +3,18 @@ enum AppRouteNames {
   onBoarding(path: '/onBoarding'),
   signIn(path: '/signIn'),
   signUp(path: '/signUp'),
+  syncData(path: '/syncData'),
+  dashboard(path: '/dashboard'),
+  calendar(path: '/calendar'),
+  profile(path: '/profile'),
+  medicineProfile(path: '/medicineProfile'),
   enterMail(path: '/enterMail'),
   verifyCode(path: 'verifyCode', param: "mail"),
-  resetPassword(path: '/resetPassword');
+  resetPassword(path: '/resetPassword'),
+  optionAddBaby(path: '/optionAddBaby'),
+  addBaby(path: '/addBaby'),
+  addPregnancyBaby(path: '/addPregnancyBaby'),
+  articles(path: '/articles');
 
   const AppRouteNames({
     required this.path,

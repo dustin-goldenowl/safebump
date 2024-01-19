@@ -60,22 +60,35 @@ dependencies:
   freezed_annotation: 2.4.1
   google_sign_in: 6.2.1
   sign_in_with_apple: 5.0.0
+  shared_preferences: 2.2.2
+  path_provider: 2.1.2
+  path: 1.8.3
   
   # Widget
   smooth_page_indicator: 1.1.0
+  convex_bottom_bar: 3.2.0
   otp_text_field: 1.1.3
   bot_toast: 4.1.3
+  board_datetime_picker: 1.4.0
+  lottie: 3.0.0
 
   # Firebase
   firebase_auth: 4.16.0
   cloud_firestore: 4.14.0
   firebase_core: 2.24.2
+  firebase_storage: 11.6.0
+
+  ## Local database
+  drift: 2.14.1
+  drift_sqflite: 2.0.1
+  sqlite3_flutter_libs: 0.5.18
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   build_runner: 2.4.7
+  drift_dev: 2.14.1
   flutter_gen_runner: 5.4.0
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -143,6 +156,9 @@ flutter:
           weight: 700
         - asset: assets/fonts/Inter-Medium.ttf
           weight: 500
+    - family: Abel
+      fonts:
+        - asset: assets/fonts/Abel-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

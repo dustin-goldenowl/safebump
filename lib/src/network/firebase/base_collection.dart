@@ -22,6 +22,7 @@ class BaseCollectionReference<T> {
         return MResult.error('Document does not exist');
       }
     } catch (e) {
+      xLog.e(e);
       return MResult.exception(e);
     }
   }

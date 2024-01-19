@@ -54,7 +54,7 @@ class AppConstant {
             icon: Icons.quiz),
         ExtensionModel(
             label: S.of(context).articles,
-            routeName: AppRouteNames.dashboard.name,
+            routeName: AppRouteNames.articles.name,
             icon: Icons.article),
         ExtensionModel(
             label: S.of(context).videos,

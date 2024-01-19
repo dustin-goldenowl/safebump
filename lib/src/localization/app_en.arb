@@ -110,5 +110,8 @@
     "percent": "%",
     "tryAgain": "Try again",
     "calendar": "Calendar",
-    "notesCreated": "Notes Created"
+    "notesCreated": "Notes Created",
+    "time": "Time: ",
+    "hospital": "Hospital: ",
+    "medicine": "Medicine: "
 }

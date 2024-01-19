@@ -49,4 +49,8 @@ class DateTimeUtils {
     }
     return a.year == b.year && a.month == b.month && a.day == b.day;
   }
+
+  static DateTime fromyMMMd(String dateText) {
+    return DateFormat("MMM d, y").parse(dateText);
+  }
 }

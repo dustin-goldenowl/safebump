@@ -52,13 +52,16 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
     final token = UserPrefs.I.getToken();
     if (StringUtils.isNullOrEmpty(token)) {
       AppCoordinator.showSignInScreen();
+      return;
     }
     try {
       final result = await FirebaseAuth.instance.currentUser?.getIdToken();
       if (result != null && result == token) {
         await _syncDataFromFirebase();
         AppCoordinator.showHomeScreen();
+        return;
       }
+      AppCoordinator.showSignInScreen();
     } catch (e) {
       xLog.e(e);
       XToast.error(S.of(context).yourSignInIsSInvalid);

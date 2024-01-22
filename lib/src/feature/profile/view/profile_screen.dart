@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
 import 'package:safebump/widget/avatar/avatar.dart';
 import 'package:safebump/widget/card/card_item_with_icon.dart';
@@ -21,7 +23,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen>
     with WidgetsBindingObserver, AutomaticKeepAliveClientMixin<ProfileScreen> {
-
   @override
   bool get wantKeepAlive => true;
 
@@ -304,7 +305,10 @@ class _ProfileScreenState extends State<ProfileScreen>
         width: AppSize.s30,
         height: AppSize.s30,
         child: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            AppCoordinator.showEditProfileScreen()
+                .then((value) => xLog.e(value));
+          },
           icon: Assets.svg.icEdit.svg(),
         ),
       ),
@@ -313,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Widget _renderEmailUser() {
     return Text(
-      S.of(context).safeBump ?? S.of(context).empty,
+      S.of(context).safeBump,
       style: const TextStyle(
         color: AppColors.hintTextColor,
         fontFamily: FontFamily.inter,

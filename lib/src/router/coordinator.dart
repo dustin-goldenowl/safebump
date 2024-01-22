@@ -56,4 +56,12 @@ class AppCoordinator {
 
   static void showExtensionScreen(String routeName) =>
       context.pushNamed(routeName);
+
+  static Future<bool> showEditProfileScreen() async {
+    bool result = false;
+    await context
+        .pushNamed<bool>(AppRouteNames.editProfile.name)
+        .then((value) => result = value ?? false);
+    return result;
+  }
 }

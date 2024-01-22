@@ -117,5 +117,19 @@
     "aboutSafeBump": "About SafeBump",
     "settings": "Settings",
     "empty": "--",
-    "profile": "Profile"
+    "profile": "Profile",
+    "unsavedChanges": "Unsaved changes",
+    "doYouWantToSave": "Do you want to save all changes before leaving?",
+    "saveChanges": "Save changes",
+    "editProfile": "Edit profile",
+    "takePhoto": "Take photo",
+    "choosePhoto": "Choose photo",
+    "removePhoto": "Remove photo",
+    "editProfilePicture": "Edit profile picture",
+    "bodyMeasurement":"Body measurement",
+    "imperial": "Imperial",
+    "metric": "Metric",
+    "done": "Done",
+    "height": "Height",
+    "weight": "Weight"
 }

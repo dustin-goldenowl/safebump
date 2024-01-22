@@ -12,6 +12,7 @@ import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
 import 'package:safebump/src/feature/articles/view/articles_screen.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
+import 'package:safebump/src/feature/edit_profile/view/edit_profile_screen.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/view/home_screen.dart';
 import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc.dart';
@@ -107,12 +108,21 @@ class AppRouter {
             ),
           ),
           GoRoute(
-            path: AppRouteNames.profile.path,
-            name: AppRouteNames.profile.name,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: ProfileScreen(),
-            ),
-          ),
+              path: AppRouteNames.profile.path,
+              name: AppRouteNames.profile.name,
+              pageBuilder: (context, state) => const NoTransitionPage(
+                    child: ProfileScreen(),
+                  ),
+              routes: <RouteBase>[
+                GoRoute(
+                  parentNavigatorKey: AppCoordinator.navigatorKey,
+                  path: AppRouteNames.editProfile.subPath,
+                  name: AppRouteNames.editProfile.name,
+                  builder: (_, state) {
+                    return const EditProfileScreen();
+                  },
+                ),
+              ]),
         ],
       ),
       GoRoute(

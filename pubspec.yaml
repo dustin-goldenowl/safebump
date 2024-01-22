@@ -64,6 +64,8 @@ dependencies:
   path_provider: 2.1.2
   path: 1.8.3
   cached_network_image: 3.3.1
+  modal_bottom_sheet: 3.0.0-pre
+  image_cropper: 5.0.1
   
   # Widget
   smooth_page_indicator: 1.1.0
@@ -73,6 +75,7 @@ dependencies:
   board_datetime_picker: 1.4.0
   lottie: 3.0.0
   flutter_svg: 2.0.9
+  image_picker: 1.0.7
 
   # Firebase
   firebase_auth: 4.16.0

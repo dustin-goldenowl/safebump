@@ -107,5 +107,15 @@
     "testYourKnowledge" : "Test your knowledge",
     "amazing":"Amazing!",
     "dontWorry": "Don't worry. You can do it later!",
-    "percent": "%"
+    "percent": "%",
+    "age": "Age",
+    "heightFt": "Height (ft,in)",
+    "heightCm": "Height (cm)",
+    "weightLb": "Weight (lb)",
+    "weightKg": "Weight (kg)",
+    "signOut": "Sign out",
+    "aboutSafeBump": "About SafeBump",
+    "settings": "Settings",
+    "empty": "--",
+    "profile": "Profile"
 }

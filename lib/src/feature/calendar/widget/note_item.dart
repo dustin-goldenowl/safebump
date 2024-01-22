@@ -9,8 +9,9 @@ import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/calendar/month_calendar.dart';
 
 class XNoteItem extends StatefulWidget {
-  const XNoteItem({super.key, required this.note});
+  const XNoteItem({super.key, required this.note, required this.deleteFunc});
   final MNote note;
+  final Function deleteFunc;
 
   @override
   State<XNoteItem> createState() => _XNoteItemState();
@@ -241,7 +242,9 @@ class _XNoteItemState extends State<XNoteItem> {
 
   Widget _renderDeleteIcon() {
     return IconButton(
-        onPressed: () {},
+        onPressed: () {
+          widget.deleteFunc();
+        },
         icon: const Icon(
           Icons.delete_forever,
           color: AppColors.red,

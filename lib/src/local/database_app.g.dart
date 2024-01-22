@@ -370,13 +370,458 @@ class BabyInforEntityCompanion extends UpdateCompanion<BabyInforEntityData> {
   }
 }
 
+class $NotesEntityTable extends NotesEntity
+    with TableInfo<$NotesEntityTable, NotesEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $NotesEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _timeMeta = const VerificationMeta('time');
+  @override
+  late final GeneratedColumn<DateTime> time = GeneratedColumn<DateTime>(
+      'time', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _dateMeta = const VerificationMeta('date');
+  @override
+  late final GeneratedColumn<String> date = GeneratedColumn<String>(
+      'date', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _remindTimeMeta =
+      const VerificationMeta('remindTime');
+  @override
+  late final GeneratedColumn<DateTime> remindTime = GeneratedColumn<DateTime>(
+      'remind_time', aliasedName, true,
+      type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _medicineMeta =
+      const VerificationMeta('medicine');
+  @override
+  late final GeneratedColumn<String> medicine = GeneratedColumn<String>(
+      'medicine', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _hospitalMeta =
+      const VerificationMeta('hospital');
+  @override
+  late final GeneratedColumn<String> hospital = GeneratedColumn<String>(
+      'hospital', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _detailMeta = const VerificationMeta('detail');
+  @override
+  late final GeneratedColumn<String> detail = GeneratedColumn<String>(
+      'detail', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, title, type, time, date, remindTime, medicine, hospital, detail];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'notes_entity';
+  @override
+  VerificationContext validateIntegrity(Insertable<NotesEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('time')) {
+      context.handle(
+          _timeMeta, time.isAcceptableOrUnknown(data['time']!, _timeMeta));
+    }
+    if (data.containsKey('date')) {
+      context.handle(
+          _dateMeta, date.isAcceptableOrUnknown(data['date']!, _dateMeta));
+    } else if (isInserting) {
+      context.missing(_dateMeta);
+    }
+    if (data.containsKey('remind_time')) {
+      context.handle(
+          _remindTimeMeta,
+          remindTime.isAcceptableOrUnknown(
+              data['remind_time']!, _remindTimeMeta));
+    }
+    if (data.containsKey('medicine')) {
+      context.handle(_medicineMeta,
+          medicine.isAcceptableOrUnknown(data['medicine']!, _medicineMeta));
+    }
+    if (data.containsKey('hospital')) {
+      context.handle(_hospitalMeta,
+          hospital.isAcceptableOrUnknown(data['hospital']!, _hospitalMeta));
+    }
+    if (data.containsKey('detail')) {
+      context.handle(_detailMeta,
+          detail.isAcceptableOrUnknown(data['detail']!, _detailMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  NotesEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return NotesEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type'])!,
+      time: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}time']),
+      date: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}date'])!,
+      remindTime: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}remind_time']),
+      medicine: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}medicine']),
+      hospital: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}hospital']),
+      detail: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}detail']),
+    );
+  }
+
+  @override
+  $NotesEntityTable createAlias(String alias) {
+    return $NotesEntityTable(attachedDatabase, alias);
+  }
+}
+
+class NotesEntityData extends DataClass implements Insertable<NotesEntityData> {
+  final String id;
+  final String title;
+  final String type;
+  final DateTime? time;
+  final String date;
+  final DateTime? remindTime;
+  final String? medicine;
+  final String? hospital;
+  final String? detail;
+  const NotesEntityData(
+      {required this.id,
+      required this.title,
+      required this.type,
+      this.time,
+      required this.date,
+      this.remindTime,
+      this.medicine,
+      this.hospital,
+      this.detail});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['title'] = Variable<String>(title);
+    map['type'] = Variable<String>(type);
+    if (!nullToAbsent || time != null) {
+      map['time'] = Variable<DateTime>(time);
+    }
+    map['date'] = Variable<String>(date);
+    if (!nullToAbsent || remindTime != null) {
+      map['remind_time'] = Variable<DateTime>(remindTime);
+    }
+    if (!nullToAbsent || medicine != null) {
+      map['medicine'] = Variable<String>(medicine);
+    }
+    if (!nullToAbsent || hospital != null) {
+      map['hospital'] = Variable<String>(hospital);
+    }
+    if (!nullToAbsent || detail != null) {
+      map['detail'] = Variable<String>(detail);
+    }
+    return map;
+  }
+
+  NotesEntityCompanion toCompanion(bool nullToAbsent) {
+    return NotesEntityCompanion(
+      id: Value(id),
+      title: Value(title),
+      type: Value(type),
+      time: time == null && nullToAbsent ? const Value.absent() : Value(time),
+      date: Value(date),
+      remindTime: remindTime == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remindTime),
+      medicine: medicine == null && nullToAbsent
+          ? const Value.absent()
+          : Value(medicine),
+      hospital: hospital == null && nullToAbsent
+          ? const Value.absent()
+          : Value(hospital),
+      detail:
+          detail == null && nullToAbsent ? const Value.absent() : Value(detail),
+    );
+  }
+
+  factory NotesEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return NotesEntityData(
+      id: serializer.fromJson<String>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      type: serializer.fromJson<String>(json['type']),
+      time: serializer.fromJson<DateTime?>(json['time']),
+      date: serializer.fromJson<String>(json['date']),
+      remindTime: serializer.fromJson<DateTime?>(json['remindTime']),
+      medicine: serializer.fromJson<String?>(json['medicine']),
+      hospital: serializer.fromJson<String?>(json['hospital']),
+      detail: serializer.fromJson<String?>(json['detail']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'title': serializer.toJson<String>(title),
+      'type': serializer.toJson<String>(type),
+      'time': serializer.toJson<DateTime?>(time),
+      'date': serializer.toJson<String>(date),
+      'remindTime': serializer.toJson<DateTime?>(remindTime),
+      'medicine': serializer.toJson<String?>(medicine),
+      'hospital': serializer.toJson<String?>(hospital),
+      'detail': serializer.toJson<String?>(detail),
+    };
+  }
+
+  NotesEntityData copyWith(
+          {String? id,
+          String? title,
+          String? type,
+          Value<DateTime?> time = const Value.absent(),
+          String? date,
+          Value<DateTime?> remindTime = const Value.absent(),
+          Value<String?> medicine = const Value.absent(),
+          Value<String?> hospital = const Value.absent(),
+          Value<String?> detail = const Value.absent()}) =>
+      NotesEntityData(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        type: type ?? this.type,
+        time: time.present ? time.value : this.time,
+        date: date ?? this.date,
+        remindTime: remindTime.present ? remindTime.value : this.remindTime,
+        medicine: medicine.present ? medicine.value : this.medicine,
+        hospital: hospital.present ? hospital.value : this.hospital,
+        detail: detail.present ? detail.value : this.detail,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('NotesEntityData(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('type: $type, ')
+          ..write('time: $time, ')
+          ..write('date: $date, ')
+          ..write('remindTime: $remindTime, ')
+          ..write('medicine: $medicine, ')
+          ..write('hospital: $hospital, ')
+          ..write('detail: $detail')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+      id, title, type, time, date, remindTime, medicine, hospital, detail);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is NotesEntityData &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.type == this.type &&
+          other.time == this.time &&
+          other.date == this.date &&
+          other.remindTime == this.remindTime &&
+          other.medicine == this.medicine &&
+          other.hospital == this.hospital &&
+          other.detail == this.detail);
+}
+
+class NotesEntityCompanion extends UpdateCompanion<NotesEntityData> {
+  final Value<String> id;
+  final Value<String> title;
+  final Value<String> type;
+  final Value<DateTime?> time;
+  final Value<String> date;
+  final Value<DateTime?> remindTime;
+  final Value<String?> medicine;
+  final Value<String?> hospital;
+  final Value<String?> detail;
+  final Value<int> rowid;
+  const NotesEntityCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.type = const Value.absent(),
+    this.time = const Value.absent(),
+    this.date = const Value.absent(),
+    this.remindTime = const Value.absent(),
+    this.medicine = const Value.absent(),
+    this.hospital = const Value.absent(),
+    this.detail = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  NotesEntityCompanion.insert({
+    required String id,
+    required String title,
+    required String type,
+    this.time = const Value.absent(),
+    required String date,
+    this.remindTime = const Value.absent(),
+    this.medicine = const Value.absent(),
+    this.hospital = const Value.absent(),
+    this.detail = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        title = Value(title),
+        type = Value(type),
+        date = Value(date);
+  static Insertable<NotesEntityData> custom({
+    Expression<String>? id,
+    Expression<String>? title,
+    Expression<String>? type,
+    Expression<DateTime>? time,
+    Expression<String>? date,
+    Expression<DateTime>? remindTime,
+    Expression<String>? medicine,
+    Expression<String>? hospital,
+    Expression<String>? detail,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (type != null) 'type': type,
+      if (time != null) 'time': time,
+      if (date != null) 'date': date,
+      if (remindTime != null) 'remind_time': remindTime,
+      if (medicine != null) 'medicine': medicine,
+      if (hospital != null) 'hospital': hospital,
+      if (detail != null) 'detail': detail,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  NotesEntityCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? title,
+      Value<String>? type,
+      Value<DateTime?>? time,
+      Value<String>? date,
+      Value<DateTime?>? remindTime,
+      Value<String?>? medicine,
+      Value<String?>? hospital,
+      Value<String?>? detail,
+      Value<int>? rowid}) {
+    return NotesEntityCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      type: type ?? this.type,
+      time: time ?? this.time,
+      date: date ?? this.date,
+      remindTime: remindTime ?? this.remindTime,
+      medicine: medicine ?? this.medicine,
+      hospital: hospital ?? this.hospital,
+      detail: detail ?? this.detail,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (time.present) {
+      map['time'] = Variable<DateTime>(time.value);
+    }
+    if (date.present) {
+      map['date'] = Variable<String>(date.value);
+    }
+    if (remindTime.present) {
+      map['remind_time'] = Variable<DateTime>(remindTime.value);
+    }
+    if (medicine.present) {
+      map['medicine'] = Variable<String>(medicine.value);
+    }
+    if (hospital.present) {
+      map['hospital'] = Variable<String>(hospital.value);
+    }
+    if (detail.present) {
+      map['detail'] = Variable<String>(detail.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('NotesEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('type: $type, ')
+          ..write('time: $time, ')
+          ..write('date: $date, ')
+          ..write('remindTime: $remindTime, ')
+          ..write('medicine: $medicine, ')
+          ..write('hospital: $hospital, ')
+          ..write('detail: $detail, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseApp extends GeneratedDatabase {
   _$DatabaseApp(QueryExecutor e) : super(e);
   late final $BabyInforEntityTable babyInforEntity =
       $BabyInforEntityTable(this);
+  late final $NotesEntityTable notesEntity = $NotesEntityTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [babyInforEntity];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [babyInforEntity, notesEntity];
 }

@@ -113,5 +113,9 @@
     "notesCreated": "Notes Created",
     "time": "Time: ",
     "hospital": "Hospital: ",
-    "medicine": "Medicine: "
+    "medicine": "Medicine: ",
+    "addYourNote": "Add your note",
+    "title": "Title",
+    "detail": "Detail",
+    "create": "Create"
 }

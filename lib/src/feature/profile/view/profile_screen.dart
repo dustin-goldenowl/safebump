@@ -188,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               firstItem: true,
               iconPath: Icons.arrow_forward_ios_outlined,
               onTap: () {
-                // TODO: Add navigation
+                AppCoordinator.showAboutScreen();
               },
             ),
             const XSolidSeparator(),

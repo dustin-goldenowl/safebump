@@ -64,4 +64,7 @@ class AppCoordinator {
         .then((value) => result = value ?? false);
     return result;
   }
+
+  static void showAboutScreen() =>
+      context.pushNamed(AppRouteNames.aboutApp.name);
 }

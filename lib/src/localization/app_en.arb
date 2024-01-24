@@ -117,5 +117,15 @@
     "addYourNote": "Add your note",
     "title": "Title",
     "detail": "Detail",
-    "create": "Create"
+    "create": "Create",
+    "age": "Age",
+    "heightFt": "Height (ft,in)",
+    "heightCm": "Height (cm)",
+    "weightLb": "Weight (lb)",
+    "weightKg": "Weight (kg)",
+    "signOut": "Sign out",
+    "aboutSafeBump": "About SafeBump",
+    "settings": "Settings",
+    "empty": "--",
+    "profile": "Profile"
 }

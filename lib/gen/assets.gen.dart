@@ -36,8 +36,11 @@ class $AssetsSvgGen {
   SvgGenImage get errorInCalendar =>
       const SvgGenImage('assets/svg/error-in-calendar.svg');
 
+  /// File path: assets/svg/ic_edit.svg
+  SvgGenImage get icEdit => const SvgGenImage('assets/svg/ic_edit.svg');
+
   /// List of all assets
-  List<SvgGenImage> get values => [errorInCalendar];
+  List<SvgGenImage> get values => [icEdit, errorInCalendar];
 }
 
 class $AssetsImagesImagesGen {

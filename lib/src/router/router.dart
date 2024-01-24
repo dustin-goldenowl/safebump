@@ -21,6 +21,7 @@ import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_
 import 'package:safebump/src/feature/forgot_password/view/enter_mail_screen.dart';
 import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.dart';
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
+import 'package:safebump/src/feature/profile/view/profile_screen.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
@@ -114,7 +115,7 @@ class AppRouter {
             path: AppRouteNames.profile.path,
             name: AppRouteNames.profile.name,
             pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomeScreen(),
+              child: ProfileScreen(),
             ),
           ),
         ],

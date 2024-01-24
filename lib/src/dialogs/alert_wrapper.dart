@@ -26,7 +26,7 @@ class XAlert {
   }
 
   /// Shows a confirmation dialog
-  Future showCustomAlert({
+  static Future showCustomAlert({
     Widget? title,
     Widget? body,
     List<XAlertButton> actions = const [],

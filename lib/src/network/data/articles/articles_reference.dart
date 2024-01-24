@@ -44,7 +44,7 @@ class ArticlesReference extends BaseCollectionReference<MArticles> {
       if (result.isError == false) {
         return MResult.success(false);
       } else {
-        final MResult<String> result = await delete(article.id);
+        final MResult<bool> result = await delete(article);
         xLog.e(result.data);
         return MResult.success(true);
       }

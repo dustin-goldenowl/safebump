@@ -11,7 +11,7 @@ import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-enum CalendarState { normal, loading, error }
+enum CalendarStatus { normal, loading, error }
 
 enum NoteType {
   other,
@@ -31,16 +31,40 @@ enum NoteType {
         return Colors.transparent;
     }
   }
+
+  static NoteType toNoteTypeEnum(String type) {
+    switch (type) {
+      case 'appointment':
+        return NoteType.appointment;
+      case 'reminder':
+        return NoteType.reminder;
+      case 'other':
+      default:
+        return NoteType.other;
+    }
+  }
+
+  String toNoteTypeText() {
+    switch (this) {
+      case NoteType.appointment:
+        return 'appointment';
+      case NoteType.reminder:
+        return 'reminder';
+      case NoteType.other:
+        return 'other';
+      default:
+        return '';
+    }
+  }
 }
 
 class XMonthCalendar extends StatefulWidget {
   final DateTime? selectingDay;
-  final List<DateTime> data;
+  final Map<DateTime, List<NoteType>> data;
   final ValueChanged<DateTime> onDaySelected;
   final DateTime minDate;
   final DateTime? maxDate;
-  final CalendarState calendarState;
-  final List<NoteType>? listNoteType;
+  final CalendarStatus calendarState;
   const XMonthCalendar({
     Key? key,
     this.selectingDay,
@@ -48,8 +72,7 @@ class XMonthCalendar extends StatefulWidget {
     required this.onDaySelected,
     required this.minDate,
     this.maxDate,
-    this.calendarState = CalendarState.normal,
-    this.listNoteType,
+    this.calendarState = CalendarStatus.normal,
   }) : super(key: key);
 
   @override
@@ -105,9 +128,9 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: switch (widget.calendarState) {
-        CalendarState.loading => [_renderLoadingView()],
-        CalendarState.error => [_renderTryAgainView()],
-        CalendarState.normal => [_renderCalendarView()],
+        CalendarStatus.loading => [_renderLoadingView()],
+        CalendarStatus.error => [_renderTryAgainView()],
+        CalendarStatus.normal => [_renderCalendarView()],
       },
     );
   }
@@ -198,7 +221,7 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
           ),
         ),
         Text(
-          _selectingMonth.toMMMdy,
+          _selectingMonth.toMMMy,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: AppFontSize.f20,
@@ -238,6 +261,7 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
         controller: _controller,
         onSelectionChanged: (calendarSelectionDetails) {
           _onChangeDay(calendarSelectionDetails.date ?? DateTime.now());
+          widget.onDaySelected(calendarSelectionDetails.date ?? DateTime.now());
         },
         monthCellBuilder: (context, details) => _renderMonthCell(details.date),
         selectionDecoration: BoxDecoration(
@@ -274,16 +298,14 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
 
   Widget _renderMonthCell(DateTime date) {
     final isCellEnabled = _isValidDay(date);
-    final itemIndex = widget.data.indexWhere((element) {
-      return DateUtils.isSameDay(element, date);
-    });
-    final hasNote = itemIndex != -1;
+    final itemIndex = widget.data.containsKey(date);
+    final hasNote = itemIndex;
     return Opacity(
       opacity: isCellEnabled ? 1 : 0.3,
       child: Column(
         children: [
           _renderCustomDateCell(date),
-          _renderDotIndicator(hasNote, isCellEnabled),
+          _renderDotIndicator(hasNote, isCellEnabled, date),
         ],
       ),
     );
@@ -323,7 +345,8 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
     );
   }
 
-  Widget _renderDotIndicator(bool hasBioheartData, bool isEnable) {
+  Widget _renderDotIndicator(
+      bool hasBioheartData, bool isEnable, DateTime date) {
     if (!isEnable) {
       return const SizedBox.shrink();
     }
@@ -332,7 +355,7 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        for (NoteType type in widget.listNoteType ?? [])
+        for (NoteType type in widget.data[date] ?? [])
           Container(
             margin: const EdgeInsets.only(top: AppMargin.m8),
             height: AppSize.s8,

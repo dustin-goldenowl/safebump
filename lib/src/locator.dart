@@ -53,3 +53,13 @@ void _locator() {
   GetIt.I.registerLazySingleton<NotesLocalRepo>(
       () => NotesLocalRepoImpl(GetIt.I()));
 }
+
+void resetSingleton() {
+  GetIt.I.resetLazySingleton<BabyRepository>();
+  GetIt.I.resetLazySingleton<NoteRepository>();
+}
+
+void reRegisterSingleton() {
+  GetIt.I.registerLazySingleton<BabyRepository>(() => BabyRepositoryImpl());
+  GetIt.I.registerLazySingleton<NoteRepository>(() => NoteRepositoryImpl());
+}

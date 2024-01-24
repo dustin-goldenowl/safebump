@@ -32,6 +32,7 @@ class HomeBloc extends Cubit<HomeState> {
     final babyLocal = await babyLocalRepo.getAllDetails().get();
     if (babyLocal.isEmpty) {
       emit(state.copyWith(hasBaby: false));
+      return;
     }
     _setBabyInfor(babyLocal.first);
     emit(state.copyWith(hasBaby: true));
@@ -55,7 +56,8 @@ class HomeBloc extends Cubit<HomeState> {
     String weekCounter;
     int weekNumber;
     final today = DateTime.now();
-    final startedPregnancyDay = state.baby!.date!.subtract(const Duration(days: 280));
+    final startedPregnancyDay =
+        state.baby!.date!.subtract(const Duration(days: 280));
     if (today.year == startedPregnancyDay.year) {
       weekNumber = DateTimeUtils.weekNumber(today) -
           DateTimeUtils.weekNumber(startedPregnancyDay);

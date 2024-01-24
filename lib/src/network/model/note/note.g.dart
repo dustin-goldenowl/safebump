@@ -14,6 +14,7 @@ MNote _$MNoteFromJson(Map<String, dynamic> json) => MNote(
       medicine: json['medicine'] as String?,
       time:
           json['time'] == null ? null : DateTime.parse(json['time'] as String),
+      id: json['id'] as String,
       remindTime: json['remindTime'] == null
           ? null
           : DateTime.parse(json['remindTime'] as String),
@@ -21,6 +22,7 @@ MNote _$MNoteFromJson(Map<String, dynamic> json) => MNote(
 
 Map<String, dynamic> _$MNoteToJson(MNote instance) => <String, dynamic>{
       'title': instance.title,
+      'id': instance.id,
       'detail': instance.detail,
       'hospital': instance.hospital,
       'type': instance.type,

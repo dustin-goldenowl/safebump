@@ -2,17 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
+import 'package:safebump/src/dialogs/alert_wrapper.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_state.dart';
 import 'package:safebump/src/feature/calendar/widget/note_item.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/note/note.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
+import 'package:safebump/widget/button/text_button.dart';
 import 'package:safebump/widget/calendar/month_calendar.dart';
+import 'package:safebump/widget/text_field/text_field_with_label.dart';
 
 class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
@@ -42,6 +48,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
               _renderCalendar(context),
               XPaddingUtils.verticalPadding(height: AppPadding.p15),
               _renderDaysNotes(context),
+              XPaddingUtils.verticalPadding(height: AppPadding.p30),
             ],
           ),
         ),
@@ -61,12 +68,87 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _renderAddIcon() {
     return IconButton(
         onPressed: () {
-          // TODO: event action
+          _showDialogAddNote();
         },
         icon: const Icon(
           Icons.edit_calendar_outlined,
           size: AppSize.s20,
         ));
+  }
+
+  void _showDialogAddNote() {
+    XAlert.showCustomAlert(
+      title: Text(
+        S.of(context).addYourNote,
+        style: const TextStyle(
+            fontFamily: FontFamily.abel, fontWeight: FontWeight.bold),
+      ),
+      body: BlocProvider.value(
+        value: BlocProvider.of<CalendarBloc>(context),
+        child: DismissKeyBoard(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              _renderAddTitleField(),
+              _renderAddDetailField(),
+              _renderCreateButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _renderAddTitleField() {
+    return BlocBuilder<CalendarBloc, CalendarState>(
+      buildWhen: (previous, current) =>
+          previous.titleAdd != current.titleAdd ||
+          previous.errorTitleAdd != current.errorTitleAdd,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            label: S.of(context).title,
+            hintText: S.of(context).enterHere,
+            errorText: StringUtils.isNullOrEmpty(state.errorTitleAdd)
+                ? null
+                : state.errorTitleAdd,
+            prefix: const Icon(
+              Icons.abc_outlined,
+              color: AppColors.primary,
+            ),
+            onChanged: (value) {
+              context.read<CalendarBloc>().onChangedTitleAdd(value);
+            });
+      },
+    );
+  }
+
+  Widget _renderAddDetailField() {
+    return BlocBuilder<CalendarBloc, CalendarState>(
+      buildWhen: (previous, current) => previous.detailAdd != current.detailAdd,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+            maxLines: 2,
+            label: S.of(context).detail,
+            hintText: S.of(context).enterHere,
+            prefix: const Icon(
+              Icons.list,
+              color: AppColors.primary,
+            ),
+            onChanged: (value) {
+              context.read<CalendarBloc>().onChangedDetailAdd(value);
+            });
+      },
+    );
+  }
+
+  Widget _renderCreateButton() {
+    return XTextButton(
+        callback: () {
+          context.read<CalendarBloc>().createNote(context);
+          AppCoordinator.pop();
+        },
+        label: S.of(context).create);
   }
 
   Widget _renderCalendar(BuildContext context) {
@@ -135,6 +217,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _renderNoteItem(MNote note) {
-    return XNoteItem(note: note);
+    return XNoteItem(
+      note: note,
+      deleteFunc: () => context.read<CalendarBloc>().deleteNote(note.id, context),
+    );
   }
 }

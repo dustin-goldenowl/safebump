@@ -23,7 +23,7 @@ class NoteReference extends BaseCollectionReference<MCalendar> {
     }
   }
 
-  Future<MResult<MCalendar>> getOrAddUser(MCalendar notes) async {
+  Future<MResult<MCalendar>> upsertNote(MCalendar notes) async {
     try {
       final MResult<MCalendar> result = await set(notes);
       return MResult.success(result.data);
@@ -40,6 +40,21 @@ class NoteReference extends BaseCollectionReference<MCalendar> {
       return MResult.success(docs);
     } catch (e) {
       xLog.e(e);
+      return MResult.exception(e);
+    }
+  }
+
+  Future<MResult<bool>> deleteNote(MCalendar date) async {
+    try {
+      final result = await get(date.date);
+      if (result.isError == true) {
+        return MResult.success(false);
+      } else {
+        final MResult<bool> result = await delete(date);
+        xLog.e(result.data);
+        return MResult.success(true);
+      }
+    } catch (e) {
       return MResult.exception(e);
     }
   }

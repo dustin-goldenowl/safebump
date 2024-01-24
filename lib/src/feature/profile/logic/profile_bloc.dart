@@ -24,6 +24,7 @@ class ProfileBloc extends Cubit<ProfileState> {
     if (state.status == ProfileScreenStatus.loading) return;
     emit(state.copyWith(status: ProfileScreenStatus.loading));
     try {
+      await Future.delayed(const Duration(seconds: 1));
       final result = await GetIt.I.get<SignRepository>().logOut(state.user);
       if (result.data != null) {
         UserPrefs.I.clearSharedPref();

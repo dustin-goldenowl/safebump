@@ -48,6 +48,7 @@ class SettingsBloc extends Cubit<SettingsState> {
       await GetIt.I.get<UserRepository>().deleteUser(user);
       final result = await GetIt.I.get<SignRepository>().removeAccount(user);
       if (result.data != null) {
+        UserPrefs.I.clearSharedPref();
         AppCoordinator.showSignInScreen();
       }
     } catch (e) {

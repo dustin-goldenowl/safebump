@@ -34,6 +34,15 @@ class UserPrefs {
     _prefs = await SharedPreferences.getInstance();
   }
 
+  void clearSharedPref() {
+    setToken(null);
+    setUser(null);
+    setDoDailyQuiz(false);
+    setLanguage(LanguageEnum.english);
+    setPercentCorrectDailyQuiz(0);
+    setPergnancyDay(DateTime.now());
+  }
+
   // theme
   ThemeMode getTheme() {
     final value = _prefs.getString(_keys.theme);

@@ -16,6 +16,7 @@ class XTextFieldWithLabel extends StatelessWidget {
         fontFamily: FontFamily.inter,
         color: AppColors.hintTextColor),
     this.errorText,
+    this.initText,
     this.isObscureText = false,
     this.errorStyle,
     this.prefix,
@@ -24,11 +25,13 @@ class XTextFieldWithLabel extends StatelessWidget {
     this.borderColor = AppColors.hintTextColor,
     required this.onChanged,
     this.keyboardType,
+    this.isEnable = true,
     this.maxLines = 1,
   });
   final String? label;
   final TextStyle? labelStyle;
   final String hintText;
+  final String? initText;
   final TextStyle? hintStyle;
   final String? errorText;
   final TextStyle? errorStyle;
@@ -38,6 +41,7 @@ class XTextFieldWithLabel extends StatelessWidget {
   final Color borderColor;
   final bool isObscureText;
   final TextInputType? keyboardType;
+  final bool isEnable;
   final void Function(String) onChanged;
   final int maxLines;
 
@@ -52,11 +56,16 @@ class XTextFieldWithLabel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
+            enabled: isEnable,
             maxLines: maxLines,
             keyboardType: keyboardType,
             textInputAction: TextInputAction.next,
             onChanged: (value) => onChanged(value),
             obscureText: isObscureText,
+            controller: StringUtils.isNullOrEmpty(initText)
+                ? null
+                : TextEditingController.fromValue(
+                    TextEditingValue(text: initText!)),
             decoration: InputDecoration(
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: borderColor, width: 0.5),

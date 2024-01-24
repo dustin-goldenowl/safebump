@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/about_safebump/view/about_safebump_screen.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_baby_bloc.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
 import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
@@ -14,6 +15,7 @@ import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
 import 'package:safebump/src/feature/articles/view/articles_screen.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
 import 'package:safebump/src/feature/dashboard/view/dashboard_view.dart';
+import 'package:safebump/src/feature/edit_profile/logic/edit_profile_bloc.dart';
 import 'package:safebump/src/feature/edit_profile/view/edit_profile_screen.dart';
 import 'package:safebump/src/feature/home/logic/home_bloc.dart';
 import 'package:safebump/src/feature/home/view/home_screen.dart';
@@ -22,6 +24,7 @@ import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_
 import 'package:safebump/src/feature/forgot_password/view/enter_mail_screen.dart';
 import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.dart';
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
+import 'package:safebump/src/feature/profile/logic/profile_bloc.dart';
 import 'package:safebump/src/feature/profile/view/profile_screen.dart';
 import 'package:safebump/src/feature/setting/logic/setting_bloc.dart';
 import 'package:safebump/src/feature/setting/view/setting_screen.dart';
@@ -117,8 +120,11 @@ class AppRouter {
           GoRoute(
               path: AppRouteNames.profile.path,
               name: AppRouteNames.profile.name,
-              pageBuilder: (context, state) => const NoTransitionPage(
-                    child: ProfileScreen(),
+              pageBuilder: (context, state) => NoTransitionPage(
+                    child: BlocProvider(
+                      create: (context) => ProfileBloc(),
+                      child: const ProfileScreen(),
+                    ),
                   ),
               routes: <RouteBase>[
                 GoRoute(
@@ -126,7 +132,18 @@ class AppRouter {
                   path: AppRouteNames.editProfile.subPath,
                   name: AppRouteNames.editProfile.name,
                   builder: (_, state) {
-                    return const EditProfileScreen();
+                    return BlocProvider(
+                      create: (context) => EditProfileBloc(),
+                      child: const EditProfileScreen(),
+                    );
+                  },
+                ),
+                GoRoute(
+                  parentNavigatorKey: AppCoordinator.navigatorKey,
+                  path: AppRouteNames.aboutApp.subPath,
+                  name: AppRouteNames.aboutApp.name,
+                  builder: (_, state) {
+                    return const AboutSafeBumpScreen();
                   },
                 ),
                 GoRoute(

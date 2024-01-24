@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/about_safebump/view/about_safebump_screen.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_baby_bloc.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
 import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
@@ -126,6 +127,14 @@ class AppRouter {
                   name: AppRouteNames.editProfile.name,
                   builder: (_, state) {
                     return const EditProfileScreen();
+                  },
+                ),
+                GoRoute(
+                  parentNavigatorKey: AppCoordinator.navigatorKey,
+                  path: AppRouteNames.aboutApp.subPath,
+                  name: AppRouteNames.aboutApp.name,
+                  builder: (_, state) {
+                    return const AboutSafeBumpScreen();
                   },
                 ),
                 GoRoute(

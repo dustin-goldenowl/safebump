@@ -1,5 +1,6 @@
 class AppSize {
   static const s0 = 0.0;
+  static const s1 = 1.0;
   static const s2 = 2.0;
   static const s3 = 3.0;
   static const s4 = 4.0;
@@ -7,11 +8,16 @@ class AppSize {
   static const s8 = 8.0;
   static const s10 = 10.0;
   static const s14 = 14.0;
+  static const s16 = 16.0;
   static const s20 = 20.0;
+  static const s24 = 24.0;
   static const s30 = 30.0;
+  static const s36 = 36.0;
   static const s60 = 60.0;
   static const s70 = 70.0;
   static const s40 = 40.0;
+  static const s44 = 44.0;
+  static const s48 = 48.0;
   static const s123 = 123.0;
   static const s150 = 150.0;
   static const s200 = 200.0;
@@ -19,6 +25,8 @@ class AppSize {
 
 class AppPadding {
   static const p0 = 0.0;
+  static const p2 = 2.0;
+  static const p6 = 6.0;
   static const p8 = 8.0;
   static const p10 = 10.0;
   static const p12 = 12.0;
@@ -40,6 +48,7 @@ class AppMargin {
   static const m12 = 12.0;
   static const m16 = 16.0;
   static const m20 = 20.0;
+  static const m24 = 24.0;
   static const m30 = 30.0;
   static const m59 = 59.0;
   static const m100 = 100.0;
@@ -66,4 +75,11 @@ class AppRadius {
   static const r16 = 16.0;
   static const r20 = 20.0;
   static const r30 = 30.0;
+}
+
+class AppElevation {
+  static const ev0 = 0.0;
+  static const ev1 = 1.0;
+  static const ev2 = 2.0;
+  static const ev3 = 3.0;
 }

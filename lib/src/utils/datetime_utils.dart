@@ -1,4 +1,6 @@
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 
 class DateTimeUtils {
   static List<DateTime> createWeekOfToday(DateTime today) {
@@ -43,6 +45,7 @@ class DateTimeUtils {
         date.year, date.month, date.day, time.hour, time.minute, time.second);
   }
 
+
   static bool isSameDay(DateTime? a, DateTime? b) {
     if (a == null || b == null) {
       return false;
@@ -52,5 +55,23 @@ class DateTimeUtils {
 
   static DateTime fromyMMMd(String dateText) {
     return DateFormat("MMM d, y").parse(dateText);
+  }
+
+  static String calculateAge(BuildContext context, DateTime? birthDate) {
+    if (birthDate == null) return S.of(context).empty;
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age.toString();
   }
 }

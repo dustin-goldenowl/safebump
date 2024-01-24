@@ -24,6 +24,7 @@ import 'package:safebump/src/feature/forgot_password/view/enter_mail_screen.dart
 import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.dart';
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/profile/view/profile_screen.dart';
+import 'package:safebump/src/feature/setting/view/setting_screen.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
@@ -134,6 +135,14 @@ class AppRouter {
                   name: AppRouteNames.aboutApp.name,
                   builder: (_, state) {
                     return const AboutSafeBumpScreen();
+                  },
+                ),
+                GoRoute(
+                  parentNavigatorKey: AppCoordinator.navigatorKey,
+                  path: AppRouteNames.setting.subPath,
+                  name: AppRouteNames.setting.name,
+                  builder: (_, state) {
+                    return const SettingsScreen();
                   },
                 ),
               ]),

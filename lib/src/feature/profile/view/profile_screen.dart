@@ -197,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               lastItem: true,
               iconPath: Icons.arrow_forward_ios_outlined,
               onTap: () {
-                // TODO: Add navigation
+                AppCoordinator.showSettingScreen();
               },
             ),
           ],

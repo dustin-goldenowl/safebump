@@ -70,7 +70,7 @@ class XUnitsSegment extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    imperialText ?? S.of(context).metric,
+                    metricText ?? S.of(context).metric,
                     style: TextStyle(
                         fontFamily: FontFamily.inter,
                         fontSize: AppFontSize.f16,

@@ -146,5 +146,12 @@
     "termsAndConditions": "Terms and conditions",
     "rateSafeBump": "Rate SafeBump App",
     "version": "Version",
-    "understood": "Understood"
+    "understood": "Understood",
+    "units":"Units",
+    "account": "Account",
+    "language": "Language",
+    "english": "English",
+    "deleteAccount": "Delete account",
+    "lbFt": "lb | ft",
+    "kgCm": "kg | cm"
 }

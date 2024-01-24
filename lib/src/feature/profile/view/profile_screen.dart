@@ -11,6 +11,7 @@ import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
+import 'package:safebump/src/utils/measurement_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
 import 'package:safebump/widget/avatar/avatar.dart';
@@ -153,11 +154,19 @@ class _ProfileScreenState extends State<ProfileScreen>
                   DateTimeUtils.calculateAge(context, state.user.dateOfBirth),
               title: S.of(context).age),
           _renderAgeRowItem(
-              value: _checkNullData(state.user.height),
+              value: _getValueText(
+                  data: state.user.height,
+                  unitType:
+                      state.user.measurementUnit ?? MeasurementUnitType.metric,
+                  rulerType: RulerType.height),
               title: _checkBodyMeasurement(
                   state.user.measurementUnit, RulerType.height)),
           _renderAgeRowItem(
-              value: _checkNullData(state.user.weight),
+              value: _getValueText(
+                  data: state.user.weight,
+                  unitType:
+                      state.user.measurementUnit ?? MeasurementUnitType.metric,
+                  rulerType: RulerType.weight),
               title: _checkBodyMeasurement(
                   state.user.measurementUnit, RulerType.weight)),
         ],
@@ -165,9 +174,27 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  String _checkNullData(double? data) {
+  String _getValueText(
+      {double? data,
+      required RulerType rulerType,
+      required MeasurementUnitType unitType}) {
     if (data == null) return S.of(context).empty;
-    return data.toString();
+    switch (rulerType) {
+      case RulerType.height:
+        switch (unitType) {
+          case MeasurementUnitType.imperial:
+            return "${data.toFeet() ~/ 100}' ${(data.toFeet() % 100).toInt()}\"";
+          case MeasurementUnitType.metric:
+            return data.round().toString();
+        }
+      case RulerType.weight:
+        switch (unitType) {
+          case MeasurementUnitType.imperial:
+            return data.toLb().toStringAsFixed(2);
+          case MeasurementUnitType.metric:
+            return data.toString();
+        }
+    }
   }
 
   String _checkBodyMeasurement(MeasurementUnitType? type, RulerType bodyType) {

@@ -12,10 +12,9 @@ enum ImageType { none, network, assest, file }
 
 class XAvatar extends StatefulWidget {
   final String? url;
-  final String? firstName;
-  final String? lastName;
   final ImageType imageType;
   final bool isEditable;
+  final String? name;
   final VoidCallback? onEdit;
   final TextStyle? textStyle;
   final double? borderWidth;
@@ -23,12 +22,11 @@ class XAvatar extends StatefulWidget {
   const XAvatar({
     Key? key,
     this.url,
-    this.firstName,
-    this.lastName,
     this.isEditable = false,
     this.onEdit,
     this.imageType = ImageType.network,
     this.textStyle,
+    this.name,
     this.borderWidth,
     this.imageSize,
   }) : super(key: key);
@@ -53,16 +51,14 @@ class _XAvatarState extends State<XAvatar> {
     return true;
   }
 
-  String getNameAvatar(String? firstName, String? lastName) {
-    String firstCharFirstName = '';
-    String firstCharLastName = '';
-    if (firstName != null && firstName != '') {
-      firstCharFirstName = firstName[0];
+  String getNameAvatar(String? name) {
+    String nameAvatar = '';
+    if (!StringUtils.isNullOrEmpty(name)) {
+      for (String text in name!.split(' ')) {
+        nameAvatar = nameAvatar.padRight(nameAvatar.length + 1, text[0]);
+      }
     }
-    if (lastName != null && lastName != '') {
-      firstCharLastName = lastName[0];
-    }
-    return '$firstCharFirstName$firstCharLastName'.toUpperCase();
+    return nameAvatar.toUpperCase();
   }
 
   Widget _renderImage(ImageType type, String? url) {
@@ -96,7 +92,7 @@ class _XAvatarState extends State<XAvatar> {
         ),
         child: Center(
           child: Text(
-            getNameAvatar(widget.firstName, widget.lastName),
+            getNameAvatar(widget.name),
             style: widget.textStyle ??
                 TextStyle(
                   fontFamily: FontFamily.productSans,

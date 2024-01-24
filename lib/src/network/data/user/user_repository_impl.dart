@@ -30,4 +30,9 @@ class UserRepositoryImpl extends UserRepository {
   Future<MResult<List<MUser>>> getUsers() {
     return usersRef.getUsers();
   }
+
+  @override
+  Future<MResult<MUser>> upsertUser(MUser user) {
+    return usersRef.getOrAddUser(user);
+  }
 }

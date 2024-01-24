@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
+import 'package:safebump/src/feature/profile/logic/profile_bloc.dart';
+import 'package:safebump/src/feature/profile/logic/profile_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
@@ -8,7 +12,6 @@ import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
-import 'package:safebump/src/utils/utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
 import 'package:safebump/widget/avatar/avatar.dart';
 import 'package:safebump/widget/card/card_item_with_icon.dart';
@@ -107,48 +110,79 @@ class _ProfileScreenState extends State<ProfileScreen>
         elevation: AppElevation.ev0,
         child: Padding(
           padding: const EdgeInsets.all(AppPadding.p12),
-          child: Column(
-            children: [
-              _renderAvatarRow(context),
-              XPaddingUtils.verticalPadding(height: AppPadding.p16),
-              const XSolidSeparator(),
-              _renderAgeRow(),
-            ],
+          child: BlocBuilder<ProfileBloc, ProfileState>(
+            buildWhen: (previous, current) =>
+                previous.status != current.status ||
+                previous.user != current.user,
+            builder: (context, state) {
+              return Column(
+                children: [
+                  _renderAvatarRow(state),
+                  XPaddingUtils.verticalPadding(height: AppPadding.p16),
+                  const XSolidSeparator(),
+                  _renderAgeRow(state),
+                ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _renderAvatarRow(BuildContext context) {
+  Widget _renderAvatarRow(ProfileState state) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        _renderAvatar(),
+        _renderAvatar(img: state.user.avatar, name: state.user.name ?? ''),
         XPaddingUtils.horizontalPadding(width: AppPadding.p16),
-        _renderNameAndEmail(),
+        _renderNameAndEmail(
+            name: state.user.name ?? '', email: state.user.email ?? ''),
       ],
     );
   }
 
-  Widget _renderAgeRow() {
+  Widget _renderAgeRow(ProfileState state) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppPadding.p8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _renderAgeRowItem(
-              DateTimeUtils.calculateAge(
-                  DateTime.now().subtract(const Duration(days: 3650))),
-              S.of(context).age),
-          _renderAgeRowItem(150.toString(), S.of(context).heightCm),
-          _renderAgeRowItem(150.toString(), S.of(context).weightKg),
+              value:
+                  DateTimeUtils.calculateAge(context, state.user.dateOfBirth),
+              title: S.of(context).age),
+          _renderAgeRowItem(
+              value: _checkNullData(state.user.height),
+              title: _checkBodyMeasurement(
+                  state.user.measurementUnit, RulerType.height)),
+          _renderAgeRowItem(
+              value: _checkNullData(state.user.weight),
+              title: _checkBodyMeasurement(
+                  state.user.measurementUnit, RulerType.weight)),
         ],
       ),
     );
   }
 
-  Widget _renderAgeRowItem(String value, String title) {
+  String _checkNullData(double? data) {
+    if (data == null) return S.of(context).empty;
+    return data.toString();
+  }
+
+  String _checkBodyMeasurement(MeasurementUnitType? type, RulerType bodyType) {
+    switch (type) {
+      case MeasurementUnitType.imperial:
+        if (bodyType == RulerType.height) return S.of(context).heightFt;
+        return S.of(context).weightLb;
+      case MeasurementUnitType.metric:
+      default:
+        if (bodyType == RulerType.height) return S.of(context).heightCm;
+        return S.of(context).weightKg;
+    }
+  }
+
+  Widget _renderAgeRowItem({required String value, required String title}) {
     return Column(
       children: [
         Text(
@@ -238,15 +272,14 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Widget _renderAvatar() {
+  Widget _renderAvatar({String? img, required String name}) {
     return XAvatar(
       key: UniqueKey(),
-      firstName: S.of(context).safeBump,
-      lastName: S.of(context).safeBump,
+      name: name,
     );
   }
 
-  Widget _renderNameAndEmail() {
+  Widget _renderNameAndEmail({required String name, required String email}) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,19 +288,19 @@ class _ProfileScreenState extends State<ProfileScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _renderUserName(),
+              _renderUserName(name),
               _renderEditButton(),
             ],
           ),
-          _renderEmailUser()
+          _renderEmailUser(email)
         ],
       ),
     );
   }
 
-  Widget _renderUserName() {
+  Widget _renderUserName(String name) {
     // workaround - https://github.com/flutter/flutter/issues/18761
-    final userName = S.of(context).safeBump.replaceAll('', '\u{200B}');
+    final userName = name.replaceAll('', '\u{200B}');
 
     return Expanded(
       // Use layout builder get maxWidth of expand
@@ -306,8 +339,11 @@ class _ProfileScreenState extends State<ProfileScreen>
         height: AppSize.s30,
         child: IconButton(
           onPressed: () {
-            AppCoordinator.showEditProfileScreen()
-                .then((value) => xLog.e(value));
+            AppCoordinator.showEditProfileScreen().then((value) {
+              if (value) {
+                context.read<ProfileBloc>().updateProfile();
+              }
+            });
           },
           icon: Assets.svg.icEdit.svg(),
         ),
@@ -315,9 +351,9 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Widget _renderEmailUser() {
+  Widget _renderEmailUser(String email) {
     return Text(
-      S.of(context).safeBump,
+      email,
       style: const TextStyle(
         color: AppColors.hintTextColor,
         fontFamily: FontFamily.inter,

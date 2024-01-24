@@ -43,15 +43,11 @@ class BaseRulerPicker extends StatefulWidget {
     this.scale = 10,
     this.scaleLineStyleList = const [
       ScaleLineStyle(
-          scale: 0,
-          color: Color.fromARGB(255, 188, 194, 203),
-          width: 2,
-          height: 32),
-      ScaleLineStyle(
-          color: Color.fromARGB(255, 188, 194, 203), width: 1, height: 20),
+          scale: 0, color: AppColors.greyScaleLine, width: 2, height: 32),
+      ScaleLineStyle(color: AppColors.greyScaleLine, width: 1, height: 20),
     ],
     this.rulerScaleTextStyle = const TextStyle(
-      color: Color.fromARGB(255, 188, 194, 203),
+      color: AppColors.greyScaleLine,
       fontSize: 14,
     ),
     this.marker,
@@ -134,7 +130,7 @@ class BaseRulerPickerState extends State<BaseRulerPicker> {
   Widget _buildRulerScaleLine(int index) {
     double width = 0;
     double height = 0;
-    Color color = const Color.fromARGB(255, 188, 194, 203);
+    Color color = AppColors.greyScaleLine;
     final scaleDivisible = index % _scaleLineStyleMap[0]!.scale == 0;
     if (index == 0 || scaleDivisible) {
       width = _scaleLineStyleMap[0]!.width;

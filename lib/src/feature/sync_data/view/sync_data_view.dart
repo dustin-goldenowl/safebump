@@ -11,6 +11,7 @@ import 'package:safebump/src/local/database_app.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/baby/baby_repo.dart';
+import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/router/coordinator.dart';
@@ -71,8 +72,10 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
   }
 
   Future<void> _syncDataFromFirebase() async {
+    await GetIt.I.get<DatabaseApp>().deleteAll();
     await _syncingUserData();
     await _syncingBabyData();
+    await _syncingNotesData();
   }
 
   Future<void> _syncingUserData() async {
@@ -107,5 +110,9 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
             ));
       }
     }
+  }
+
+  Future<void> _syncingNotesData() async {
+    await GetIt.I.get<NoteRepository>().getNotes();
   }
 }

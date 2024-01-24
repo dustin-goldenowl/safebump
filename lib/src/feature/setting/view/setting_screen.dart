@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/src/config/enum/language_enum.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
+import 'package:safebump/src/feature/setting/logic/setting_bloc.dart';
+import 'package:safebump/src/feature/setting/logic/setting_state.dart';
+import 'package:safebump/src/feature/setting/widget/language_options_bottom_sheet.dart';
 import 'package:safebump/src/feature/setting/widget/unit_segment_with_title.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
+import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -23,6 +30,7 @@ class _SettingsScreenState extends State<SettingsScreen>
   @override
   void initState() {
     super.initState();
+    context.read<SettingsBloc>().inital();
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -41,10 +49,6 @@ class _SettingsScreenState extends State<SettingsScreen>
         body: _renderBody(),
       ),
     );
-  }
-
-  _onSelectUnitSection(MeasurementUnitType? type) async {
-    //TODO: And unit
   }
 
   Widget _renderBody() {
@@ -71,6 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen>
       isTitleCenter: true,
       leading: IconButton(
           onPressed: () {
+            context.read<SettingsBloc>().saveSharedPref();
             AppCoordinator.pop();
           },
           icon: const Icon(
@@ -81,12 +86,21 @@ class _SettingsScreenState extends State<SettingsScreen>
   }
 
   Widget _renderBodyMeasurementUnit() {
-    return XUnitSegmentWithTitle(
-        title: S.of(context).bodyMeasurement,
-        unitType: MeasurementUnitType.metric,
-        metricText: S.of(context).kgCm,
-        imperialText: S.of(context).lbFt,
-        onTap: _onSelectUnitSection);
+    return BlocSelector<SettingsBloc, SettingsState, MeasurementUnitType>(
+      selector: (state) {
+        return state.measurementUnitType;
+      },
+      builder: (context, measurementUnitType) {
+        return XUnitSegmentWithTitle(
+            title: S.of(context).bodyMeasurement,
+            unitType: measurementUnitType,
+            metricText: S.of(context).kgCm,
+            imperialText: S.of(context).lbFt,
+            onTap: (type) => context
+                .read<SettingsBloc>()
+                .onChangedMeasurementUnit(type ?? MeasurementUnitType.metric));
+      },
+    );
   }
 
   Widget _renderUnits() {
@@ -116,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen>
               iconPath: Icons.keyboard_arrow_right_rounded,
               paddingItem: const EdgeInsets.only(right: AppPadding.p6),
               onTap: () {
-                // TODO: Show model bottom sheet change language
+                _onTapShowLanguageOptions();
               }),
         ),
         SizedBox(
@@ -126,12 +140,29 @@ class _SettingsScreenState extends State<SettingsScreen>
               iconPath: Icons.keyboard_arrow_right_rounded,
               paddingItem: const EdgeInsets.only(right: AppPadding.p6),
               onTap: () {
-                // TODO: Show delete account pop up
+                context.read<SettingsBloc>().onTappedDeleteAccount(context);
               }),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p23),
       ],
     );
+  }
+
+  void _onTapShowLanguageOptions() {
+    showCupertinoModalBottomSheet(
+      duration: const Duration(milliseconds: 300),
+      animationCurve: Curves.easeOut,
+      context: context,
+      builder: (context) => XOptionsBottomSheet(
+        title: S.of(context).selectLanguage,
+      ),
+      barrierColor: Colors.transparent.withOpacity(0.5),
+      enableDrag: false,
+    ).then((valueCallback) {
+      if (valueCallback != null) {
+        UserPrefs.I.setLanguage(valueCallback as LanguageEnum);
+      }
+    });
   }
 
   Widget _renderIconWithTitle(IconData icon, String title) {

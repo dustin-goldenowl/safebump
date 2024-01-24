@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/firebase_options.dart';
 import 'package:safebump/src/config/device/app_info.dart';
+import 'package:safebump/src/local/repo/notes/notes_local_repo.dart';
+import 'package:safebump/src/local/repo/notes/notes_local_repo_impl.dart';
 import 'package:safebump/src/network/data/articles/articles_repository.dart';
 import 'package:safebump/src/network/data/articles/articles_repository_impl.dart';
 import 'package:safebump/src/network/data/daily_quiz/daily_quiz_repository.dart';
@@ -12,6 +14,8 @@ import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo_impl.dart';
 import 'package:safebump/src/network/data/baby/baby_repo.dart';
 import 'package:safebump/src/network/data/baby/baby_repo_impl.dart';
+import 'package:safebump/src/network/data/note/note_repository.dart';
+import 'package:safebump/src/network/data/note/note_repository_impl.dart';
 import 'package:safebump/src/network/data/sign/sign_repository.dart';
 import 'package:safebump/src/network/data/sign/sign_repository_impl.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
@@ -39,10 +43,13 @@ void _locator() {
   GetIt.I.registerLazySingleton<DailyQuizRepository>(
       () => DailyQuizRepositoryImpl());
   GetIt.I.registerLazySingleton<BabyRepository>(() => BabyRepositoryImpl());
+  GetIt.I.registerLazySingleton<NoteRepository>(() => NoteRepositoryImpl());
   GetIt.I.registerLazySingleton<ArticlesRepository>(
       () => ArticlesRepositoryImpl());
 
   GetIt.I.registerLazySingleton<DatabaseApp>((() => DatabaseApp()));
   GetIt.I.registerLazySingleton<BabyInforLocalRepo>(
       () => BabyInforLocalRepoImpl(GetIt.I()));
+  GetIt.I.registerLazySingleton<NotesLocalRepo>(
+      () => NotesLocalRepoImpl(GetIt.I()));
 }

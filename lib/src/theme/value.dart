@@ -67,3 +67,10 @@ class AppRadius {
   static const r20 = 20.0;
   static const r30 = 30.0;
 }
+
+class AppElevation {
+  static const ev0 = 0.0;
+  static const ev1 = 1.0;
+  static const ev2 = 2.0;
+  static const ev3 = 3.0;
+}

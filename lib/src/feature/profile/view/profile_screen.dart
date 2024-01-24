@@ -315,17 +315,17 @@ class _ProfileScreenState extends State<ProfileScreen>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             mainAxisSize: MainAxisSize.min,
             children: [
-              _renderUserName(name),
+              _renderUserName(name: name),
               _renderEditButton(),
             ],
           ),
-          _renderEmailUser(email)
+          _renderEmailUser(email: email)
         ],
       ),
     );
   }
 
-  Widget _renderUserName(String name) {
+  Widget _renderUserName({required String name}) {
     // workaround - https://github.com/flutter/flutter/issues/18761
     final userName = name.replaceAll('', '\u{200B}');
 
@@ -378,7 +378,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Widget _renderEmailUser(String email) {
+  Widget _renderEmailUser({required String email}) {
     return Text(
       email,
       style: const TextStyle(

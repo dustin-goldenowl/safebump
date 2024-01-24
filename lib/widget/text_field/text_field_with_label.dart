@@ -24,6 +24,7 @@ class XTextFieldWithLabel extends StatelessWidget {
     this.borderColor = AppColors.hintTextColor,
     required this.onChanged,
     this.keyboardType,
+    this.maxLines = 1,
   });
   final String? label;
   final TextStyle? labelStyle;
@@ -38,6 +39,7 @@ class XTextFieldWithLabel extends StatelessWidget {
   final bool isObscureText;
   final TextInputType? keyboardType;
   final void Function(String) onChanged;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +52,7 @@ class XTextFieldWithLabel extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
+            maxLines: maxLines,
             keyboardType: keyboardType,
             textInputAction: TextInputAction.next,
             onChanged: (value) => onChanged(value),

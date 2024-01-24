@@ -44,7 +44,7 @@ class DailyQuizReference extends BaseCollectionReference<DailyQuiz> {
       if (result.isError == false) {
         return MResult.success(false);
       } else {
-        final MResult<String> result = await delete(quiz.id);
+        final MResult<bool> result = await delete(quiz);
         xLog.e(result.data);
         return MResult.success(true);
       }

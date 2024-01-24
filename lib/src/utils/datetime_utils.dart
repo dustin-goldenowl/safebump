@@ -37,8 +37,20 @@ class DateTimeUtils {
     return woy;
   }
 
-  static DateTime addTimeIntoDate({required DateTime date, required DateTime time}) {
+  static DateTime addTimeIntoDate(
+      {required DateTime date, required DateTime time}) {
     return DateTime(
         date.year, date.month, date.day, time.hour, time.minute, time.second);
+  }
+
+  static bool isSameDay(DateTime? a, DateTime? b) {
+    if (a == null || b == null) {
+      return false;
+    }
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  static DateTime fromyMMMd(String dateText) {
+    return DateFormat("MMM d, y").parse(dateText);
   }
 }

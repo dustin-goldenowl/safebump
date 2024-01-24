@@ -15,7 +15,9 @@ enum AppRouteNames {
   addBaby(path: '/addBaby'),
   addPregnancyBaby(path: '/addPregnancyBaby'),
   articles(path: '/articles'),
-  editProfile(path: '/editProfile');
+  editProfile(path: '/editProfile'),
+  setting(path: '/setting'),
+  aboutApp(path:'/aboutApp');
 
   const AppRouteNames({
     required this.path,

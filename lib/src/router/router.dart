@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
+import 'package:safebump/src/feature/about_safebump/view/about_safebump_screen.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_baby_bloc.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
 import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
@@ -25,6 +26,7 @@ import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/profile/logic/profile_bloc.dart';
 import 'package:safebump/src/feature/profile/view/profile_screen.dart';
+import 'package:safebump/src/feature/setting/view/setting_screen.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
 import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
@@ -133,6 +135,22 @@ class AppRouter {
                       create: (context) => EditProfileBloc(),
                       child: const EditProfileScreen(),
                     );
+                  },
+                ),
+                GoRoute(
+                  parentNavigatorKey: AppCoordinator.navigatorKey,
+                  path: AppRouteNames.aboutApp.subPath,
+                  name: AppRouteNames.aboutApp.name,
+                  builder: (_, state) {
+                    return const AboutSafeBumpScreen();
+                  },
+                ),
+                GoRoute(
+                  parentNavigatorKey: AppCoordinator.navigatorKey,
+                  path: AppRouteNames.setting.subPath,
+                  name: AppRouteNames.setting.name,
+                  builder: (_, state) {
+                    return const SettingsScreen();
                   },
                 ),
               ]),

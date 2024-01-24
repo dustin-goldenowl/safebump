@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:safebump/src/config/enum/language_enum.dart';
+import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -17,6 +19,8 @@ class _keys {
   static const String doDailyQuiz = 'doDailyQuiz';
   static const String isUserCorrect = 'isUserCorrect';
   static const String percentCorrectDailyQuiz = 'percentCorrectDailyQuiz';
+  static const String bodyMeasurementUnitType = 'bodyMeasurementUnitType';
+  static const String language = 'language';
 }
 
 class UserPrefs {
@@ -28,6 +32,15 @@ class UserPrefs {
   late SharedPreferences _prefs;
   Future initialize() async {
     _prefs = await SharedPreferences.getInstance();
+  }
+
+  void clearSharedPref() {
+    setToken(null);
+    setUser(null);
+    setDoDailyQuiz(false);
+    setLanguage(LanguageEnum.english);
+    setPercentCorrectDailyQuiz(0);
+    setPergnancyDay(DateTime.now());
   }
 
   // theme
@@ -150,5 +163,28 @@ class UserPrefs {
 
   void setPercentCorrectDailyQuiz(int percent) {
     _prefs.setInt(_keys.percentCorrectDailyQuiz, percent);
+  }
+
+  MeasurementUnitType getBodyMeasurementUnitType() {
+    try {
+      return MeasurementUnitType.getType(
+          _prefs.getString(_keys.bodyMeasurementUnitType) ?? '');
+    } catch (_) {}
+    return MeasurementUnitType.metric;
+  }
+
+  void setBodyMeasurementUnitType(MeasurementUnitType type) {
+    _prefs.setString(_keys.bodyMeasurementUnitType, type.getText());
+  }
+
+  LanguageEnum getLanguage() {
+    try {
+      return LanguageEnum.getLanguage(_prefs.getString(_keys.language) ?? '');
+    } catch (_) {}
+    return LanguageEnum.english;
+  }
+
+  void setLanguage(LanguageEnum language) {
+    _prefs.setString(_keys.language, language.getText());
   }
 }

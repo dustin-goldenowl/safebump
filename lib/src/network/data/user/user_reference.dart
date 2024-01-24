@@ -3,6 +3,7 @@ import 'package:safebump/src/network/firebase/base_collection.dart';
 import 'package:safebump/src/network/firebase/collection/collection.dart';
 import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/utils/utils.dart';
 
 class UserReference extends BaseCollectionReference<MUser> {
   UserReference()
@@ -33,6 +34,19 @@ class UserReference extends BaseCollectionReference<MUser> {
       final docs = query.docs.map((e) => e.data()).toList();
       return MResult.success(docs);
     } catch (e) {
+      return MResult.exception(e);
+    }
+  }
+
+  Future<MResult<bool>> deleteUser(MUser user) async {
+    try {
+      final result = await delete(user);
+      if (result.isError == true) {
+        return MResult.exception(false);
+      }
+      return result;
+    } catch (e) {
+      xLog.e(e);
       return MResult.exception(e);
     }
   }

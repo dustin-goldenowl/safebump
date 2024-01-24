@@ -35,4 +35,9 @@ class UserRepositoryImpl extends UserRepository {
   Future<MResult<MUser>> upsertUser(MUser user) {
     return usersRef.getOrAddUser(user);
   }
+
+  @override
+  Future<MResult<bool>> deleteUser(MUser user) {
+    return usersRef.deleteUser(user);
+  }
 }

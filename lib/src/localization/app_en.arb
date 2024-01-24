@@ -153,5 +153,9 @@
     "english": "English",
     "deleteAccount": "Delete account",
     "lbFt": "lb | ft",
-    "kgCm": "kg | cm"
+    "kgCm": "kg | cm",
+    "selectLanguage": "Select language",
+    "select": "Select",
+    "areYouSureYouWant": "Are you sure you want to delete?",
+    "deleteMyAccount": "Delete my account"
 }

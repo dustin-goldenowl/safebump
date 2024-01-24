@@ -7,4 +7,5 @@ abstract class UserRepository {
   Future<MResult<List<MUser>>> getUsers();
 
   Future<MResult<MUser>> upsertUser(MUser user);
+  Future<MResult<bool>> deleteUser(MUser user);
 }

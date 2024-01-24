@@ -5,7 +5,29 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 
-enum MeasurementUnitType { imperial, metric }
+enum MeasurementUnitType {
+  imperial,
+  metric;
+
+  String getText() {
+    switch (this) {
+      case MeasurementUnitType.imperial:
+        return 'imperial';
+      case MeasurementUnitType.metric:
+        return 'metric';
+    }
+  }
+
+  static MeasurementUnitType getType(String type) {
+    switch (type) {
+      case 'imperial':
+        return MeasurementUnitType.imperial;
+      case 'metric':
+      default:
+        return MeasurementUnitType.metric;
+    }
+  }
+}
 
 enum RulerType { height, weight }
 

@@ -1,11 +1,13 @@
-import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/config/enum/baby_type_enum.dart';
-import 'package:safebump/src/dialogs/alert_wrapper.dart';
+import 'package:safebump/src/dialogs/toast_wrapper.dart';
+import 'package:safebump/src/feature/edit_profile/logic/edit_profile_bloc.dart';
+import 'package:safebump/src/feature/edit_profile/logic/edit_profile_state.dart';
 import 'package:safebump/src/feature/edit_profile/logic/picker_image.dart';
 import 'package:safebump/src/feature/edit_profile/widget/image_picker_bottom_sheet.dart';
 import 'package:safebump/src/feature/edit_profile/widget/ruler_bottom_sheet.dart';
@@ -14,6 +16,8 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/datetime_ext.dart';
+import 'package:safebump/src/utils/measurement_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -36,6 +40,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   @override
   void initState() {
     super.initState();
+    context.read<EditProfileBloc>().initalData();
   }
 
   @override
@@ -43,15 +48,33 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     return Scaffold(
       backgroundColor: AppColors.white,
       body: DismissKeyBoard(
-        child: SafeArea(
-          child: Column(
-            children: <Widget>[
-              _renderAppBar(),
-              _renderSeparatorAndAvatar(),
-              Expanded(
-                child: _renderInforUser(),
-              ),
-            ],
+        child: BlocListener<EditProfileBloc, EditProfileState>(
+          listenWhen: (previous, current) => previous.status != current.status,
+          listener: (context, state) {
+            switch (state.status) {
+              case EditProfileStatus.loading:
+                XToast.showLoading();
+                break;
+              case EditProfileStatus.fail:
+                if (XToast.isShowLoading) XToast.hideLoading();
+                break;
+              case EditProfileStatus.success:
+                if (XToast.isShowLoading) XToast.hideLoading();
+                AppCoordinator.pop(true);
+                break;
+              default:
+            }
+          },
+          child: SafeArea(
+            child: Column(
+              children: <Widget>[
+                _renderAppBar(),
+                _renderSeparatorAndAvatar(),
+                Expanded(
+                  child: _renderInforUser(),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -64,23 +87,15 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         isTitleCenter: true,
         leading: IconButton(
             onPressed: () {
-              if (true) {
+              bool isProfileChanged =
+                  !(context.read<EditProfileBloc>().state.user ==
+                      context.read<EditProfileBloc>().userAfterEdit());
+              if (isProfileChanged) {
                 // If user has changed profile but they hasn't save
-                XAlert.showConfirmDialog(S.of(context).unsavedChanges,
-                        S.of(context).doYouWantToSave,
-                        textNo: S.of(context).cancel,
-                        textYes: S.of(context).saveChanges)
-                    .then((value) {
-                  if (value == true) {
-                    //TODO: Add logic save changes
-                  } else {
-                    AppCoordinator.pop(false);
-                  }
-                });
+                context.read<EditProfileBloc>().showDialogUnsaved(context);
+              } else {
+                AppCoordinator.pop(false);
               }
-              // else {
-              //   AppCoordinator.pop(false);
-              // }
             },
             icon: const Icon(
               Icons.arrow_back,
@@ -89,7 +104,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         action: XTextButton(
           label: S.of(context).save,
           callback: () {
-            // Add logic save changes
+            context.read<EditProfileBloc>().saveEdittedProfile(context);
           },
         ));
   }
@@ -180,47 +195,62 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   }
 
   Widget _renderName(BuildContext context) {
-    return XTextFieldWithLabel(
-      label: S.of(context).name,
-      hintText: S.of(context).enterYourName,
-      onChanged: (name) {
-        // TODO: Change name
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      buildWhen: (pre, cur) =>
+          pre.name != cur.name ||
+          pre.errorName != cur.errorName ||
+          pre.initName != cur.initName,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+          label: S.of(context).name,
+          hintText: S.of(context).enterYourName,
+          initText: state.initName,
+          errorText: StringUtils.isNullOrEmpty(state.errorName)
+              ? null
+              : state.errorName,
+          onChanged: (name) {
+            context.read<EditProfileBloc>().onChangeName(name);
+          },
+        );
       },
     );
   }
 
   Widget _renderEmail(BuildContext context) {
-    return XTextFieldWithLabel(
-      label: S.of(context).email,
-      hintText: S.of(context).enterYourEmail,
-      onChanged: (mail) {
-        // TODO: Change mail
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      buildWhen: (pre, cur) => pre.email != cur.email,
+      builder: (context, state) {
+        return XTextFieldWithLabel(
+          label: S.of(context).email,
+          hintText: S.of(context).enterYourEmail,
+          initText: state.email,
+          onChanged: (mail) {},
+          isEnable: false,
+        );
       },
     );
   }
 
   Widget _renderDateOfBirth(BuildContext context) {
-    return XLabelButton(
-      onTapped: () async {
-        await showBoardDateTimePicker(
-          context: context,
-          pickerType: DateTimePickerType.date,
-          options: BoardDateTimeOptions(
-            boardTitle: S.of(context).selectDate,
-            activeColor: AppColors.primary,
-          ),
-          onChanged: (date) {
-            // TODO: change birthday
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      buildWhen: (pre, cur) => pre.dateOfBirth != cur.dateOfBirth,
+      builder: (context, state) {
+        return XLabelButton(
+          onTapped: () async {
+            await context
+                .read<EditProfileBloc>()
+                .onTapDateOfBirthButton(context);
           },
+          hint: S.of(context).selectDate,
+          label: S.of(context).dateOfBirth,
+          value: state.dateOfBirth?.toMMMdy,
+          icon: Icons.calendar_today_outlined,
+          labelStyle: const TextStyle(
+            fontSize: AppFontSize.f16,
+            fontFamily: FontFamily.productSans,
+          ),
         );
       },
-      hint: S.of(context).selectDate,
-      label: S.of(context).dateOfBirth,
-      icon: Icons.calendar_today_outlined,
-      labelStyle: const TextStyle(
-        fontSize: AppFontSize.f16,
-        fontFamily: FontFamily.productSans,
-      ),
     );
   }
 
@@ -237,37 +267,48 @@ class _EditProfileScreenState extends State<EditProfileScreen>
               color: AppColors.grey6,
               borderRadius: BorderRadius.circular(AppRadius.r10),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: XRadioListTile<Gender>(
-                    value: Gender.female,
-                    groupValue: Gender.female,
-                    label: S.of(context).female,
-                    onChanged: (value) {
-                      // TODO: onchange gender
-                    },
-                  ),
-                ),
-                Container(
-                  width: AppSize.s1,
-                  height: AppSize.s20,
-                  color: AppColors.grey2,
-                ),
-                Expanded(
-                  child: XRadioListTile<Gender>(
-                    value: Gender.male,
-                    groupValue: Gender.female,
-                    label: S.of(context).male,
-                    onChanged: (value) {
-                      // TODO: onchange gender
-                    },
-                  ),
-                ),
-              ],
-            )),
+            child: _renderGenderRadio()),
       ],
+    );
+  }
+
+  Widget _renderGenderRadio() {
+    return BlocSelector<EditProfileBloc, EditProfileState, Gender?>(
+      selector: (state) {
+        return state.gender;
+      },
+      builder: (context, gender) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: XRadioListTile<Gender>(
+                value: Gender.female,
+                groupValue: gender ?? Gender.female,
+                label: S.of(context).female,
+                onChanged: (value) {
+                  context.read<EditProfileBloc>().onChangeGender(value);
+                },
+              ),
+            ),
+            Container(
+              width: AppSize.s1,
+              height: AppSize.s20,
+              color: AppColors.grey2,
+            ),
+            Expanded(
+              child: XRadioListTile<Gender>(
+                value: Gender.male,
+                groupValue: gender ?? Gender.female,
+                label: S.of(context).male,
+                onChanged: (value) {
+                  context.read<EditProfileBloc>().onChangeGender(value);
+                },
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -304,10 +345,18 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   }
 
   Widget _renderSegmentControl() {
-    return XUnitsSegment(
-      unitType: MeasurementUnitType.metric,
-      onTap: (MeasurementUnitType? value) {
-        // TODO: Change measurement
+    return BlocSelector<EditProfileBloc, EditProfileState,
+        MeasurementUnitType?>(
+      selector: (state) {
+        return state.measurementUnit;
+      },
+      builder: (context, measurementUnit) {
+        return XUnitsSegment(
+          unitType: measurementUnit ?? MeasurementUnitType.metric,
+          onTap: (MeasurementUnitType? value) {
+            context.read<EditProfileBloc>().onChangeMeasurementUnitType(value);
+          },
+        );
       },
     );
   }
@@ -318,14 +367,14 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       case RulerType.height:
         switch (unitType) {
           case MeasurementUnitType.imperial:
-            return "${(currentValue ~/ 100).toString()} ft, ${(currentValue % 100).round().toString()} in";
+            return "${(currentValue).toFeet() ~/ 100} ft, ${((currentValue).toFeet() % 100).toInt()} in";
           case MeasurementUnitType.metric:
             return "${currentValue.round()} cm";
         }
       case RulerType.weight:
         switch (unitType) {
           case MeasurementUnitType.imperial:
-            return "${(currentValue)} lb";
+            return "${(currentValue).toLb().toStringAsFixed(2)} lb";
           case MeasurementUnitType.metric:
             return "$currentValue kg";
         }
@@ -333,45 +382,91 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   }
 
   Widget _renderHeight(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          _onTapHeightAndWeight(context, RulerType.height);
-        },
-        child: _renderTextFieldHeightWeight(
-          _markerText(50, RulerType.height, MeasurementUnitType.metric),
-          S.of(context).height,
-        ));
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      buildWhen: (previous, current) =>
+          previous.height != current.height ||
+          previous.measurementUnit != current.measurementUnit,
+      builder: (context, state) {
+        return GestureDetector(
+            onTap: () {
+              _onTapHeightAndWeight(context,
+                  rulerType: RulerType.height,
+                  measurementUnitType:
+                      state.measurementUnit ?? MeasurementUnitType.metric);
+            },
+            child: _renderTextFieldHeightWeight(
+              _markerText(state.height ?? 0.0, RulerType.height,
+                  state.measurementUnit ?? MeasurementUnitType.metric),
+              S.of(context).height,
+            ));
+      },
+    );
   }
 
   Widget _renderWeight(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          _onTapHeightAndWeight(context, RulerType.weight);
-        },
-        child: _renderTextFieldHeightWeight(
-          _markerText(50, RulerType.weight, MeasurementUnitType.metric),
-          S.of(context).weight,
-        ));
+    return BlocBuilder<EditProfileBloc, EditProfileState>(
+      buildWhen: (previous, current) =>
+          previous.weight != current.weight ||
+          previous.measurementUnit != current.measurementUnit,
+      builder: (context, state) {
+        return GestureDetector(
+            onTap: () {
+              _onTapHeightAndWeight(context,
+                  rulerType: RulerType.weight,
+                  measurementUnitType:
+                      state.measurementUnit ?? MeasurementUnitType.metric);
+            },
+            child: _renderTextFieldHeightWeight(
+              _markerText(state.weight ?? 0.0, RulerType.weight,
+                  state.measurementUnit ?? MeasurementUnitType.metric),
+              S.of(context).weight,
+            ));
+      },
+    );
   }
 
-  void _onTapHeightAndWeight(BuildContext context, RulerType rulerType) {
+  void _onTapHeightAndWeight(
+    BuildContext context, {
+    required RulerType rulerType,
+    required MeasurementUnitType measurementUnitType,
+  }) {
+    final state = context.read<EditProfileBloc>().state;
+    double value = 0;
+    if (rulerType == RulerType.weight) {
+      value = (state.weight?.toLb() ?? 0.0) * 10;
+    } else {
+      value = state.height?.toFeet() ?? 0.0;
+    }
     showCupertinoModalBottomSheet(
       duration: const Duration(milliseconds: 300),
       animationCurve: Curves.easeOut,
       context: context,
       builder: (context) => XRulerBottomSheet(
-        value: 100,
+        value: value,
         rulerType: rulerType,
-        measurementUnitType: MeasurementUnitType.metric,
+        measurementUnitType: measurementUnitType,
       ),
       barrierColor: Colors.transparent.withOpacity(0.5),
       enableDrag: false,
     ).then((valueCallback) {
       if (valueCallback != null) {
+        final value = valueCallback as int;
         if (rulerType == RulerType.weight) {
-          // TODO: update to field weight infor
+          measurementUnitType != MeasurementUnitType.metric
+              ? context
+                  .read<EditProfileBloc>()
+                  .onChangeWeight(value.toDouble().toKilogram() / 10)
+              : context
+                  .read<EditProfileBloc>()
+                  .onChangeWeight(value.toDouble() / 10);
         } else {
-          // TODO: update to field height infor
+          measurementUnitType != MeasurementUnitType.metric
+              ? context
+                  .read<EditProfileBloc>()
+                  .onChangeHeight(value.toDouble().toCentimeter())
+              : context
+                  .read<EditProfileBloc>()
+                  .onChangeHeight(value.toDouble());
         }
       }
     });

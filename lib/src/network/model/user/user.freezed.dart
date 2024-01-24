@@ -24,6 +24,12 @@ mixin _$MUser {
   String? get name => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
+  DateTime? get dateOfBirth => throw _privateConstructorUsedError;
+  Gender? get gender => throw _privateConstructorUsedError;
+  MeasurementUnitType? get measurementUnit =>
+      throw _privateConstructorUsedError;
+  double? get height => throw _privateConstructorUsedError;
+  double? get weight => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +41,16 @@ abstract class $MUserCopyWith<$Res> {
   factory $MUserCopyWith(MUser value, $Res Function(MUser) then) =
       _$MUserCopyWithImpl<$Res, MUser>;
   @useResult
-  $Res call({String id, String? name, String? avatar, String? email});
+  $Res call(
+      {String id,
+      String? name,
+      String? avatar,
+      String? email,
+      DateTime? dateOfBirth,
+      Gender? gender,
+      MeasurementUnitType? measurementUnit,
+      double? height,
+      double? weight});
 }
 
 /// @nodoc
@@ -55,6 +70,11 @@ class _$MUserCopyWithImpl<$Res, $Val extends MUser>
     Object? name = freezed,
     Object? avatar = freezed,
     Object? email = freezed,
+    Object? dateOfBirth = freezed,
+    Object? gender = freezed,
+    Object? measurementUnit = freezed,
+    Object? height = freezed,
+    Object? weight = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -73,6 +93,26 @@ class _$MUserCopyWithImpl<$Res, $Val extends MUser>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
+      dateOfBirth: freezed == dateOfBirth
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      gender: freezed == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as Gender?,
+      measurementUnit: freezed == measurementUnit
+          ? _value.measurementUnit
+          : measurementUnit // ignore: cast_nullable_to_non_nullable
+              as MeasurementUnitType?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+      weight: freezed == weight
+          ? _value.weight
+          : weight // ignore: cast_nullable_to_non_nullable
+              as double?,
     ) as $Val);
   }
 }
@@ -84,7 +124,16 @@ abstract class _$$MUserImplCopyWith<$Res> implements $MUserCopyWith<$Res> {
       __$$MUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String? name, String? avatar, String? email});
+  $Res call(
+      {String id,
+      String? name,
+      String? avatar,
+      String? email,
+      DateTime? dateOfBirth,
+      Gender? gender,
+      MeasurementUnitType? measurementUnit,
+      double? height,
+      double? weight});
 }
 
 /// @nodoc
@@ -102,6 +151,11 @@ class __$$MUserImplCopyWithImpl<$Res>
     Object? name = freezed,
     Object? avatar = freezed,
     Object? email = freezed,
+    Object? dateOfBirth = freezed,
+    Object? gender = freezed,
+    Object? measurementUnit = freezed,
+    Object? height = freezed,
+    Object? weight = freezed,
   }) {
     return _then(_$MUserImpl(
       id: null == id
@@ -120,6 +174,26 @@ class __$$MUserImplCopyWithImpl<$Res>
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
               as String?,
+      dateOfBirth: freezed == dateOfBirth
+          ? _value.dateOfBirth
+          : dateOfBirth // ignore: cast_nullable_to_non_nullable
+              as DateTime?,
+      gender: freezed == gender
+          ? _value.gender
+          : gender // ignore: cast_nullable_to_non_nullable
+              as Gender?,
+      measurementUnit: freezed == measurementUnit
+          ? _value.measurementUnit
+          : measurementUnit // ignore: cast_nullable_to_non_nullable
+              as MeasurementUnitType?,
+      height: freezed == height
+          ? _value.height
+          : height // ignore: cast_nullable_to_non_nullable
+              as double?,
+      weight: freezed == weight
+          ? _value.weight
+          : weight // ignore: cast_nullable_to_non_nullable
+              as double?,
     ));
   }
 }
@@ -127,7 +201,16 @@ class __$$MUserImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MUserImpl extends _MUser {
-  const _$MUserImpl({required this.id, this.name, this.avatar, this.email})
+  const _$MUserImpl(
+      {required this.id,
+      this.name,
+      this.avatar,
+      this.email,
+      this.dateOfBirth,
+      this.gender,
+      this.measurementUnit,
+      this.height,
+      this.weight})
       : super._();
 
   factory _$MUserImpl.fromJson(Map<String, dynamic> json) =>
@@ -141,10 +224,20 @@ class _$MUserImpl extends _MUser {
   final String? avatar;
   @override
   final String? email;
+  @override
+  final DateTime? dateOfBirth;
+  @override
+  final Gender? gender;
+  @override
+  final MeasurementUnitType? measurementUnit;
+  @override
+  final double? height;
+  @override
+  final double? weight;
 
   @override
   String toString() {
-    return 'MUser(id: $id, name: $name, avatar: $avatar, email: $email)';
+    return 'MUser(id: $id, name: $name, avatar: $avatar, email: $email, dateOfBirth: $dateOfBirth, gender: $gender, measurementUnit: $measurementUnit, height: $height, weight: $weight)';
   }
 
   @override
@@ -155,12 +248,20 @@ class _$MUserImpl extends _MUser {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            (identical(other.email, email) || other.email == email));
+            (identical(other.email, email) || other.email == email) &&
+            (identical(other.dateOfBirth, dateOfBirth) ||
+                other.dateOfBirth == dateOfBirth) &&
+            (identical(other.gender, gender) || other.gender == gender) &&
+            (identical(other.measurementUnit, measurementUnit) ||
+                other.measurementUnit == measurementUnit) &&
+            (identical(other.height, height) || other.height == height) &&
+            (identical(other.weight, weight) || other.weight == weight));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, avatar, email);
+  int get hashCode => Object.hash(runtimeType, id, name, avatar, email,
+      dateOfBirth, gender, measurementUnit, height, weight);
 
   @JsonKey(ignore: true)
   @override
@@ -181,7 +282,12 @@ abstract class _MUser extends MUser {
       {required final String id,
       final String? name,
       final String? avatar,
-      final String? email}) = _$MUserImpl;
+      final String? email,
+      final DateTime? dateOfBirth,
+      final Gender? gender,
+      final MeasurementUnitType? measurementUnit,
+      final double? height,
+      final double? weight}) = _$MUserImpl;
   const _MUser._() : super._();
 
   factory _MUser.fromJson(Map<String, dynamic> json) = _$MUserImpl.fromJson;
@@ -194,6 +300,16 @@ abstract class _MUser extends MUser {
   String? get avatar;
   @override
   String? get email;
+  @override
+  DateTime? get dateOfBirth;
+  @override
+  Gender? get gender;
+  @override
+  MeasurementUnitType? get measurementUnit;
+  @override
+  double? get height;
+  @override
+  double? get weight;
   @override
   @JsonKey(ignore: true)
   _$$MUserImplCopyWith<_$MUserImpl> get copyWith =>

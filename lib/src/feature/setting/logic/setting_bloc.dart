@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/dialogs/alert_wrapper.dart';
+import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/feature/setting/logic/setting_state.dart';
 import 'package:safebump/src/local/database_app.dart';
@@ -52,8 +53,11 @@ class SettingsBloc extends Cubit<SettingsState> {
         UserPrefs.I.clearSharedPref();
         await GetIt.I.get<DatabaseApp>().deleteAll();
         AppCoordinator.showSignInScreen();
+        return;
       }
+      XToast.error(S.text.someThingWentWrong);
     } catch (e) {
+      XToast.error(S.text.someThingWentWrong);
       xLog.e(e);
     }
   }

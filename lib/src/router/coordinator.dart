@@ -65,6 +65,8 @@ class AppCoordinator {
     return result;
   }
 
+  static void showAboutScreen() =>
+      context.pushNamed(AppRouteNames.aboutApp.name);
   static void showSettingScreen() =>
       context.pushNamed(AppRouteNames.setting.name);
 }

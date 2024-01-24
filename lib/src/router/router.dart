@@ -8,6 +8,8 @@ import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
 import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/select_option_add_screen.dart';
+import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
+import 'package:safebump/src/feature/calendar/view/calendar_screen.dart';
 import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
 import 'package:safebump/src/feature/articles/view/articles_screen.dart';
 import 'package:safebump/src/feature/dashboard/bloc/dashboard_state.dart';
@@ -98,8 +100,11 @@ class AppRouter {
           GoRoute(
             path: AppRouteNames.calendar.path,
             name: AppRouteNames.calendar.name,
-            pageBuilder: (context, state) => const NoTransitionPage(
-              child: HomeScreen(),
+            pageBuilder: (context, state) => NoTransitionPage(
+              child: BlocProvider(
+                create: (context) => CalendarBloc(),
+                child: const CalendarScreen(),
+              ),
             ),
           ),
           GoRoute(

@@ -45,6 +45,18 @@ class DateTimeUtils {
         date.year, date.month, date.day, time.hour, time.minute, time.second);
   }
 
+
+  static bool isSameDay(DateTime? a, DateTime? b) {
+    if (a == null || b == null) {
+      return false;
+    }
+    return a.year == b.year && a.month == b.month && a.day == b.day;
+  }
+
+  static DateTime fromyMMMd(String dateText) {
+    return DateFormat("MMM d, y").parse(dateText);
+  }
+
   static String calculateAge(BuildContext context, DateTime? birthDate) {
     if (birthDate == null) return S.of(context).empty;
     DateTime currentDate = DateTime.now();

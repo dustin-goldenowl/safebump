@@ -107,5 +107,15 @@
     "testYourKnowledge" : "Test your knowledge",
     "amazing":"Amazing!",
     "dontWorry": "Don't worry. You can do it later!",
-    "percent": "%"
+    "percent": "%",
+    "tryAgain": "Try again",
+    "calendar": "Calendar",
+    "notesCreated": "Notes Created",
+    "time": "Time: ",
+    "hospital": "Hospital: ",
+    "medicine": "Medicine: ",
+    "addYourNote": "Add your note",
+    "title": "Title",
+    "detail": "Detail",
+    "create": "Create"
 }

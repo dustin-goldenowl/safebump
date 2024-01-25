@@ -32,8 +32,8 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<MResult<MUser>> upsertUser(MUser user) {
-    return usersRef.getOrAddUser(user);
+  Future<MResult<bool>> upsertUser(MUser user) {
+    return usersRef.updateUser(user);
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:safebump/src/network/model/baby/baby.dart';
 import 'package:safebump/src/network/model/calendar/calendar.dart';
 import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 import 'package:safebump/src/network/model/user/user.dart';
+import 'package:safebump/src/network/model/video/video.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 
 class XCollection {
@@ -47,6 +48,15 @@ class XCollection {
           .withConverter<MArticles>(
             fromFirestore: (snapshot, options) =>
                 MArticles.fromJson(snapshot.data() as Map<String, dynamic>),
+            toFirestore: (chatRoom, _) => chatRoom.toJson(),
+          );
+
+  static CollectionReference<MVideo> get video =>
+      FirebaseFirestore.instance
+          .collection('videos')
+          .withConverter<MVideo>(
+            fromFirestore: (snapshot, options) =>
+                MVideo.fromJson(snapshot.data() as Map<String, dynamic>),
             toFirestore: (chatRoom, _) => chatRoom.toJson(),
           );
 }

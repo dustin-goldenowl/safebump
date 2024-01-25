@@ -6,11 +6,11 @@ import 'package:safebump/src/network/model/video/video.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class VideoStorageReference extends BaseStorageReference<MVideo> {
-  VideoStorageReference() : super(XStorageCollection.videoThumbnail, XStorageCollection.video);
+  VideoStorageReference() : super(XStorageCollection.video, XStorageCollection.videoThumbnail);
 
   Future<MResult<Uint8List>> getVideoThumbnail(String id) async {
     try {
-      final result = await get("$id.jpg");
+      final result = await get("$id.jpg", isGetFromSubRef: true);
       if (result.isError == true) {
         return result;
       } else {
@@ -23,7 +23,7 @@ class VideoStorageReference extends BaseStorageReference<MVideo> {
 
   Future<MResult<List>> getAllVideoThumbnails() async {
     try {
-      final result = await getAll();
+      final result = await getAll(isGetFromSubRef: true);
       return MResult.success(result.data);
     } catch (e) {
       return MResult.exception(e);

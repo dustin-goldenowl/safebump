@@ -1,22 +1,22 @@
 import 'package:flutter/foundation.dart';
-import 'package:safebump/src/network/model/articles/articles.dart';
+import 'package:safebump/src/network/model/video/video.dart';
 
 enum VideoStatus { init, loading, success, fail }
 
 class VideoState {
   VideoState(
-      {this.status = VideoStatus.init, this.articles, this.listImage});
+      {this.status = VideoStatus.init, this.videos, this.listThumbnail});
 
   final VideoStatus status;
-  final List<MArticles>? articles;
-  final Map<String, Uint8List>? listImage;
+  final List<MVideo>? videos;
+  final Map<String, Uint8List>? listThumbnail;
   VideoState copyWith(
       {VideoStatus? status,
-      List<MArticles>? articles,
-      Map<String, Uint8List>? listImage}) {
+      List<MVideo>? videos,
+      Map<String, Uint8List>? listThumbnail}) {
     return VideoState(
         status: status ?? this.status,
-        articles: articles ?? this.articles,
-        listImage: listImage ?? this.listImage);
+        videos: videos ?? this.videos,
+        listThumbnail: listThumbnail ?? this.listThumbnail);
   }
 }

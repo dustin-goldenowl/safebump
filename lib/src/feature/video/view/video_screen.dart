@@ -6,7 +6,7 @@ import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/video/logic/video_bloc.dart';
 import 'package:safebump/src/feature/video/logic/video_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
-import 'package:safebump/src/network/model/articles/articles.dart';
+import 'package:safebump/src/network/model/video/video.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
@@ -26,7 +26,7 @@ class _VideoScreenState extends State<VideoScreen> {
   @override
   void initState() {
     super.initState();
-    // context.read<VideoBloc>().inital(context);
+    context.read<VideoBloc>().inital(context);
   }
 
   @override
@@ -66,23 +66,23 @@ class _VideoScreenState extends State<VideoScreen> {
         child: BlocBuilder<VideoBloc, VideoState>(
       buildWhen: (previous, current) =>
           previous.status != current.status ||
-          previous.articles != current.articles ||
-          previous.listImage != current.listImage,
+          previous.videos != current.videos ||
+          previous.listThumbnail != current.listThumbnail,
       builder: (context, state) {
-        return isNullOrEmpty(state.articles) || isNullOrEmpty(state.listImage)
+        return isNullOrEmpty(state.videos) || isNullOrEmpty(state.listThumbnail)
             ? const SizedBox.shrink()
             : ListView.builder(
-                itemCount: state.articles!.length,
+                itemCount: state.videos!.length,
                 itemBuilder: (context, index) => _renderArticleCard(
                     context,
-                    state.articles![index],
-                    state.listImage![state.articles![index].id]));
+                    state.videos![index],
+                    state.listThumbnail![state.videos![index].id]));
       },
     ));
   }
 
   Widget _renderArticleCard(
-      BuildContext context, MArticles mArticles, Uint8List? image) {
+      BuildContext context, MVideo mVideos, Uint8List? image) {
     return Container(
       margin: const EdgeInsets.symmetric(
           vertical: AppMargin.m10, horizontal: AppMargin.m16),
@@ -96,16 +96,41 @@ class _VideoScreenState extends State<VideoScreen> {
         children: [
           _renderImage(image),
           XPaddingUtils.verticalPadding(height: AppPadding.p15),
-          _renderTitle(mArticles.title),
+          _renderTitle(mVideos.title),
           XPaddingUtils.verticalPadding(height: AppPadding.p10),
-          _renderSummary(mArticles.summarize),
+          _renderSummary(mVideos.content),
         ],
       ),
     );
   }
 
   Widget _renderImage(Uint8List? image) {
-    return image == null ? const SizedBox.shrink() : Image.memory(image);
+    return image == null
+        ? const SizedBox.shrink()
+        : Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.memory(image),
+              _renderBackground(),
+              const Icon(
+                Icons.play_circle,
+                color: AppColors.white,
+                size: AppSize.s48,
+              )
+            ],
+          );
+  }
+
+  Widget _renderBackground() {
+    return Positioned(
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
+      child: Container(
+        color: AppColors.black.withOpacity(0.3),
+      ),
+    );
   }
 
   Widget _renderTitle(String title) {

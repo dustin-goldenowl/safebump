@@ -53,7 +53,7 @@ class XCollection {
 
   static CollectionReference<MVideo> get video =>
       FirebaseFirestore.instance
-          .collection('video')
+          .collection('videos')
           .withConverter<MVideo>(
             fromFirestore: (snapshot, options) =>
                 MVideo.fromJson(snapshot.data() as Map<String, dynamic>),

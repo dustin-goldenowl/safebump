@@ -33,6 +33,8 @@ import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
 import 'package:safebump/src/feature/sync_data/view/sync_data_view.dart';
+import 'package:safebump/src/feature/video/logic/video_bloc.dart';
+import 'package:safebump/src/feature/video/view/video_screen.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
 import 'package:safebump/src/services/user_prefs.dart';
@@ -98,6 +100,14 @@ class AppRouter {
                     builder: (__, _) => BlocProvider(
                           create: (context) => ArticlesBloc(),
                           child: const ArticlesScreen(),
+                        )),
+                GoRoute(
+                    parentNavigatorKey: AppCoordinator.navigatorKey,
+                    path: AppRouteNames.videos.subPath,
+                    name: AppRouteNames.videos.name,
+                    builder: (__, _) => BlocProvider(
+                          create: (context) => VideoBloc(),
+                          child: const VideoScreen(),
                         ))
               ]),
           GoRoute(

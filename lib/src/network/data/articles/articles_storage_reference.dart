@@ -6,7 +6,7 @@ import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class ArticlesStorageReference extends BaseStorageReference<MArticles> {
-  ArticlesStorageReference() : super(XStorageCollection.articles);
+  ArticlesStorageReference() : super(XStorageCollection.articles, null);
 
   Future<MResult<Uint8List>> getArticleImage(String id) async {
     try {

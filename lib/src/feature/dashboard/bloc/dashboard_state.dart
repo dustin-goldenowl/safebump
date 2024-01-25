@@ -12,11 +12,6 @@ enum XNavigationBarItems {
     icon: Icons.calendar_month_outlined,
     selectedIcon: Icons.calendar_month,
   ),
-  medicineProfile(
-    route: AppRouteNames.medicineProfile,
-    icon: Icons.file_present_outlined,
-    selectedIcon: Icons.file_present,
-  ),
   account(
     route: AppRouteNames.profile,
     icon: Icons.account_circle_outlined,

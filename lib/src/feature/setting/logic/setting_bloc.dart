@@ -5,6 +5,7 @@ import 'package:safebump/src/dialogs/alert_wrapper.dart';
 import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/feature/setting/logic/setting_state.dart';
+import 'package:safebump/src/local/database_app.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/sign/sign_repository.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
@@ -50,6 +51,7 @@ class SettingsBloc extends Cubit<SettingsState> {
       final result = await GetIt.I.get<SignRepository>().removeAccount(user);
       if (result.data != null) {
         UserPrefs.I.clearSharedPref();
+        await GetIt.I.get<DatabaseApp>().deleteAll();
         AppCoordinator.showSignInScreen();
         return;
       }

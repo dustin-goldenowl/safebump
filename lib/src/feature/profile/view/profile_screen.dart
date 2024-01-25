@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/feature/profile/logic/profile_bloc.dart';
 import 'package:safebump/src/feature/profile/logic/profile_state.dart';
@@ -65,24 +66,44 @@ class _ProfileScreenState extends State<ProfileScreen>
     super.build(context);
     return Scaffold(
       backgroundColor: AppColors.white4,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _renderAppbar(context),
-              Column(
-                children: [
-                  XPaddingUtils.verticalPadding(height: AppPadding.p8),
-                  _renderInformationCard(context),
-                  XPaddingUtils.verticalPadding(height: AppPadding.p16),
-                  _renderAboutSettingsCard(),
-                  XPaddingUtils.verticalPadding(height: AppPadding.p16),
-                ],
-              ),
-              _renderLogOutButton(),
-            ],
+      body: BlocListener<ProfileBloc, ProfileState>(
+        listenWhen: (previous, current) => previous.status != current.status,
+        listener: (context, state) {
+          switch (state.status) {
+            case ProfileScreenStatus.loading:
+              XToast.showLoading();
+              break;
+            case ProfileScreenStatus.fail:
+              if (XToast.isShowLoading) XToast.hideLoading();
+              XToast.error(S.of(context).someThingWentWrong);
+              break;
+            case ProfileScreenStatus.success:
+              if (XToast.isShowLoading) XToast.hideLoading();
+              AppCoordinator.showSignInScreen();
+              break;
+            case ProfileScreenStatus.init:
+            default:
+          }
+        },
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _renderAppbar(context),
+                Column(
+                  children: [
+                    XPaddingUtils.verticalPadding(height: AppPadding.p8),
+                    _renderInformationCard(context),
+                    XPaddingUtils.verticalPadding(height: AppPadding.p16),
+                    _renderAboutSettingsCard(),
+                    XPaddingUtils.verticalPadding(height: AppPadding.p16),
+                  ],
+                ),
+                _renderLogOutButton(),
+              ],
+            ),
           ),
         ),
       ),
@@ -284,7 +305,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
         ),
         onPressed: () {
-          // TODO: Add logic sign out
+          context.read<ProfileBloc>().signOutAccount();
         },
         child: Text(
           S.of(context).signOut,

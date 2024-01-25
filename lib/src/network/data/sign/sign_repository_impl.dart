@@ -29,6 +29,10 @@ class SignRepositoryImpl extends SignRepository {
       );
       final userResult = await DomainManager().user.getOrAddUser(newUser);
 
+      // save sharepref
+      UserPrefs.I.setToken(await result.user?.getIdToken());
+      UserPrefs.I.setUser(userResult.data);
+
       return MResult.success(userResult.data ?? newUser);
     } catch (e) {
       return MResult.exception(e);
@@ -70,6 +74,7 @@ class SignRepositoryImpl extends SignRepository {
       final newUser = MUser(
         id: user?.uid ?? '',
         email: email,
+        name: user?.displayName,
       );
 
       final userResult = await DomainManager().user.getOrAddUser(newUser);

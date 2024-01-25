@@ -157,5 +157,6 @@
     "selectLanguage": "Select language",
     "select": "Select",
     "areYouSureYouWant": "Are you sure you want to delete?",
-    "deleteMyAccount": "Delete my account"
+    "deleteMyAccount": "Delete my account",
+    "areYouSureYouWantSignOut": "Are you sure you want to sign out?"
 }

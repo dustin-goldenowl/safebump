@@ -4,13 +4,14 @@ import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class BaseStorageReference<T> {
-  BaseStorageReference(this.ref);
+  BaseStorageReference(this.ref, this.subRef);
 
   void log(dynamic value) => debugPrint('$value');
   final Reference ref;
+  final Reference subRef;
 
-  Future<MResult<Uint8List>> get(String item) async {
-    final itemRef = ref.child(item);
+  Future<MResult<Uint8List>> get(String item, {bool isGetFromSubRef = false}) async {
+    final itemRef = isGetFromSubRef ? subRef.child(item) : ref.child(item);
     try {
       const oneMegabyte = 1024 * 1024;
       final Uint8List? data = await itemRef.getData(oneMegabyte);

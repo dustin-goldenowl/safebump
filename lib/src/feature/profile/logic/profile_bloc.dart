@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/feature/profile/logic/profile_state.dart';
 import 'package:safebump/src/local/database_app.dart';
+import 'package:safebump/src/locator.dart';
 import 'package:safebump/src/network/data/sign/sign_repository.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/services/user_prefs.dart';
@@ -27,8 +28,9 @@ class ProfileBloc extends Cubit<ProfileState> {
       await Future.delayed(const Duration(seconds: 1));
       final result = await GetIt.I.get<SignRepository>().logOut(state.user);
       if (result.data != null) {
-        UserPrefs.I.clearSharedPref();
+        await UserPrefs.I.clearSharedPref();
         await GetIt.I.get<DatabaseApp>().deleteAll();
+        resetSingleton();
         emit(state.copyWith(status: ProfileScreenStatus.success));
         return;
       }

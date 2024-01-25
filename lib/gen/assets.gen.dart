@@ -32,6 +32,10 @@ class $AssetsJsonsGen {
 class $AssetsSvgGen {
   const $AssetsSvgGen();
 
+  /// File path: assets/svg/empty_illustratiom.svg
+  SvgGenImage get emptyIllustratiom =>
+      const SvgGenImage('assets/svg/empty_illustratiom.svg');
+
   /// File path: assets/svg/error-in-calendar.svg
   SvgGenImage get errorInCalendar =>
       const SvgGenImage('assets/svg/error-in-calendar.svg');
@@ -43,7 +47,8 @@ class $AssetsSvgGen {
   SvgGenImage get icUs => const SvgGenImage('assets/svg/ic_us.svg');
 
   /// List of all assets
-  List<SvgGenImage> get values => [errorInCalendar, icEdit, icUs];
+  List<SvgGenImage> get values =>
+      [emptyIllustratiom, errorInCalendar, icEdit, icUs];
 }
 
 class $AssetsImagesImagesGen {

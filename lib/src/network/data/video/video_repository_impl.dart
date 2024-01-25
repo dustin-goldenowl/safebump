@@ -22,4 +22,9 @@ class VideosRepositoryImpl extends VideosRepository {
   Future<MResult<Uint8List>> getVideoThumbnail(String id) async {
     return await videoStorageRef.getVideoThumbnail(id);
   }
+
+  @override
+  Future<MResult<String>> getVideoUrl(String id) async {
+    return await videoStorageRef.getVideo(id);
+  }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -12,8 +14,10 @@ import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -23,6 +27,8 @@ class VideoScreen extends StatefulWidget {
 }
 
 class _VideoScreenState extends State<VideoScreen> {
+  late VideoPlayerController _controller;
+
   @override
   void initState() {
     super.initState();
@@ -53,11 +59,6 @@ class _VideoScreenState extends State<VideoScreen> {
         icon: const Icon(Icons.arrow_back),
       ),
       isTitleCenter: true,
-      action: IconButton(
-          onPressed: () {
-            // Todo: Add event
-          },
-          icon: const Icon(Icons.more_vert_rounded)),
     );
   }
 
@@ -73,33 +74,48 @@ class _VideoScreenState extends State<VideoScreen> {
             ? const SizedBox.shrink()
             : ListView.builder(
                 itemCount: state.videos!.length,
-                itemBuilder: (context, index) => _renderArticleCard(
-                    context,
-                    state.videos![index],
-                    state.listThumbnail![state.videos![index].id]));
+                itemBuilder: (context, index) => Container(
+                      margin: const EdgeInsets.symmetric(
+                          vertical: AppMargin.m10, horizontal: AppMargin.m16),
+                      child: _renderArticleCard(context, state.videos![index],
+                          state.listThumbnail![state.videos![index].id]),
+                    ));
       },
     ));
   }
 
   Widget _renderArticleCard(
       BuildContext context, MVideo mVideos, Uint8List? image) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-          vertical: AppMargin.m10, horizontal: AppMargin.m16),
-      padding: const EdgeInsets.all(AppPadding.p15),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.r10),
-          color: AppColors.white,
-          boxShadow: AppDecorations.shadow),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _renderImage(image),
-          XPaddingUtils.verticalPadding(height: AppPadding.p15),
-          _renderTitle(mVideos.title),
-          XPaddingUtils.verticalPadding(height: AppPadding.p10),
-          _renderSummary(mVideos.content),
-        ],
+    return Material(
+      child: InkWell(
+        onTap: () async {
+          final url = await context.read<VideoBloc>().getVideoUrl(mVideos.id);
+          if (!StringUtils.isNullOrEmpty(url)) {
+            _controller = VideoPlayerController.networkUrl(Uri.parse(url))
+              ..initialize().then((_) {
+                // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+                setState(() {});
+              });
+            context.read<VideoBloc>().showFullVideo(context, _controller);
+          }
+        },
+        child: Ink(
+          padding: const EdgeInsets.all(AppPadding.p15),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(AppRadius.r10),
+              color: AppColors.white,
+              boxShadow: AppDecorations.shadow),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _renderImage(image),
+              XPaddingUtils.verticalPadding(height: AppPadding.p15),
+              _renderTitle(mVideos.title),
+              XPaddingUtils.verticalPadding(height: AppPadding.p10),
+              _renderSummary(mVideos.content),
+            ],
+          ),
+        ),
       ),
     );
   }

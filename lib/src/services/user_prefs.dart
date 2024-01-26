@@ -34,13 +34,13 @@ class UserPrefs {
     _prefs = await SharedPreferences.getInstance();
   }
 
-  void clearSharedPref() {
-    setToken(null);
-    setUser(null);
-    setDoDailyQuiz(false);
-    setLanguage(LanguageEnum.english);
-    setPercentCorrectDailyQuiz(0);
-    setPergnancyDay(DateTime.now());
+  Future<void> clearSharedPref() async {
+    await setToken(null);
+    await setUser(null);
+    await setDoDailyQuiz(false);
+    await setLanguage(LanguageEnum.english);
+    await setPercentCorrectDailyQuiz(0);
+    await setPergnancyDay(DateTime.now());
   }
 
   // theme
@@ -63,20 +63,20 @@ class UserPrefs {
     return '';
   }
 
-  void setToken(String? value) {
+  Future<void> setToken(String? value) async {
     if (value == null) {
-      _prefs.remove(_keys.token);
+      await _prefs.remove(_keys.token);
     } else {
-      _prefs.setString(_keys.token, value);
+      await _prefs.setString(_keys.token, value);
     }
   }
 
   // user
-  void setUser(MUser? value) {
+  Future<void> setUser(MUser? value) async {
     if (value == null) {
-      _prefs.remove(_keys.user);
+      await _prefs.remove(_keys.user);
     } else {
-      _prefs.setString(_keys.user, jsonEncode(value.toJson()));
+      await _prefs.setString(_keys.user, jsonEncode(value.toJson()));
     }
   }
 
@@ -112,8 +112,9 @@ class UserPrefs {
     }
   }
 
-  void setPergnancyDay(DateTime date) {
-    _prefs.setString(_keys.pergnancyDay, DateFormat("y/M/d").format(date));
+  Future<void> setPergnancyDay(DateTime date) async {
+    await _prefs.setString(
+        _keys.pergnancyDay, DateFormat("y/M/d").format(date));
   }
 
   //First open App
@@ -128,8 +129,8 @@ class UserPrefs {
     }
   }
 
-  void setIsFirstOpenApp(bool isFirst) {
-    _prefs.setBool(_keys.firstOpen, isFirst);
+  Future<void> setIsFirstOpenApp(bool isFirst) async {
+    await _prefs.setBool(_keys.firstOpen, isFirst);
   }
 
   bool getDoDailyQuiz() {
@@ -139,8 +140,8 @@ class UserPrefs {
     return false;
   }
 
-  void setDoDailyQuiz(bool isAnswer) {
-    _prefs.setBool(_keys.doDailyQuiz, isAnswer);
+  Future<void> setDoDailyQuiz(bool isAnswer) async {
+    await _prefs.setBool(_keys.doDailyQuiz, isAnswer);
   }
 
   bool getIsUserCorrect() {
@@ -150,8 +151,8 @@ class UserPrefs {
     return false;
   }
 
-  void setIsUserCorrect(bool isCorrect) {
-    _prefs.setBool(_keys.isUserCorrect, isCorrect);
+  Future<void> setIsUserCorrect(bool isCorrect) async {
+    await _prefs.setBool(_keys.isUserCorrect, isCorrect);
   }
 
   int getPercentCorrectDailyQuiz() {
@@ -161,8 +162,8 @@ class UserPrefs {
     return 0;
   }
 
-  void setPercentCorrectDailyQuiz(int percent) {
-    _prefs.setInt(_keys.percentCorrectDailyQuiz, percent);
+  Future<void> setPercentCorrectDailyQuiz(int percent) async {
+    await _prefs.setInt(_keys.percentCorrectDailyQuiz, percent);
   }
 
   MeasurementUnitType getBodyMeasurementUnitType() {
@@ -173,8 +174,8 @@ class UserPrefs {
     return MeasurementUnitType.metric;
   }
 
-  void setBodyMeasurementUnitType(MeasurementUnitType type) {
-    _prefs.setString(_keys.bodyMeasurementUnitType, type.getText());
+  Future<void> setBodyMeasurementUnitType(MeasurementUnitType type) async {
+    await _prefs.setString(_keys.bodyMeasurementUnitType, type.getText());
   }
 
   LanguageEnum getLanguage() {
@@ -184,7 +185,7 @@ class UserPrefs {
     return LanguageEnum.english;
   }
 
-  void setLanguage(LanguageEnum language) {
-    _prefs.setString(_keys.language, language.getText());
+  Future<void> setLanguage(LanguageEnum language) async {
+    await _prefs.setString(_keys.language, language.getText());
   }
 }

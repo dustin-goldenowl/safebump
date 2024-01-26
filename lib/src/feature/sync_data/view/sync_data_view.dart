@@ -52,7 +52,9 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
   Future<void> _checkUserToken() async {
     final token = UserPrefs.I.getToken();
     if (StringUtils.isNullOrEmpty(token)) {
-      AppCoordinator.showSignInScreen();
+      await Future.delayed(Duration.zero, () {
+        AppCoordinator.showSignInScreen();
+      });
       return;
     }
     try {
@@ -85,6 +87,7 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
         sharePrefUser = await GetIt.I<UserRepository>()
             .getUser()
             .then((value) => value.data);
+        UserPrefs.I.setUser(sharePrefUser);
       } catch (e) {
         xLog.e(e);
         sharePrefUser = const MUser(id: 'id');

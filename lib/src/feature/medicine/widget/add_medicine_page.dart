@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
+import 'package:safebump/src/feature/medicine/widget/medication_detail_bottom_sheet.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
@@ -117,7 +120,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
         child: XTextFieldWithLabel(
           hintText: S.of(context).enterMedicationName,
           onChanged: (text) {
-            //TODO: enter name
+            context.read<AddMedicationBloc>().onChangedMedicationName(text);
           },
           prefix: const Icon(
             Icons.medication_outlined,
@@ -131,9 +134,30 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
               size: AppSize.s20,
             ),
             onPressed: () {
-              // TODO: Show bottom sheet
+              _showMedicationDetailBottomsheet(context);
             },
           ),
         ));
+  }
+
+  void _showMedicationDetailBottomsheet(BuildContext context) {
+    showModalBottomSheet(
+      transitionAnimationController: controller,
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => FractionallySizedBox(
+        heightFactor: 0.92,
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: BlocProvider.value(
+              value: BlocProvider.of<AddMedicationBloc>(context),
+              child: const XMedicationDetailBottomSheet(),
+            )),
+      ),
+      isScrollControlled: true,
+      barrierColor: AppColors.black.withOpacity(0.6),
+      enableDrag: true,
+      isDismissible: true,
+    );
   }
 }

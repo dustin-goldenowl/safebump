@@ -69,6 +69,20 @@ class Utils {
     }
     return result;
   }
+
+  static String formatDecimalNumber(double? value) {
+    if (value == null) return '-';
+    // round double before remove the first digit of decimal part
+    final roundDouble = ((value * 10).round()) / 10;
+    return roundDouble
+        .toStringAsFixed(isDecimalStartWith0(roundDouble) ? 0 : 1);
+  }
+
+  static bool isDecimalStartWith0(num? value) {
+    if (value == null) return false;
+    return value is int ||
+        num.parse(value.toStringAsFixed(1)) == value.roundToDouble();
+  }
 }
 
 bool isNullOrEmpty(Object? object) {

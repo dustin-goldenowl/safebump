@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/src/config/enum/baby_type_enum.dart';
+import 'package:safebump/src/config/enum/medication_enum.dart';
 import 'package:safebump/src/network/model/baby_fact_model.dart';
 import 'package:safebump/src/network/model/extension_model.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
@@ -96,4 +97,23 @@ class AppConstant {
           ),
         ),
       ];
+
+  static final List<DoseType> medicationUnitList = [
+    DoseType.spoon,
+    DoseType.cap,
+    DoseType.drop,
+    DoseType.application,
+    DoseType.patch,
+    DoseType.spray,
+    DoseType.puff,
+    DoseType.suppository,
+    DoseType.pill,
+    DoseType.packet,
+    DoseType.injection,
+    DoseType.gram,
+    DoseType.miligram,
+    DoseType.mililiter,
+    DoseType.unit,
+    DoseType.piece,
+  ];
 }

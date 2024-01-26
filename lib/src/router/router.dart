@@ -25,8 +25,10 @@ import 'package:safebump/src/feature/forgot_password/logic/cubit/enter_mail_bloc
 import 'package:safebump/src/feature/forgot_password/logic/cubit/reset_password_bloc.dart';
 import 'package:safebump/src/feature/forgot_password/view/enter_mail_screen.dart';
 import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.dart';
+import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/view/medication_screen.dart';
+import 'package:safebump/src/feature/medicine/widget/add_medicine_page.dart';
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/profile/logic/profile_bloc.dart';
 import 'package:safebump/src/feature/profile/view/profile_screen.dart';
@@ -169,7 +171,10 @@ class AppRouter {
                         path: AppRouteNames.addMedication.subPath,
                         name: AppRouteNames.addMedication.name,
                         builder: (_, state) {
-                          return Container();
+                          return BlocProvider(
+                            create: (context) => AddMedicationBloc(),
+                            child: const AddMedicationScreen(),
+                          );
                         },
                       ),
                     ]),

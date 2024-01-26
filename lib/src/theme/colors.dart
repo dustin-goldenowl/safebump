@@ -14,6 +14,7 @@ class AppColors {
   static const hintTextColor = Color(0xFF8C8A8A);
   static const red = Color.fromARGB(255, 248, 103, 103);
   static const green = Color.fromARGB(255, 61, 164, 61);
+  static const yellow = Color.fromARGB(255, 215, 197, 78);
   // black
   static const black = Colors.black;
   static const black2 = Color(0xFF1E1E1E);

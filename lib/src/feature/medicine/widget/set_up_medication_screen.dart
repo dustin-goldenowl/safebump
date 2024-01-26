@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -73,7 +74,7 @@ class SetupMedicationScreen extends StatelessWidget {
               color: AppColors.white),
         ),
         onPressed: () {
-          //TODO: setup
+          AppCoordinator.showAddMedication();
         },
       ),
     );

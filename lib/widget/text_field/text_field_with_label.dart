@@ -27,6 +27,7 @@ class XTextFieldWithLabel extends StatelessWidget {
     this.keyboardType,
     this.isEnable = true,
     this.maxLines = 1,
+    this.textInputAction,
   });
   final String? label;
   final TextStyle? labelStyle;
@@ -44,6 +45,7 @@ class XTextFieldWithLabel extends StatelessWidget {
   final bool isEnable;
   final void Function(String) onChanged;
   final int maxLines;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +61,7 @@ class XTextFieldWithLabel extends StatelessWidget {
             enabled: isEnable,
             maxLines: maxLines,
             keyboardType: keyboardType,
-            textInputAction: TextInputAction.next,
+            textInputAction: textInputAction,
             onChanged: (value) => onChanged(value),
             obscureText: isObscureText,
             controller: StringUtils.isNullOrEmpty(initText)

@@ -25,6 +25,20 @@ class BaseStorageReference<T> {
     }
   }
 
+    Future<MResult<String>> getUrl(String item,
+      {bool isGetFromSubRef = false}) async {
+    final itemRef = isGetFromSubRef && subRef != null
+        ? subRef!.child(item)
+        : ref.child(item);
+    try {
+      final String data = await itemRef.getDownloadURL();
+      return MResult.success(data);
+    } on FirebaseException catch (e) {
+      xLog.e(e.message);
+      return MResult.exception(e);
+    }
+  }
+
   Future<MResult<bool>> delete(String item) async {
     try {
       await ref.child(item).delete().timeout(const Duration(seconds: 5));

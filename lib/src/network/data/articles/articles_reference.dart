@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/firebase/base_collection.dart';
 import 'package:safebump/src/network/firebase/collection/collection.dart';
 import 'package:safebump/src/network/model/articles/articles.dart';
@@ -21,6 +22,19 @@ class ArticlesReference extends BaseCollectionReference<MArticles> {
       } else {
         final MResult<MArticles> result = await set(article);
         return MResult.success(result.data);
+      }
+    } catch (e) {
+      return MResult.exception(e);
+    }
+  }
+
+  Future<MResult<MArticles>> getArticle(String id) async {
+    try {
+      final result = await get(id);
+      if (result.isError == false) {
+        return result;
+      } else {
+        return MResult.error(S.text.someThingWentWrong);
       }
     } catch (e) {
       return MResult.exception(e);

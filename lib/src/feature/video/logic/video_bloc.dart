@@ -1,13 +1,19 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/video/logic/video_state.dart';
+import 'package:safebump/src/feature/video/widget/playback_option.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/video/video_repository.dart';
 import 'package:safebump/src/network/model/video/video.dart';
+import 'package:safebump/src/router/coordinator.dart';
+import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/utils.dart';
+import 'package:video_player/video_player.dart';
 
 class VideoBloc extends Cubit<VideoState> {
   VideoBloc() : super(VideoState());
@@ -58,5 +64,46 @@ class VideoBloc extends Cubit<VideoState> {
       }
     }
     emit(state.copyWith(listThumbnail: listImage));
+  }
+
+  Future<String> getVideoUrl(String id) async {
+    _createLoadingScreen();
+    try {
+      final result = await GetIt.I.get<VideosRepository>().getVideoUrl(id);
+      _hideLoadingScreen();
+      if (result.data != null) {
+        return result.data!;
+      }
+      return '';
+    } catch (e) {
+      xLog.e(e);
+      _hideLoadingScreen();
+      XToast.error(S.text.someThingWentWrong);
+      return '';
+    }
+  }
+
+  void showFullVideo(BuildContext context, VideoPlayerController controller) {
+    showCupertinoDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) => GestureDetector(
+              onTap: () => AppCoordinator.pop(),
+              child: Container(
+                color: AppColors.black.withOpacity(0.5),
+                padding: const EdgeInsets.all(AppPadding.p20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: VideoPlayer(controller),
+                    ),
+                    XPlayBackOption(controller: controller)
+                  ],
+                ),
+              ),
+            )).then((value) => controller.dispose());
   }
 }

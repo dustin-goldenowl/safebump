@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/firebase/base_storage.dart';
 import 'package:safebump/src/network/firebase/collection/storage_collection.dart';
 import 'package:safebump/src/network/model/articles/articles.dart';
@@ -11,12 +12,13 @@ class ArticlesStorageReference extends BaseStorageReference<MArticles> {
   Future<MResult<Uint8List>> getArticleImage(String id) async {
     try {
       final result = await get("$id.jpg");
-      if (result.isError == true) {
-        return result;
+      if (result.data == null) {
+        return MResult.error(S.text.someThingWentWrong);
       } else {
         return MResult.success(result.data);
       }
     } catch (e) {
+      xLog.e(e);
       return MResult.exception(e);
     }
   }

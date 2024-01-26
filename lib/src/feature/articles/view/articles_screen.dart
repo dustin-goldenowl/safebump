@@ -83,23 +83,26 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
 
   Widget _renderArticleCard(
       BuildContext context, MArticles mArticles, Uint8List? image) {
-    return Container(
-      margin: const EdgeInsets.symmetric(
-          vertical: AppMargin.m10, horizontal: AppMargin.m16),
-      padding: const EdgeInsets.all(AppPadding.p15),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppRadius.r10),
-          color: AppColors.white,
-          boxShadow: AppDecorations.shadow),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _renderImage(image),
-          XPaddingUtils.verticalPadding(height: AppPadding.p15),
-          _renderTitle(mArticles.title),
-          XPaddingUtils.verticalPadding(height: AppPadding.p10),
-          _renderSummary(mArticles.summarize),
-        ],
+    return GestureDetector(
+      onTap: () => AppCoordinator.showArticleDetailScreen(mArticles.id),
+      child: Container(
+        margin: const EdgeInsets.symmetric(
+            vertical: AppMargin.m10, horizontal: AppMargin.m16),
+        padding: const EdgeInsets.all(AppPadding.p15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.r10),
+            color: AppColors.white,
+            boxShadow: AppDecorations.shadow),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _renderImage(image),
+            XPaddingUtils.verticalPadding(height: AppPadding.p15),
+            _renderTitle(mArticles.title),
+            XPaddingUtils.verticalPadding(height: AppPadding.p10),
+            _renderSummary(mArticles.summarize),
+          ],
+        ),
       ),
     );
   }

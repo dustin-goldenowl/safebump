@@ -22,4 +22,9 @@ class ArticlesRepositoryImpl extends ArticlesRepository {
   Future<MResult<Uint8List>> getArticleImage(String id) async {
     return await articleStorageRef.getArticleImage(id);
   }
+
+  @override
+  Future<MResult<MArticles>> getArticle(String id) async {
+    return await articleRef.getArticle(id);
+  }
 }

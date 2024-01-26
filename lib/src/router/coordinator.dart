@@ -69,4 +69,7 @@ class AppCoordinator {
       context.pushNamed(AppRouteNames.aboutApp.name);
   static void showSettingScreen() =>
       context.pushNamed(AppRouteNames.setting.name);
+
+  static void showArticleDetailScreen(String id) => context
+      .pushNamed(AppRouteNames.articlesDetail.name, pathParameters: {'id': id});
 }

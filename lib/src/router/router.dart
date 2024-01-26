@@ -9,6 +9,8 @@ import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
 import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/select_option_add_screen.dart';
+import 'package:safebump/src/feature/articles/logic/article_detail_bloc.dart';
+import 'package:safebump/src/feature/articles/view/article_detail_screen.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
 import 'package:safebump/src/feature/calendar/view/calendar_screen.dart';
 import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
@@ -33,6 +35,8 @@ import 'package:safebump/src/feature/sign_in/view/sign_in_view.dart';
 import 'package:safebump/src/feature/sign_up/logic/sign_up_bloc.dart';
 import 'package:safebump/src/feature/sign_up/view/sign_up_view.dart';
 import 'package:safebump/src/feature/sync_data/view/sync_data_view.dart';
+import 'package:safebump/src/feature/video/logic/video_bloc.dart';
+import 'package:safebump/src/feature/video/view/video_screen.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/router/route_name.dart';
 import 'package:safebump/src/services/user_prefs.dart';
@@ -98,6 +102,29 @@ class AppRouter {
                     builder: (__, _) => BlocProvider(
                           create: (context) => ArticlesBloc(),
                           child: const ArticlesScreen(),
+                        ),
+                    routes: <RouteBase>[
+                      GoRoute(
+                        parentNavigatorKey: AppCoordinator.navigatorKey,
+                        path: AppRouteNames.articlesDetail.buildSubPathParam,
+                        name: AppRouteNames.articlesDetail.name,
+                        builder: (_, state) {
+                          final id = state.pathParameters[
+                              AppRouteNames.articlesDetail.param]!;
+                          return BlocProvider(
+                            create: (context) => ArticleDetailBloc(id: id),
+                            child: const ArticlesDetailScreen(),
+                          );
+                        },
+                      ),
+                    ]),
+                GoRoute(
+                    parentNavigatorKey: AppCoordinator.navigatorKey,
+                    path: AppRouteNames.videos.subPath,
+                    name: AppRouteNames.videos.name,
+                    builder: (__, _) => BlocProvider(
+                          create: (context) => VideoBloc(),
+                          child: const VideoScreen(),
                         ))
               ]),
           GoRoute(

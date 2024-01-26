@@ -1,26 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/firebase/base_collection.dart';
 import 'package:safebump/src/network/firebase/collection/collection.dart';
-import 'package:safebump/src/network/model/articles/articles.dart';
 import 'package:safebump/src/network/model/common/result.dart';
+import 'package:safebump/src/network/model/video/video.dart';
 import 'package:safebump/src/utils/utils.dart';
 
-class ArticlesReference extends BaseCollectionReference<MArticles> {
-  ArticlesReference()
+class VideoReference extends BaseCollectionReference<MVideo> {
+  VideoReference()
       : super(
-          XCollection.articles,
+          XCollection.video,
           getObjectId: (e) => e.id,
           setObjectId: (e, id) => e.copyWith(id: id),
         );
 
-  Future<MResult<MArticles>> getOrAddArticles(MArticles article) async {
+  Future<MResult<MVideo>> getOrAddVideo(MVideo video) async {
     try {
-      final result = await get(article.id);
+      final result = await get(video.id);
       if (result.isError == true) {
         return result;
       } else {
-        final MResult<MArticles> result = await set(article);
+        final MResult<MVideo> result = await set(video);
         return MResult.success(result.data);
       }
     } catch (e) {
@@ -28,22 +27,9 @@ class ArticlesReference extends BaseCollectionReference<MArticles> {
     }
   }
 
-  Future<MResult<MArticles>> getArticle(String id) async {
+  Future<MResult<List<MVideo>>> getAllVideos() async {
     try {
-      final result = await get(id);
-      if (result.isError == false) {
-        return result;
-      } else {
-        return MResult.error(S.text.someThingWentWrong);
-      }
-    } catch (e) {
-      return MResult.exception(e);
-    }
-  }
-
-  Future<MResult<List<MArticles>>> getAllArticles() async {
-    try {
-      final QuerySnapshot<MArticles> query =
+      final QuerySnapshot<MVideo> query =
           await ref.get().timeout(const Duration(seconds: 10));
       final docs = query.docs.map((e) => e.data()).toList();
       return MResult.success(docs);
@@ -52,13 +38,13 @@ class ArticlesReference extends BaseCollectionReference<MArticles> {
     }
   }
 
-  Future<MResult<bool>> deleteArticle(MArticles article) async {
+  Future<MResult<bool>> deleteVideo(MVideo video) async {
     try {
-      final result = await get(article.id);
+      final result = await get(video.id);
       if (result.isError == false) {
         return MResult.success(false);
       } else {
-        final MResult<bool> result = await delete(article);
+        final MResult<bool> result = await delete(video);
         xLog.e(result.data);
         return MResult.success(true);
       }

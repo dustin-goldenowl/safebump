@@ -2,37 +2,50 @@ import 'package:flutter/foundation.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/firebase/base_storage.dart';
 import 'package:safebump/src/network/firebase/collection/storage_collection.dart';
-import 'package:safebump/src/network/model/articles/articles.dart';
 import 'package:safebump/src/network/model/common/result.dart';
+import 'package:safebump/src/network/model/video/video.dart';
 import 'package:safebump/src/utils/utils.dart';
 
-class ArticlesStorageReference extends BaseStorageReference<MArticles> {
-  ArticlesStorageReference() : super(XStorageCollection.articles, null);
+class VideoStorageReference extends BaseStorageReference<MVideo> {
+  VideoStorageReference()
+      : super(XStorageCollection.video, XStorageCollection.videoThumbnail);
 
-  Future<MResult<Uint8List>> getArticleImage(String id) async {
+  Future<MResult<Uint8List>> getVideoThumbnail(String id) async {
     try {
-      final result = await get("$id.jpg");
-      if (result.data == null) {
-        return MResult.error(S.text.someThingWentWrong);
+      final result = await get("$id.jpg", isGetFromSubRef: true);
+      if (result.isError == true) {
+        return result;
       } else {
         return MResult.success(result.data);
       }
     } catch (e) {
-      xLog.e(e);
       return MResult.exception(e);
     }
   }
 
-  Future<MResult<List>> getAllArticlesImage() async {
+  Future<MResult<String>> getVideo(String id) async {
     try {
-      final result = await getAll();
+      final result = await getUrl("$id.mp4");
+      if (result.data != null) {
+        return result;
+      } else {
+        return MResult.error(S.text.someThingWentWrong);
+      }
+    } catch (e) {
+      return MResult.exception(e);
+    }
+  }
+
+  Future<MResult<List>> getAllVideoThumbnails() async {
+    try {
+      final result = await getAll(isGetFromSubRef: true);
       return MResult.success(result.data);
     } catch (e) {
       return MResult.exception(e);
     }
   }
 
-  Future<MResult<bool>> deleteArticleImage(String id) async {
+  Future<MResult<bool>> deleteVideoThumbnail(String id) async {
     try {
       final result = await get("$id.jpg");
       if (result.isError == false) {

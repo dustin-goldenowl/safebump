@@ -81,6 +81,7 @@ dependencies:
   syncfusion_flutter_calendar: 23.2.7
   flutter_svg: 2.0.9
   image_picker: 1.0.7
+  video_player: 2.8.2
 
   # Firebase
   firebase_auth: 4.16.0

@@ -4,16 +4,34 @@ import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class BaseStorageReference<T> {
-  BaseStorageReference(this.ref);
+  BaseStorageReference(this.ref, this.subRef);
 
   void log(dynamic value) => debugPrint('$value');
   final Reference ref;
+  final Reference? subRef;
 
-  Future<MResult<Uint8List>> get(String item) async {
-    final itemRef = ref.child(item);
+  Future<MResult<Uint8List>> get(String item,
+      {bool isGetFromSubRef = false}) async {
+    final itemRef = isGetFromSubRef && subRef != null
+        ? subRef!.child(item)
+        : ref.child(item);
     try {
       const oneMegabyte = 1024 * 1024;
       final Uint8List? data = await itemRef.getData(oneMegabyte);
+      return MResult.success(data);
+    } on FirebaseException catch (e) {
+      xLog.e(e.message);
+      return MResult.exception(e);
+    }
+  }
+
+    Future<MResult<String>> getUrl(String item,
+      {bool isGetFromSubRef = false}) async {
+    final itemRef = isGetFromSubRef && subRef != null
+        ? subRef!.child(item)
+        : ref.child(item);
+    try {
+      final String data = await itemRef.getDownloadURL();
       return MResult.success(data);
     } on FirebaseException catch (e) {
       xLog.e(e.message);
@@ -30,10 +48,11 @@ class BaseStorageReference<T> {
     }
   }
 
-  Future<MResult<List>> getAll() async {
+  Future<MResult<List>> getAll({bool isGetFromSubRef = false}) async {
     try {
-      final ListResult listAll =
-          await ref.listAll().timeout(const Duration(seconds: 5));
+      final ListResult listAll = isGetFromSubRef && subRef != null
+          ? await subRef!.listAll().timeout(const Duration(seconds: 5))
+          : await ref.listAll().timeout(const Duration(seconds: 5));
 
       return MResult.success([listAll.items, listAll.prefixes]);
     } catch (e) {

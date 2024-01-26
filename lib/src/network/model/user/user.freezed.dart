@@ -235,34 +235,6 @@ class _$MUserImpl extends _MUser {
   @override
   final double? weight;
 
-  @override
-  String toString() {
-    return 'MUser(id: $id, name: $name, avatar: $avatar, email: $email, dateOfBirth: $dateOfBirth, gender: $gender, measurementUnit: $measurementUnit, height: $height, weight: $weight)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$MUserImpl &&
-            (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.dateOfBirth, dateOfBirth) ||
-                other.dateOfBirth == dateOfBirth) &&
-            (identical(other.gender, gender) || other.gender == gender) &&
-            (identical(other.measurementUnit, measurementUnit) ||
-                other.measurementUnit == measurementUnit) &&
-            (identical(other.height, height) || other.height == height) &&
-            (identical(other.weight, weight) || other.weight == weight));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, id, name, avatar, email,
-      dateOfBirth, gender, measurementUnit, height, weight);
-
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')

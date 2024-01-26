@@ -58,7 +58,7 @@ class AppConstant {
             icon: Icons.article),
         ExtensionModel(
             label: S.of(context).videos,
-            routeName: AppRouteNames.dashboard.name,
+            routeName: AppRouteNames.videos.name,
             icon: Icons.video_collection_rounded),
         ExtensionModel(
             label: S.of(context).food,

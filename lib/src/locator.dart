@@ -20,6 +20,8 @@ import 'package:safebump/src/network/data/sign/sign_repository.dart';
 import 'package:safebump/src/network/data/sign/sign_repository_impl.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
 import 'package:safebump/src/network/data/user/user_repository_impl.dart';
+import 'package:safebump/src/network/data/video/video_repository.dart';
+import 'package:safebump/src/network/data/video/video_repository_impl.dart';
 import 'package:safebump/src/router/router.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 
@@ -46,6 +48,7 @@ void _locator() {
   GetIt.I.registerLazySingleton<NoteRepository>(() => NoteRepositoryImpl());
   GetIt.I.registerLazySingleton<ArticlesRepository>(
       () => ArticlesRepositoryImpl());
+  GetIt.I.registerLazySingleton<VideosRepository>(() => VideosRepositoryImpl());
 
   GetIt.I.registerLazySingleton<DatabaseApp>((() => DatabaseApp()));
   GetIt.I.registerLazySingleton<BabyInforLocalRepo>(

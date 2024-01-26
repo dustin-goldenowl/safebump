@@ -14,6 +14,8 @@ import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo_impl.dart';
 import 'package:safebump/src/network/data/baby/baby_repo.dart';
 import 'package:safebump/src/network/data/baby/baby_repo_impl.dart';
+import 'package:safebump/src/network/data/medication/medication_repository.dart';
+import 'package:safebump/src/network/data/medication/medication_repository_impl.dart';
 import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/data/note/note_repository_impl.dart';
 import 'package:safebump/src/network/data/quiz/quiz_repository.dart';
@@ -52,6 +54,8 @@ void _locator() {
       () => ArticlesRepositoryImpl());
   GetIt.I.registerLazySingleton<VideosRepository>(() => VideosRepositoryImpl());
   GetIt.I.registerLazySingleton<QuizRepository>(() => QuizRepositoryImpl());
+  GetIt.I.registerLazySingleton<MedicationRepository>(
+      () => MedicationRepositoryImpl());
 
   GetIt.I.registerLazySingleton<DatabaseApp>((() => DatabaseApp()));
   GetIt.I.registerLazySingleton<BabyInforLocalRepo>(
@@ -61,6 +65,7 @@ void _locator() {
 }
 
 void resetSingleton() {
+  GetIt.I.resetLazySingleton<MedicationRepository>();
   GetIt.I.resetLazySingleton<BabyRepository>();
   GetIt.I.resetLazySingleton<NoteRepository>();
 }

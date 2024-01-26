@@ -42,7 +42,7 @@ class AppConstant {
   static List<ExtensionModel> getListExtensionData(BuildContext context) => [
         ExtensionModel(
             label: S.of(context).medicines,
-            routeName: AppRouteNames.dashboard.name,
+            routeName: AppRouteNames.medication.name,
             icon: Icons.medical_information),
         ExtensionModel(
             label: S.of(context).exercises,

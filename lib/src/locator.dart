@@ -27,6 +27,7 @@ import 'package:safebump/src/network/data/user/user_repository_impl.dart';
 import 'package:safebump/src/network/data/video/video_repository.dart';
 import 'package:safebump/src/network/data/video/video_repository_impl.dart';
 import 'package:safebump/src/router/router.dart';
+import 'package:safebump/src/services/firebase_message.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 
 Future initializeApp() async {
@@ -37,6 +38,7 @@ Future initializeApp() async {
   await Future.wait([
     AppInfo.initialize(),
     UserPrefs.instance.initialize(),
+    XFirebaseMessage.instance.initialize()
   ]);
   _locator();
 }

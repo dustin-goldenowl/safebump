@@ -57,6 +57,7 @@ class AppMargin {
 class AppFontSize {
   static const f8 = 8.0;
   static const f10 = 10.0;
+  static const f12 = 12.0;
   static const f14 = 14.0;
   static const f16 = 16.0;
   static const f20 = 20.0;

@@ -72,4 +72,7 @@ class AppCoordinator {
 
   static void showArticleDetailScreen(String id) => context
       .pushNamed(AppRouteNames.articlesDetail.name, pathParameters: {'id': id});
+
+  static void showQuestionQuizScreen(String title) => context
+      .pushNamed(AppRouteNames.questionQuiz.name, pathParameters: {'id': title});
 }

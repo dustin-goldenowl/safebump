@@ -50,7 +50,7 @@ class AppConstant {
             icon: Icons.pregnant_woman_outlined),
         ExtensionModel(
             label: S.of(context).quiz,
-            routeName: AppRouteNames.dashboard.name,
+            routeName: AppRouteNames.quiz.name,
             icon: Icons.quiz),
         ExtensionModel(
             label: S.of(context).articles,

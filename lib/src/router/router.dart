@@ -28,6 +28,10 @@ import 'package:safebump/src/feature/forgot_password/view/reset_password_screen.
 import 'package:safebump/src/feature/on_boarding/view/on_boarding_view.dart';
 import 'package:safebump/src/feature/profile/logic/profile_bloc.dart';
 import 'package:safebump/src/feature/profile/view/profile_screen.dart';
+import 'package:safebump/src/feature/quiz/logic/question_bloc.dart';
+import 'package:safebump/src/feature/quiz/logic/quiz_bloc.dart';
+import 'package:safebump/src/feature/quiz/view/question_screen.dart';
+import 'package:safebump/src/feature/quiz/view/quiz_screen.dart';
 import 'package:safebump/src/feature/setting/logic/setting_bloc.dart';
 import 'package:safebump/src/feature/setting/view/setting_screen.dart';
 import 'package:safebump/src/feature/sign_in/logic/sign_in_bloc.dart';
@@ -125,7 +129,30 @@ class AppRouter {
                     builder: (__, _) => BlocProvider(
                           create: (context) => VideoBloc(),
                           child: const VideoScreen(),
-                        ))
+                        )),
+                GoRoute(
+                    parentNavigatorKey: AppCoordinator.navigatorKey,
+                    path: AppRouteNames.quiz.subPath,
+                    name: AppRouteNames.quiz.name,
+                    builder: (__, _) => BlocProvider(
+                          create: (context) => QuizBloc(),
+                          child: const QuizScreen(),
+                        ),
+                    routes: <RouteBase>[
+                      GoRoute(
+                        parentNavigatorKey: AppCoordinator.navigatorKey,
+                        path: AppRouteNames.questionQuiz.buildSubPathParam,
+                        name: AppRouteNames.questionQuiz.name,
+                        builder: (_, state) {
+                          final title = state.pathParameters[
+                              AppRouteNames.questionQuiz.param]!;
+                          return BlocProvider(
+                            create: (context) => QuestionBloc(title),
+                            child: const QuestionScreen(),
+                          );
+                        },
+                      ),
+                    ]),
               ]),
           GoRoute(
             path: AppRouteNames.calendar.path,

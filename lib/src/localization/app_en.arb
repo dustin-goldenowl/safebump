@@ -159,5 +159,12 @@
     "areYouSureYouWant": "Are you sure you want to delete?",
     "deleteMyAccount": "Delete my account",
     "areYouSureYouWantSignOut": "Are you sure you want to sign out?",
-    "back": "Back"
+    "back": "Back",
+    "pregnancyPreparation": "Pregnancy Preparation",
+    "testComplete": "Test complete!",
+    "yourResult": "Your result",
+    "doTheTestAgain": "Do the test again",
+    "maybeLater": "Maybe later", 
+    "previous": "Previous",
+    "finish": "Finish"
 }

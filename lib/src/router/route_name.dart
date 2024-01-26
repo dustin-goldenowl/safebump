@@ -19,7 +19,9 @@ enum AppRouteNames {
   videos(path: '/videos'),
   editProfile(path: '/editProfile'),
   setting(path: '/setting'),
-  aboutApp(path: '/aboutApp');
+  aboutApp(path: '/aboutApp'),
+  quiz(path: '/quiz'),
+  questionQuiz(path: 'questionQuiz', param: 'id');
 
   const AppRouteNames({
     required this.path,

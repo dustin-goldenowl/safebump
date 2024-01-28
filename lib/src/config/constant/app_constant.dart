@@ -46,10 +46,6 @@ class AppConstant {
             routeName: AppRouteNames.medication.name,
             icon: Icons.medical_information),
         ExtensionModel(
-            label: S.of(context).exercises,
-            routeName: AppRouteNames.dashboard.name,
-            icon: Icons.pregnant_woman_outlined),
-        ExtensionModel(
             label: S.of(context).quiz,
             routeName: AppRouteNames.quiz.name,
             icon: Icons.quiz),
@@ -61,10 +57,6 @@ class AppConstant {
             label: S.of(context).videos,
             routeName: AppRouteNames.videos.name,
             icon: Icons.video_collection_rounded),
-        ExtensionModel(
-            label: S.of(context).food,
-            routeName: AppRouteNames.dashboard.name,
-            icon: Icons.food_bank)
       ];
 
   static Map<DateTime, BabyFactModel> getBabyFactsData() {

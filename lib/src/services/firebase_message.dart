@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 import '../utils/utils.dart';
 
@@ -19,6 +21,15 @@ class XFirebaseMessage {
 
   bool isNotificationsInitialized = false;
 
+  final _androidChannel = const AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    description: 'This channel is used for importance notification',
+    importance: Importance.defaultImportance,
+  );
+
+  final _localNoti = FlutterLocalNotificationsPlugin();
+
   Future<void> initialize() async {
     messaging = FirebaseMessaging.instance;
     _tokenStream = messaging.onTokenRefresh;
@@ -34,6 +45,32 @@ class XFirebaseMessage {
     await requestPermission();
   }
 
+  @pragma('vm:entry-point')
+  void notificationTapBackground(NotificationResponse notificationResponse) {
+    xLog.e(notificationResponse.toString());
+  }
+
+  Future initLocalNotification() async {
+    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const iOS = DarwinInitializationSettings();
+    const settings = InitializationSettings(android: android, iOS: iOS);
+
+    await _localNoti.initialize(
+      settings,
+      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
+      onDidReceiveNotificationResponse: (details) {
+        xLog.e(details.toString());
+      },
+    );
+
+    final platform = _localNoti.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+
+    await platform?.requestNotificationsPermission();
+
+    await platform?.createNotificationChannel(_androidChannel);
+  }
+
   // NOTE: This function you must initialize Plugin Notification. For example:
   // - Awesome Notification:
   //  https://pub.dev/packages/awesome_notifications#-how-to-show-local-notifications
@@ -45,6 +82,7 @@ class XFirebaseMessage {
   // at https://firebase.flutter.dev/docs/messaging/apple-integration
   Future<void> setupNotification() async {
     if (isNotificationsInitialized) {
+      xLog.e(true);
       return;
     }
 
@@ -56,6 +94,7 @@ class XFirebaseMessage {
       badge: true,
       sound: true,
     );
+    initLocalNotification();
     configForegroundNotification();
     configOnMessageOpenApp();
     isNotificationsInitialized = true;
@@ -110,8 +149,54 @@ class XFirebaseMessage {
     AndroidNotification? android = message.notification?.android;
 
     if (notification != null && android != null) {
-      //TODO: Implement show notification
+      _localNoti.show(notification.hashCode, notification.title,
+          notification.body, getNotificationDetail(),
+          payload: jsonEncode(message.toMap()));
     }
+  }
+
+  NotificationDetails getNotificationDetail() {
+    return NotificationDetails(
+        android: AndroidNotificationDetails(
+            _androidChannel.id, _androidChannel.name,
+            channelDescription: _androidChannel.description,
+            icon: '@mipmap/ic_launcher'));
+  }
+
+  Future scheduleNotification(
+      {int id = 0,
+      String? title,
+      String? body,
+      String? payload,
+      required tz.TZDateTime scheduledNotiDateTime}) async {
+    return _localNoti.zonedSchedule(
+      id,
+      title,
+      body,
+      scheduledNotiDateTime,
+      getNotificationDetail(),
+      payload: payload,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
+  Future reminderNotification(
+      {int id = 0,
+      String? title,
+      String? body,
+      String? payload,
+      required RepeatInterval interval}) async {
+    return _localNoti.periodicallyShow(
+      id,
+      title,
+      body,
+      interval,
+      getNotificationDetail(),
+      payload: payload,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
   }
 
   void registerTokenFCM() async {

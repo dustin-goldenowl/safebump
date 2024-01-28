@@ -233,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _renderExtensionSection(BuildContext context) {
     return SizedBox(
-      height: 500,
+      height: 360,
       child: GridView.builder(
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -246,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
           icon: AppConstant.getListExtensionData(context)[index].icon,
           routeName: AppConstant.getListExtensionData(context)[index].routeName,
         ),
-        itemCount: 6,
+        itemCount: AppConstant.getListExtensionData(context).length,
       ),
     );
   }

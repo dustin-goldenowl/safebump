@@ -9,7 +9,9 @@ import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
 
 class SetupMedicationScreen extends StatelessWidget {
-  const SetupMedicationScreen({Key? key}) : super(key: key);
+  const SetupMedicationScreen({Key? key, required this.setupMedication})
+      : super(key: key);
+  final Function(bool) setupMedication;
 
   @override
   Widget build(BuildContext context) {
@@ -73,8 +75,10 @@ class SetupMedicationScreen extends StatelessWidget {
               fontSize: AppFontSize.f16,
               color: AppColors.white),
         ),
-        onPressed: () {
-          AppCoordinator.showAddMedication();
+        onPressed: () async {
+          await AppCoordinator.showAddMedication().then((value) {
+            setupMedication(value);
+          });
         },
       ),
     );

@@ -142,7 +142,7 @@ class _XNoteItemState extends State<XNoteItem> {
                     style: const TextStyle(fontFamily: FontFamily.abel),
                   ),
                   Text(
-                    (widget.note.time ?? DateTime.now()).toHHm,
+                    (widget.note.time ?? DateTime.now()).toHHmm,
                     style: const TextStyle(
                         fontFamily: FontFamily.abel,
                         color: AppColors.black,
@@ -195,7 +195,7 @@ class _XNoteItemState extends State<XNoteItem> {
                     style: const TextStyle(fontFamily: FontFamily.abel),
                   ),
                   Text(
-                    (widget.note.time ?? DateTime.now()).toHHm,
+                    (widget.note.time ?? DateTime.now()).toHHmm,
                     style: const TextStyle(
                         fontFamily: FontFamily.abel,
                         color: AppColors.black,

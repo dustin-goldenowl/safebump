@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
+import 'package:safebump/src/feature/medicine/logic/add_medication_state.dart';
 import 'package:safebump/src/feature/medicine/widget/medication_detail_bottom_sheet.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
 
 class AddMedicationScreen extends StatefulWidget {
@@ -117,31 +119,46 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
           top: AppMargin.m24,
           bottom: AppMargin.m8,
         ),
-        child: XTextFieldWithLabel(
-          hintText: S.of(context).enterMedicationName,
-          onChanged: (text) {
-            context.read<AddMedicationBloc>().onChangedMedicationName(text);
+        child: BlocBuilder<AddMedicationBloc, AddMedicationState>(
+          buildWhen: (previous, current) =>
+              previous.name != current.name ||
+              previous.nameError != current.nameError,
+          builder: (context, state) {
+            return XTextFieldWithLabel(
+              hintText: S.of(context).enterMedicationName,
+              onChanged: (text) {
+                context.read<AddMedicationBloc>().onChangedMedicationName(text);
+              },
+              errorText: StringUtils.isNullOrEmpty(state.nameError)
+                  ? null
+                  : state.nameError,
+              prefix: const Icon(
+                Icons.medication_outlined,
+                color: AppColors.hintTextColor,
+                size: AppSize.s20,
+              ),
+              suffix: IconButton(
+                icon: const Icon(
+                  Icons.rocket_launch,
+                  color: AppColors.hintTextColor,
+                  size: AppSize.s20,
+                ),
+                onPressed: () {
+                  if (context
+                      .read<AddMedicationBloc>()
+                      .isNameInvalid(context)) {
+                    return;
+                  }
+                  _showMedicationDetailBottomsheet(context);
+                },
+              ),
+            );
           },
-          prefix: const Icon(
-            Icons.medication_outlined,
-            color: AppColors.hintTextColor,
-            size: AppSize.s20,
-          ),
-          suffix: IconButton(
-            icon: const Icon(
-              Icons.rocket_launch,
-              color: AppColors.hintTextColor,
-              size: AppSize.s20,
-            ),
-            onPressed: () {
-              _showMedicationDetailBottomsheet(context);
-            },
-          ),
         ));
   }
 
-  void _showMedicationDetailBottomsheet(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> _showMedicationDetailBottomsheet(BuildContext context) async {
+    await showModalBottomSheet(
       transitionAnimationController: controller,
       context: context,
       backgroundColor: Colors.transparent,
@@ -151,13 +168,17 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
             backgroundColor: Colors.transparent,
             body: BlocProvider.value(
               value: BlocProvider.of<AddMedicationBloc>(context),
-              child: const XMedicationDetailBottomSheet(),
+              child: const XMedicationDetailBottomSheet(isEdit: false,),
             )),
       ),
       isScrollControlled: true,
       barrierColor: AppColors.black.withOpacity(0.6),
       enableDrag: true,
       isDismissible: true,
-    );
+    ).then((value) {
+      if (value == true) {
+        AppCoordinator.pop(true);
+      }
+    });
   }
 }

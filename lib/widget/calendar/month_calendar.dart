@@ -371,11 +371,8 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
     );
   }
 
-  // Days mustn't be future day & before account creation day.
   bool _isValidDay(DateTime time) {
-    final now = DateTime.now();
-    final currentDate = DateTime(now.year, now.month, now.day);
-    if (time.difference(currentDate).inDays > 0 ||
+    if (time.difference(_maxDate).inDays > 0 ||
         time.difference(widget.minDate).inDays < 0) {
       return false;
     }

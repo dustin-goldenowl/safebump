@@ -85,6 +85,7 @@ class XPickableTextField extends StatelessWidget {
         Column(
           children: [
             GestureDetector(
+              
               onTap: isDisable
                   ? null
                   : !isEditable
@@ -153,8 +154,10 @@ class _TextFormField extends StatelessWidget {
             ? Theme.of(context).inputDecorationTheme.errorStyle
             : const TextStyle(height: 0),
         suffixIconConstraints: const BoxConstraints(
-          minWidth: AppSize.s30,
+          minWidth: AppSize.s20,
         ),
+        // isCollapsed: true,
+        isDense: true,
         suffixIcon: trailingIcon ?? const SizedBox.shrink(),
         fillColor: AppColors.grey6,
         border: _renderCustomBorder(),

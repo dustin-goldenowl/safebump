@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/medication_state.dart';
+import 'package:safebump/src/feature/medicine/widget/medication_card.dart';
+import 'package:safebump/src/feature/medicine/widget/medication_detail_bottom_sheet.dart';
 import 'package:safebump/src/feature/medicine/widget/set_up_medication_screen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
@@ -47,7 +51,12 @@ class _MedicationScreenState extends State<MedicationScreen>
                   return _renderFailFetchQuestion();
                 case MedicationScreenStatus.success:
                   return state.listMedication.isEmpty
-                      ? const Expanded(child: SetupMedicationScreen())
+                      ? Expanded(
+                          child: SetupMedicationScreen(
+                          setupMedication: (isSuccess) => context
+                              .read<MedicationBloc>()
+                              .reloadPage(context, isSuccess),
+                        ))
                       : _renderMedicationContent();
                 default:
                   return const SizedBox.shrink();
@@ -93,12 +102,14 @@ class _MedicationScreenState extends State<MedicationScreen>
   }
 
   Widget _renderMedicationContent() {
-    return Column(
-      children: [
-        _renderHeaderMedication(),
-        const SizedBox(height: AppSize.s10),
-        _renderTabBarView(),
-      ],
+    return Expanded(
+      child: Column(
+        children: [
+          _renderHeaderMedication(),
+          const SizedBox(height: AppSize.s10),
+          _renderMedicationView(),
+        ],
+      ),
     );
   }
 
@@ -115,18 +126,35 @@ class _MedicationScreenState extends State<MedicationScreen>
     );
   }
 
-  Widget _renderTabBarView() {
+  Widget _renderMedicationView() {
     return Expanded(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
-      child: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
         child: _renderMedicationList(context),
       ),
-    ));
+    );
   }
 
   Widget _renderMedicationList(BuildContext context) {
-    return Container();
+    return BlocBuilder<MedicationBloc, MedicationState>(
+      buildWhen: (previous, current) =>
+          previous.listMedication != current.listMedication,
+      builder: (context, state) {
+        return ListView.builder(
+            itemCount: state.listMedication.length,
+            itemBuilder: (context, index) => XMedicationCard(
+                medicationName: state.listMedication[index].name,
+                medicationUnit:
+                    '${state.listMedication[index].amount} ${state.listMedication[index].doseType.getText()}',
+                onEditMedication: () => _showMedicationDetailBottomsheet(
+                      context,
+                      state.listMedication[index].copyWith(),
+                    ),
+                onDeleteMedication: () {
+                  context.read<MedicationBloc>().deleteMedication(context,state.listMedication[index]);
+                }));
+      },
+    );
   }
 
   Widget _renderHeaderMedication() {
@@ -145,15 +173,45 @@ class _MedicationScreenState extends State<MedicationScreen>
                 color: AppColors.black),
           ),
           IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onPressed: () {},
+              splashColor: AppColors.subPrimary,
+              highlightColor: AppColors.subPrimary,
+              onPressed: () async {
+                await AppCoordinator.showAddMedication().then((value) {
+                  if (value == true) {
+                    context.read<MedicationBloc>().reloadPage(context, value);
+                  }
+                });
+              },
               icon: const Icon(
-                Icons.add_circle_outline,
+                Icons.add_circle,
                 color: AppColors.primary,
               )),
         ],
       ),
     );
+  }
+
+  Future<void> _showMedicationDetailBottomsheet(
+      BuildContext context, MMedication medication) async {
+    await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (_) => FractionallySizedBox(
+        heightFactor: 0.92,
+        child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: BlocProvider(
+              create: (context) => AddMedicationBloc(),
+              child: XMedicationDetailBottomSheet(
+                  isEdit: true, medication: medication),
+            )),
+      ),
+      isScrollControlled: true,
+      barrierColor: AppColors.black.withOpacity(0.6),
+      enableDrag: true,
+      isDismissible: true,
+    ).then((value) {
+      context.read<MedicationBloc>().reloadPage(context, true);
+    });
   }
 }

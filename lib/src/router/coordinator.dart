@@ -77,6 +77,11 @@ class AppCoordinator {
       context.pushNamed(AppRouteNames.questionQuiz.name,
           pathParameters: {'id': title});
 
-  static void showAddMedication() =>
-      context.pushNamed(AppRouteNames.addMedication.name);
+  static Future<bool> showAddMedication() async {
+    bool result = false;
+    await context
+        .pushNamed<bool>(AppRouteNames.addMedication.name)
+        .then((value) => result = value ?? false);
+    return result;
+  }
 }

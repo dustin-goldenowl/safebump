@@ -19,6 +19,12 @@ class NotesLocalRepoImpl extends NotesLocalRepo {
   }
 
   @override
+  MultiSelectable<NotesEntityData> getDetailByMedicineName({required String name}) {
+    return (database.select(database.notesEntity)
+      ..where((notes) => notes.medicine.equals(name)));
+  }
+
+  @override
   MultiSelectable<NotesEntityData> getAllDetails({int? limit}) {
     if (limit == null) {
       return database.select(database.notesEntity);

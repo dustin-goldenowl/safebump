@@ -54,6 +54,44 @@ enum DoseType {
         return S.text.unit;
     }
   }
+
+  static DoseType gettype(String type) {
+    switch (type) {
+      case 'Application':
+        return DoseType.application;
+      case 'Cap':
+        return DoseType.cap;
+      case 'Drop':
+        return DoseType.drop;
+      case 'Gram':
+        return DoseType.gram;
+      case 'Injection':
+        return DoseType.injection;
+      case 'Miligram':
+        return DoseType.miligram;
+      case 'Mililiter':
+        return DoseType.mililiter;
+      case 'Packet':
+        return DoseType.packet;
+      case 'Patch':
+        return DoseType.patch;
+      case 'Piece':
+        return DoseType.piece;
+      case 'Pill':
+        return DoseType.pill;
+      case 'Puff':
+        return DoseType.puff;
+      case 'Spoon':
+        return DoseType.spoon;
+      case 'Spray':
+        return DoseType.spray;
+      case 'Suppository':
+        return DoseType.suppository;
+      case 'Unit':
+      default:
+        return DoseType.unit;
+    }
+  }
 }
 
 enum ReminderFrequencyEnum {

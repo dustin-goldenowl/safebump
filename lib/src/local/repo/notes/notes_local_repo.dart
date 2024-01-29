@@ -15,6 +15,9 @@ abstract class NotesLocalRepo {
 
   MultiSelectable<NotesEntityData> getDetailByDate({required String date});
 
+  MultiSelectable<NotesEntityData> getDetailByMedicineName(
+      {required String name});
+
   //Get all records of Details table with limitation and order by desc
   MultiSelectable<NotesEntityData> getAllDetails({int? limit});
 

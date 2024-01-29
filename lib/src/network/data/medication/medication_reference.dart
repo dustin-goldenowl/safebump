@@ -31,11 +31,10 @@ class MedicationReference extends BaseCollectionReference<MMedication> {
   Future<MResult<bool>> deleteMedication(MMedication medication) async {
     try {
       final result = await get(medication.id);
-      if (result.isError == false) {
+      if (result.data == null) {
         return MResult.exception(false);
       } else {
-        final MResult<bool> result = await delete(medication);
-        xLog.e(result.data);
+        await delete(medication);
         return MResult.success(true);
       }
     } catch (e) {
@@ -43,11 +42,11 @@ class MedicationReference extends BaseCollectionReference<MMedication> {
     }
   }
 
-  Future<MResult<bool>> upsertMedication(MMedication medication) async {
+  Future<MResult<bool>> updateMedication(MMedication medication) async {
     try {
       final result = await update(medication.id, medication.toJson());
       if (result.isError == true) {
-        return MResult.error(S.text.someThingWentWrong);
+        return MResult.success(false);
       } else {
         return MResult.success(true);
       }

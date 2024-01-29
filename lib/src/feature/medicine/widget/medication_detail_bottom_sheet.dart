@@ -1,16 +1,20 @@
+import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:safebump/gen/fonts.gen.dart';
+import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/config/enum/medication_enum.dart';
 import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/add_medication_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
+import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 import 'package:safebump/widget/chip/warning_chip.dart';
 import 'package:safebump/widget/list_view/list_view_bottom_sheet.dart';
@@ -20,7 +24,11 @@ import 'package:safebump/widget/text_field/pickable_text_field.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
 
 class XMedicationDetailBottomSheet extends StatefulWidget {
-  const XMedicationDetailBottomSheet({Key? key}) : super(key: key);
+  const XMedicationDetailBottomSheet(
+      {Key? key, required this.isEdit, this.medication})
+      : super(key: key);
+  final bool isEdit;
+  final MMedication? medication;
 
   @override
   State<XMedicationDetailBottomSheet> createState() =>
@@ -32,6 +40,9 @@ class _XMedicationDetailBottomSheetState
   @override
   void initState() {
     WidgetsBinding.instance.addObserver(this);
+    if (widget.isEdit && !isNullOrEmpty(widget.medication)) {
+      context.read<AddMedicationBloc>().initialize(widget.medication!);
+    }
     super.initState();
   }
 
@@ -43,8 +54,7 @@ class _XMedicationDetailBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+    return DismissKeyBoard(
       child: ClipRRect(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(AppRadius.r30),
@@ -96,7 +106,9 @@ class _XMedicationDetailBottomSheetState
             }
             return IconButton(
               onPressed: () {
-                context.read<AddMedicationBloc>().onPressSaveButton();
+                context
+                    .read<AddMedicationBloc>()
+                    .onPressSaveButton(context, widget.medication?.id);
               },
               icon: const Icon(
                 Icons.check,
@@ -133,7 +145,6 @@ class _XMedicationDetailBottomSheetState
                   XPaddingUtils.verticalPadding(height: AppPadding.p23),
                   _renderNotesSection(),
                   XPaddingUtils.verticalPadding(height: AppPadding.p16),
-                  _renderSetReminderSection(),
                   _renderFrequencyAndReminder(),
                 ],
               ),
@@ -215,14 +226,23 @@ class _XMedicationDetailBottomSheetState
   Widget _renderNotesSection() {
     return Column(
       children: [
-        XTextFieldWithLabel(
-          initText: context.read<AddMedicationBloc>().state.note,
-          label: S.of(context).notes,
-          onChanged: (value) =>
-              context.read<AddMedicationBloc>().setNotes(value),
-          hintText: S.of(context).addYourNotesHere,
-          maxLines: 10,
-          textInputAction: TextInputAction.newline,
+        BlocBuilder<AddMedicationBloc, AddMedicationState>(
+          buildWhen: (pre, cur) =>
+              pre.name != cur.name ||
+              pre.nameError != cur.nameError ||
+              pre.nameInit != cur.nameInit,
+          builder: (context, state) {
+            return XTextFieldWithLabel(
+              initText: state.nameInit,
+              label: S.of(context).notes,
+              onChanged: (value) {
+                context.read<AddMedicationBloc>().setNotes(value);
+              },
+              hintText: S.of(context).addYourNotesHere,
+              maxLines: 3,
+              textInputAction: TextInputAction.newline,
+            );
+          },
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p30),
         const XSolidSeparator(
@@ -232,75 +252,20 @@ class _XMedicationDetailBottomSheetState
     );
   }
 
-  Widget _renderSetReminderSection() {
-    return BlocSelector<AddMedicationBloc, AddMedicationState, bool>(
-      selector: (state) {
-        return state.isSetReminder;
-      },
-      builder: (context, isReminder) {
-        return isReminder
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      S.of(context).doYouWantToSetReminder,
-                      style: const TextStyle(
-                        fontFamily: FontFamily.abel,
-                        color: AppColors.black,
-                        fontSize: AppFontSize.f16,
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppRadius.r8),
-                          border: Border.all(color: AppColors.primary)),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: AppPadding.p6, vertical: AppPadding.p2),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            S.of(context).set,
-                            textScaler: TextScaler.noScaling,
-                            style: const TextStyle(
-                                fontFamily: FontFamily.productSans,
-                                color: AppColors.primary),
-                          ),
-                          XPaddingUtils.horizontalPadding(width: AppPadding.p6),
-                          const Icon(
-                            Icons.timer,
-                            size: AppSize.s16,
-                            color: AppColors.primary,
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              )
-            : const SizedBox.shrink();
-      },
-    );
-  }
-
   Widget _renderFrequencyAndReminder() {
     return BlocBuilder<AddMedicationBloc, AddMedicationState>(
       builder: (context, state) {
-        return isNullOrEmpty(state.time)
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _renderFrequencySection(state),
-                  XPaddingUtils.verticalPadding(height: AppPadding.p16),
-                  _renderTakeTimeList(state),
-                  XPaddingUtils.verticalPadding(height: AppPadding.p16),
-                ],
-              )
-            : const SizedBox.shrink();
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _renderFrequencySection(state),
+            XPaddingUtils.verticalPadding(height: AppPadding.p16),
+            _renderTakeTimeList(state),
+            XPaddingUtils.verticalPadding(height: AppPadding.p16),
+            _renderEmptyTime(state),
+            XPaddingUtils.verticalPadding(height: AppPadding.p16),
+          ],
+        );
       },
     );
   }
@@ -322,6 +287,16 @@ class _XMedicationDetailBottomSheetState
           ),
         ),
         GestureDetector(
+          onTap: () {
+            context.read<AddMedicationBloc>().showBottomSheetDateTimePicker(
+                context,
+                title: S.of(context).selectTime,
+                type: DateTimePickerType.time, onChanged: (time) {
+              xLog.e(widget.medication.toString());
+              context.read<AddMedicationBloc>().onChangedListRemindTime(time);
+              xLog.e(widget.medication.toString());
+            });
+          },
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(AppRadius.r8),
@@ -332,7 +307,7 @@ class _XMedicationDetailBottomSheetState
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  S.of(context).set,
+                  S.of(context).addATime,
                   textScaler: TextScaler.noScaling,
                   style: const TextStyle(
                       fontFamily: FontFamily.productSans,
@@ -353,17 +328,30 @@ class _XMedicationDetailBottomSheetState
   }
 
   Widget _renderTakeTimeList(AddMedicationState state) {
-    return Wrap(
-      spacing: AppMargin.m8,
-      runSpacing: AppMargin.m8,
-      children: state.time!
-          .map(
-            (element) => XWarningChip(
-              title: element,
-            ),
-          )
-          .toList(),
-    );
+    return isNullOrEmpty(state.time)
+        ? const SizedBox.shrink()
+        : Wrap(
+            spacing: AppMargin.m8,
+            runSpacing: AppMargin.m8,
+            children: state.time!
+                .map(
+                  (element) => XWarningChip(
+                    title: element,
+                    icon: _getTimerIcon(element),
+                    removeRemindTime: (time) => context
+                        .read<AddMedicationBloc>()
+                        .removeRemindTime(time),
+                  ),
+                )
+                .toList(),
+          );
+  }
+
+  IconData _getTimerIcon(String time) {
+    final hour = int.parse(time.split(':').first);
+    if (hour >= 6 && hour < 12) return Icons.wb_sunny_outlined;
+    if (hour >= 12 && hour < 20) return Icons.wb_twilight_outlined;
+    return Icons.nights_stay_outlined;
   }
 
   void _renderUnitsBottomSheet() {
@@ -382,12 +370,25 @@ class _XMedicationDetailBottomSheetState
         buttonName: S.of(context).done,
         heightFactor: 0.3,
         selectedValue:
-            context.read<AddMedicationBloc>().state.doseType.toString(),
+            context.read<AddMedicationBloc>().state.doseType.getText(),
         onPressDone: (value) {
           context.read<AddMedicationBloc>().setDoseType(value);
         },
       ),
       enableDrag: false,
     );
+  }
+
+  Widget _renderEmptyTime(AddMedicationState state) {
+    return StringUtils.isNullOrEmpty(state.timeError)
+        ? const SizedBox.shrink()
+        : Text(
+            state.timeError!,
+            textScaler: TextScaler.noScaling,
+            style: const TextStyle(
+                fontFamily: FontFamily.abel,
+                fontSize: AppFontSize.f14,
+                color: AppColors.red),
+          );
   }
 }

@@ -28,6 +28,7 @@ class NoteReference extends BaseCollectionReference<MCalendar> {
       final MResult<MCalendar> result = await set(notes);
       return MResult.success(result.data);
     } catch (e) {
+      xLog.e(e);
       return MResult.exception(e);
     }
   }

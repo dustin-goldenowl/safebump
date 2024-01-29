@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/utils.dart';
 
 class XWarningChip extends StatelessWidget {
   final IconData? icon;
@@ -12,6 +13,7 @@ class XWarningChip extends StatelessWidget {
   final double? borderRadius;
   final double? iconSize;
   final bool hasIcon;
+  final Function(String)? removeRemindTime;
   const XWarningChip({
     Key? key,
     this.icon,
@@ -22,6 +24,7 @@ class XWarningChip extends StatelessWidget {
     this.borderRadius = AppRadius.r16,
     this.iconSize,
     this.hasIcon = true,
+    this.removeRemindTime,
   }) : super(key: key);
 
   @override
@@ -50,12 +53,27 @@ class XWarningChip extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: FontFamily.abel,
                   color: textColor ?? AppColors.black,
+                  fontWeight: FontWeight.bold,
                   fontSize: AppFontSize.f14,
                 ),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
+          if (!isNullOrEmpty(removeRemindTime))
+            IconButton(
+                onPressed: () => removeRemindTime!(title),
+                style: ButtonStyle(
+                  padding:
+                      MaterialStateProperty.all(EdgeInsetsDirectional.zero),
+                  minimumSize: MaterialStateProperty.all(Size.zero),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+                icon: const Icon(
+                  Icons.cancel,
+                  color: AppColors.red,
+                  size: AppSize.s16,
+                ))
         ],
       ),
     );

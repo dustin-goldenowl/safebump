@@ -13,7 +13,7 @@ MMedication _$MMedicationFromJson(Map<String, dynamic> json) => MMedication(
       amount: (json['amount'] as num).toDouble(),
       note: json['note'] as String,
       frequency: $enumDecode(_$ReminderFrequencyEnumEnumMap, json['frequency']),
-      time: json['time'] as String,
+      time: (json['time'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$MMedicationToJson(MMedication instance) =>

@@ -225,7 +225,7 @@ class AddBabyScreen extends StatelessWidget {
           icon: Icons.access_time,
           value: isNullOrEmpty(state.babyBirthTime)
               ? null
-              : state.babyBirthTime!.toHHm,
+              : state.babyBirthTime!.toHHmm,
           labelStyle: const TextStyle(
               fontSize: AppFontSize.f16,
               fontFamily: FontFamily.productSans,

@@ -12,8 +12,8 @@ class MedicationRepositoryImpl extends MedicationRepository {
   }
 
   @override
-  Future<MResult<bool>> upsertMedication(MMedication medication) async {
-    return await medicationRef.upsertMedication(medication);
+  Future<MResult<bool>> updateMedication(MMedication medication) async {
+    return await medicationRef.updateMedication(medication);
   }
 
   @override

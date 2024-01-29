@@ -160,6 +160,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           onDaySelected: (date) =>
               context.read<CalendarBloc>().onChangedDate(date),
           minDate: DateTime.now().subtract(const Duration(days: 200)),
+          maxDate: DateTime(DateTime.now().year + 2),
           calendarState: state.status,
         );
       },
@@ -219,7 +220,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget _renderNoteItem(MNote note) {
     return XNoteItem(
       note: note,
-      deleteFunc: () => context.read<CalendarBloc>().deleteNote(note.id, context),
+      deleteFunc: () =>
+          context.read<CalendarBloc>().deleteNote(note.id, context),
     );
   }
 }

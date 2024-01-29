@@ -15,7 +15,7 @@ extension DateTimeFormat on DateTime {
   String get toMMMdy => DateFormat("MMM d, y").format(this);
 
   /// Formatted date: 16 : 09
-  String get toHHm => DateFormat("HH : m").format(this);
+  String get toHHmm => DateFormat("HH : mm").format(this);
 
   /// Formatted date: 01/17/2024
   String get toMMDDYYYYFormat => DateFormat('MM/dd/yyyy').format(this);

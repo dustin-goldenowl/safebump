@@ -11,9 +11,14 @@ class AddMedicationState {
       this.status = AddMedicationStatus.init,
       this.isSetReminder = false,
       this.frequency = ReminderFrequencyEnum.everyDay,
+      this.nameError,
+      this.timeError,
+      this.nameInit,
       this.time});
 
   final String name;
+  final String? nameError;
+  final String? nameInit;
   final DoseType doseType;
   final double amount;
   final String note;
@@ -21,6 +26,7 @@ class AddMedicationState {
   final ReminderFrequencyEnum frequency;
   final AddMedicationStatus status;
   final List<String>? time;
+  final String? timeError;
   AddMedicationState copyWith(
       {String? name,
       DoseType? doseType,
@@ -29,15 +35,22 @@ class AddMedicationState {
       bool? isSetReminder,
       AddMedicationStatus? status,
       ReminderFrequencyEnum? frequency,
+      String? timeError,
+      String? nameError,
+      String? nameInit,
       List<String>? time}) {
     return AddMedicationState(
-        name: name ?? this.name,
-        status: status ?? this.status,
-        doseType: doseType ?? this.doseType,
-        amount: amount ?? this.amount,
-        note: note ?? this.note,
-        isSetReminder: isSetReminder ?? this.isSetReminder,
-        frequency: frequency ?? this.frequency,
-        time: time ?? this.time);
+      name: name ?? this.name,
+      nameError: nameError ?? this.nameError,
+      status: status ?? this.status,
+      doseType: doseType ?? this.doseType,
+      amount: amount ?? this.amount,
+      note: note ?? this.note,
+      isSetReminder: isSetReminder ?? this.isSetReminder,
+      frequency: frequency ?? this.frequency,
+      time: time ?? this.time,
+      timeError: timeError ?? this.timeError,
+      nameInit: nameInit ?? this.nameInit,
+    );
   }
 }

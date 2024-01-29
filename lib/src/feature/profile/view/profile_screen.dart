@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
@@ -321,9 +322,18 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _renderAvatar({String? img, required String name}) {
-    return XAvatar(
-      key: UniqueKey(),
-      name: name,
+    return BlocSelector<ProfileBloc, ProfileState, Uint8List?>(
+      selector: (state) {
+        return state.avatar;
+      },
+      builder: (context, avatar) {
+        return XAvatar(
+          key: UniqueKey(),
+          imageType: ImageType.memory,
+          name: name,
+          memoryData: avatar,
+        );
+      },
     );
   }
 

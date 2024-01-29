@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:safebump/src/config/enum/baby_type_enum.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/network/model/user/user.dart';
@@ -28,7 +30,7 @@ class EditProfileState {
   final MUser user;
   final double? height;
   final double? weight;
-  final String? avatar;
+  final Uint8List? avatar;
   final String? initName;
   final EditProfileStatus status;
   EditProfileState copyWith(
@@ -41,6 +43,7 @@ class EditProfileState {
       MUser? user,
       double? height,
       double? weight,
+      Uint8List? avatar,
       String? initName,
       EditProfileStatus? status}) {
     return EditProfileState(
@@ -54,6 +57,7 @@ class EditProfileState {
         user: user ?? this.user,
         height: height ?? this.height,
         weight: weight ?? this.weight,
+        avatar: avatar ?? this.avatar,
         status: status ?? this.status);
   }
 }

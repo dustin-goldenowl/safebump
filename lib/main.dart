@@ -8,9 +8,11 @@ import 'package:safebump/src/locator.dart';
 import 'package:safebump/src/router/router.dart';
 import 'package:safebump/src/theme/themes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
   await initializeApp();
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 

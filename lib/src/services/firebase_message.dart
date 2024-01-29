@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tzInit;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../utils/utils.dart';
@@ -57,9 +58,8 @@ class XFirebaseMessage {
 
     await _localNoti.initialize(
       settings,
-      onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
       onDidReceiveNotificationResponse: (details) {
-        xLog.e(details.toString());
+        xLog.e(details.payload);
       },
     );
 
@@ -168,12 +168,13 @@ class XFirebaseMessage {
       String? title,
       String? body,
       String? payload,
-      required tz.TZDateTime scheduledNotiDateTime}) async {
+      required DateTime time}) async {
+    tzInit.initializeTimeZones();
     return _localNoti.zonedSchedule(
       id,
       title,
       body,
-      scheduledNotiDateTime,
+      nextInstanceRemindTime(time),
       getNotificationDetail(),
       payload: payload,
       uiLocalNotificationDateInterpretation:
@@ -228,5 +229,15 @@ class XFirebaseMessage {
 
   Future<void> unSubscribeTopics(String topic) async {
     await messaging.unsubscribeFromTopic(topic);
+  }
+
+  tz.TZDateTime nextInstanceRemindTime(DateTime time) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+        tz.local, now.year, now.month, now.day, time.hour, time.minute);
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
   }
 }

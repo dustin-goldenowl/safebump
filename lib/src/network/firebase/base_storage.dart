@@ -25,7 +25,7 @@ class BaseStorageReference<T> {
     }
   }
 
-    Future<MResult<String>> getUrl(String item,
+  Future<MResult<String>> getUrl(String item,
       {bool isGetFromSubRef = false}) async {
     final itemRef = isGetFromSubRef && subRef != null
         ? subRef!.child(item)
@@ -44,6 +44,7 @@ class BaseStorageReference<T> {
       await ref.child(item).delete().timeout(const Duration(seconds: 5));
       return MResult.success(true);
     } catch (e) {
+      xLog.e(e);
       return MResult.exception(e);
     }
   }
@@ -56,6 +57,17 @@ class BaseStorageReference<T> {
 
       return MResult.success([listAll.items, listAll.prefixes]);
     } catch (e) {
+      return MResult.exception(e);
+    }
+  }
+
+  Future<MResult<bool>> add(String item, Uint8List data) async {
+    final itemRef = ref.child(item);
+    try {
+      itemRef.putData(data, SettableMetadata(contentType: 'image/jpeg'));
+      return MResult.success(true);
+    } on FirebaseException catch (e) {
+      xLog.e(e.message);
       return MResult.exception(e);
     }
   }

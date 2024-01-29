@@ -9,7 +9,9 @@ import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class ProfileBloc extends Cubit<ProfileState> {
-  ProfileBloc() : super(ProfileState(user: _initUser()));
+  ProfileBloc()
+      : super(ProfileState(
+            user: _initUser(), avatar: UserPrefs.I.getUserAvatar()));
 
   static MUser _initUser() {
     final user = UserPrefs.I.getUser();
@@ -18,7 +20,11 @@ class ProfileBloc extends Cubit<ProfileState> {
   }
 
   void updateProfile() {
-    emit(state.copyWith(user: _initUser()));
+    final memoryAvatar = UserPrefs.I.getUserAvatar();
+    emit(state.copyWith(
+      user: _initUser(),
+      avatar: memoryAvatar,
+    ));
   }
 
   Future<void> signOutAccount() async {

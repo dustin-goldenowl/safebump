@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -38,7 +39,8 @@ Future initializeApp() async {
   await Future.wait([
     AppInfo.initialize(),
     UserPrefs.instance.initialize(),
-    XFirebaseMessage.instance.initialize()
+    XFirebaseMessage.instance.initialize(),
+    AndroidAlarmManager.initialize(),
   ]);
   _locator();
 }

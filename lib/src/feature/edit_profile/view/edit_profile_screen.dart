@@ -1,3 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -116,26 +120,36 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       child: Column(
         children: [
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
-          XAvatar(
-              key: UniqueKey(),
-              isEditable: true,
-              onEdit: () {
-                pickImagehandler(context, '');
-              }),
+          BlocSelector<EditProfileBloc, EditProfileState, Uint8List?>(
+            selector: (state) {
+              return state.avatar;
+            },
+            builder: (context, avatar) {
+              return XAvatar(
+                  key: UniqueKey(),
+                  isEditable: true,
+                  memoryData: avatar,
+                  name: context.read<EditProfileBloc>().state.name,
+                  imageType: ImageType.memory,
+                  onEdit: () {
+                    pickImagehandler(context, avatar);
+                  });
+            },
+          ),
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
         ],
       ),
     );
   }
 
-  void pickImagehandler(BuildContext context, String? avatar) {
+  void pickImagehandler(BuildContext context, Uint8List? avatar) {
     showCupertinoModalBottomSheet(
         duration: const Duration(milliseconds: 350),
         animationCurve: Curves.easeOut,
         barrierColor: AppColors.black.withOpacity(0.5),
         context: context,
         builder: (_) => XImagePickerBottomSheet(
-            isPhotoExisted: !StringUtils.isNullOrEmpty(avatar),
+            isPhotoExisted: !isNullOrEmpty(avatar),
             onSelectedValue: (value) async {
               AppCoordinator.pop();
               switch (value as String) {
@@ -143,7 +157,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                   try {
                     final image = await PickerImageApp.show(ImageSource.camera);
                     if (image != null) {
-                      // TODO: Save image
+                      context.read<EditProfileBloc>().setAvatar(image.bytes);
                     }
                   } catch (error) {
                     xLog.e("pickImagehandler $error");
@@ -154,7 +168,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     final image =
                         await PickerImageApp.show(ImageSource.gallery);
                     if (image != null) {
-                      // TODO: Save image
+                      context.read<EditProfileBloc>().setAvatar(image.bytes);
                     }
                   } catch (error) {
                     xLog.e("pickImagehandler $error");
@@ -162,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                   break;
                 case 'Remove photo':
                   try {
-                    // TODO: Remove photo
+                    context.read<EditProfileBloc>().setAvatar(Uint8List(0));
                   } catch (error) {
                     xLog.e("pickImagehandler $error");
                   }

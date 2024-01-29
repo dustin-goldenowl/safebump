@@ -13,6 +13,7 @@ import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/model/calendar/calendar.dart';
 import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/router/coordinator.dart';
+import 'package:safebump/src/services/alarm_noti.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
@@ -84,6 +85,7 @@ class AddMedicationBloc extends Cubit<AddMedicationState> {
         }
         xLog.e("Add new success");
         await _createNote();
+        _registerRemindAlarm();
         emit(state.copyWith(status: AddMedicationStatus.success));
         XToast.hideLoading();
         AppCoordinator.pop(true);
@@ -220,6 +222,16 @@ class AddMedicationBloc extends Cubit<AddMedicationState> {
     } catch (e) {
       xLog.e(e);
       return [];
+    }
+  }
+
+  void _registerRemindAlarm() {
+    for (int i = 0; i < (state.time ?? []).length; i++) {
+      XAlarm.setupAlarm(
+          id: i,
+          title: S.text.medication,
+          body: '${state.name} \n${state.note}',
+          time: DateTimeUtils.fromHHmm(state.time![i]));
     }
   }
 }

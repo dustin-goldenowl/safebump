@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/config/enum/baby_type_enum.dart';
 import 'package:safebump/src/dialogs/alert_wrapper.dart';
+import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/edit_profile/logic/edit_profile_state.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
@@ -16,7 +19,9 @@ import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class EditProfileBloc extends Cubit<EditProfileState> {
-  EditProfileBloc() : super(EditProfileState(user: _initUser()));
+  EditProfileBloc()
+      : super(EditProfileState(
+            user: _initUser(), avatar: UserPrefs.I.getUserAvatar()));
 
   static MUser _initUser() {
     final user = UserPrefs.I.getUser();
@@ -112,6 +117,7 @@ class EditProfileBloc extends Cubit<EditProfileState> {
     if (_invalidNameField(context)) {
       emit(state.copyWith(status: EditProfileStatus.fail));
     }
+    XToast.showLoading();
     emit(state.copyWith(status: EditProfileStatus.loading));
     try {
       MUser changedUser = userAfterEdit();
@@ -119,13 +125,17 @@ class EditProfileBloc extends Cubit<EditProfileState> {
           await GetIt.I.get<UserRepository>().upsertUser(changedUser);
       if (result.data == null) {
         emit(state.copyWith(status: EditProfileStatus.fail));
+        XToast.hideLoading();
         return;
       }
+      _syncAvatarToFirebase();
       _saveToSharePref(changedUser);
       emit(state.copyWith(status: EditProfileStatus.success));
+      XToast.hideLoading();
     } catch (e) {
       xLog.e(e);
       emit(state.copyWith(status: EditProfileStatus.fail));
+      XToast.hideLoading();
     }
   }
 
@@ -139,5 +149,24 @@ class EditProfileBloc extends Cubit<EditProfileState> {
 
   void _saveToSharePref(MUser changedUser) {
     UserPrefs.I.setUser(changedUser);
+    UserPrefs.I.setUserAvatar(state.avatar ?? Uint8List(0));
+  }
+
+  void setAvatar(Uint8List avatar) {
+    emit(state.copyWith(avatar: avatar));
+  }
+
+  Future<void> _syncAvatarToFirebase() async {
+    try {
+      if (isNullOrEmpty(state.avatar) || state.avatar == Uint8List(0)) {
+        await GetIt.I.get<UserRepository>().deleteImage(state.user.id);
+        return;
+      }
+      await GetIt.I
+          .get<UserRepository>()
+          .addImage(state.user.id, state.avatar!);
+    } catch (e) {
+      xLog.e(e);
+    }
   }
 }

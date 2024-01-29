@@ -1,7 +1,6 @@
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
@@ -10,6 +9,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -119,12 +119,13 @@ class AddPreggyScreen extends StatelessWidget {
         builder: (context, state) {
           return XLabelButton(
             onTapped: () async {
-              _showDateTimeBottomSheet(context);
+              _showDateTimeBottomSheet(context,
+                  fetusDueDate: state.fetusDueDate);
             },
             hint: S.of(context).dueDate,
             value: isNullOrEmpty(state.fetusDueDate)
                 ? null
-                : DateFormat('MMM d, y').format(state.fetusDueDate!),
+                : state.fetusDueDate!.toMMMdy,
             labelStyle: const TextStyle(
                 fontSize: AppFontSize.f16,
                 fontFamily: FontFamily.productSans,
@@ -141,20 +142,22 @@ class AddPreggyScreen extends StatelessWidget {
     ));
   }
 
-  Future<void> _showDateTimeBottomSheet(BuildContext context) async {
+  Future<void> _showDateTimeBottomSheet(BuildContext context,
+      {DateTime? fetusDueDate}) async {
     await showBoardDateTimePicker(
       context: context,
       pickerType: DateTimePickerType.date,
+      initialDate: fetusDueDate,
       minimumDate: DateTime.now().subtract(const Duration(days: 280)),
       maximumDate: DateTime.now().add(const Duration(days: 280)),
-      onChanged: (date) =>
-          context.read<AddFetusBloc>().onChangedFetusDueDate(date),
       options: BoardDateTimeOptions(
         boardTitle: S.of(context).selectDate,
         activeColor: AppColors.primary,
         showDateButton: false,
       ),
-    );
+    ).then((value) => context
+        .read<AddFetusBloc>()
+        .onChangedFetusDueDate(value ?? DateTime.now()));
   }
 
   Widget _renderBottomButton(BuildContext context) {

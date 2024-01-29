@@ -54,19 +54,10 @@ class HomeBloc extends Cubit<HomeState> {
 
   void _getWeekCounter() {
     String weekCounter;
-    int weekNumber;
-    final today = DateTime.now();
-    final startedPregnancyDay =
-        state.baby!.date!.subtract(const Duration(days: 280));
-    if (today.year == startedPregnancyDay.year) {
-      weekNumber = DateTimeUtils.weekNumber(today) -
-          DateTimeUtils.weekNumber(startedPregnancyDay);
-    } else {
-      final numberWeekOfYear =
-          DateTimeUtils.numOfWeeksOfYear(startedPregnancyDay.year);
-      weekNumber = DateTimeUtils.weekNumber(today) +
-          (numberWeekOfYear - DateTimeUtils.weekNumber(startedPregnancyDay));
-    }
+    int weekNumber = DateTimeUtils.calculateWeekNumberOfPregnancy(
+      state.baby!.date!.subtract(const Duration(days: 280)),
+    );
+    weekNumber = weekNumber == 0 ? 1 : weekNumber;
 
     switch (weekNumber % 10) {
       case 1:

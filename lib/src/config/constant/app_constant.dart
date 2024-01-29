@@ -9,6 +9,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/route_name.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
+import 'package:safebump/src/utils/utils.dart';
 
 class AppConstant {
   static List<OnBoardingModel> getListDataOfOnBoarding(BuildContext context) =>
@@ -63,15 +64,34 @@ class AppConstant {
     final pergnancyDate =
         DateTimeUtils.convertToStartedDay(UserPrefs.I.getPergnancyDay());
     Map<DateTime, BabyFactModel> babyFacts = {};
-    for (int i = 0; i < 7; i++) {
-      babyFacts.addEntries({
-        pergnancyDate.add(Duration(days: i)): BabyFactModel(
+    for (int week = 1; week <= 42; week++) {
+      for (int dayInWeek = 1; dayInWeek <= 7; dayInWeek++) {
+        if (week < 8) {
+          babyFacts.addEntries({
+            pergnancyDate.subtract(
+                    Duration(days: 295 - ((week - 1) * 7 + dayInWeek))):
+                BabyFactModel(
+              fact: S.text.yourFetalInformationCannot,
+              height: 0,
+              weight: 0,
+              daysLeft: 295 - ((week - 1) * 7 + dayInWeek),
+            ),
+          }.entries);
+          continue;
+        }
+        babyFacts.addEntries({
+          pergnancyDate
+                  .subtract(Duration(days: 295 - ((week - 1) * 7 + dayInWeek))):
+              BabyFactModel(
             fact: S.text.yourBabySizeofpear,
-            height: 105 - i + 17,
-            weight: 105 - i + 110,
-            daysLeft: 280 - i),
-      }.entries);
+            height: dayInWeek * week,
+            weight: dayInWeek * week,
+            daysLeft: 295 - ((week - 1) * 7 + dayInWeek),
+          )
+        }.entries);
+      }
     }
+    xLog.e(babyFacts);
     return babyFacts;
   }
 

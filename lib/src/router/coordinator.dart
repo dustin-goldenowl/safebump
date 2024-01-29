@@ -49,8 +49,9 @@ class AppCoordinator {
   static void showAddPregnancyBabyScreen() =>
       context.pushNamed(AppRouteNames.addPregnancyBaby.name);
 
-  static void showOptionsAddBaby() =>
-      context.pushNamed(AppRouteNames.optionAddBaby.name);
+  static Future<bool> showOptionsAddBaby() async => await context
+      .pushNamed<bool>(AppRouteNames.optionAddBaby.name)
+      .then((value) => value ?? false);
   static void showSyncDataScreen() =>
       context.pushReplacementNamed(AppRouteNames.syncData.name);
 

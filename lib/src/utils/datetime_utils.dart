@@ -77,4 +77,19 @@ class DateTimeUtils {
     }
     return age.toString();
   }
+
+  static int calculateWeekNumberOfPregnancy(DateTime pregnancyStartDay) {
+    int weekNumber;
+    final today = DateTime.now();
+    if (today.year == pregnancyStartDay.year) {
+      weekNumber = DateTimeUtils.weekNumber(today) -
+          DateTimeUtils.weekNumber(pregnancyStartDay);
+    } else {
+      final numberWeekOfYear =
+          DateTimeUtils.numOfWeeksOfYear(pregnancyStartDay.year);
+      weekNumber = DateTimeUtils.weekNumber(today) +
+          (numberWeekOfYear - DateTimeUtils.weekNumber(pregnancyStartDay));
+    }
+    return weekNumber;
+  }
 }

@@ -188,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _renderBabyFactContent(BuildContext context, String? content) {
-    return Text(content ?? "");
+    return Expanded(child: Text(content ?? ""));
   }
 
   Widget _renderBabyInfor(BuildContext context,
@@ -309,7 +309,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _renderAddBabyButton() {
     return XCircleButton(
       onTapped: () {
-        AppCoordinator.showOptionsAddBaby();
+        AppCoordinator.showOptionsAddBaby().then((value) {
+          if (value) {
+            context.read<HomeBloc>().initData(context);
+          }
+        });
       },
       color: AppColors.subPrimary,
       iconColor: AppColors.primary,

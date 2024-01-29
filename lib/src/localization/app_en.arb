@@ -204,5 +204,6 @@
     "spoon": "Spoon",
     "spray": "Spray",
     "suppository": "Suppository",
-    "pleaseAddRemindTime": "Please add remind time."
+    "pleaseAddRemindTime": "Please add remind time.",
+    "yourFetalInformationCannot": "Your fetal information cannot be determined"
 }

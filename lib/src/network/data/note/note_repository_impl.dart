@@ -7,7 +7,6 @@ import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/model/calendar/calendar.dart';
 import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/network/model/note/note.dart';
-import 'package:safebump/src/utils/utils.dart';
 
 class NoteRepositoryImpl extends NoteRepository {
   final notesRef = NoteReference();
@@ -25,7 +24,6 @@ class NoteRepositoryImpl extends NoteRepository {
   @override
   Future<MResult<List<MCalendar>>> getNotes() async {
     final result = await notesRef.getNotes();
-    xLog.e(result.data);
     if (result.data != null) {
       for (MCalendar day in result.data!) {
         for (NotesEntityData note

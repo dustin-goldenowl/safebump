@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/sign_up/logic/sign_up_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -37,7 +38,7 @@ class SignUpView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: AppPadding.p23),
                 child: Text(
                   S.of(context).or.toUpperCase(),
-                  style: const TextStyle(fontFamily: FontFamily.inter),
+                  style: AppTextStyle.labelStyle,
                 ),
               ),
               _renderSocialSignInSection(context),
@@ -149,9 +150,7 @@ class SignUpView extends StatelessWidget {
                 ? _renderCircularProgressIndicator(AppColors.white)
                 : Text(
                     S.of(context).signUp,
-                    style: const TextStyle(
-                        color: AppColors.white,
-                        fontFamily: FontFamily.productSans),
+                    style: AppTextStyle.buttonTextStylePrimary,
                   ));
       },
     );
@@ -164,7 +163,7 @@ class SignUpView extends StatelessWidget {
       children: [
         Text(
           S.of(context).alreadyHaveAccount,
-          style: const TextStyle(fontFamily: FontFamily.inter),
+          style: AppTextStyle.labelStyle,
         ),
         XTextButton(
           callback: () => AppCoordinator.showSignInScreen(),
@@ -206,7 +205,7 @@ class SignUpView extends StatelessWidget {
                       Text(
                         S.of(context).signUpWithGG,
                         style: const TextStyle(
-                            fontSize: AppFontSize.f16,
+                            fontSize: AppFontSize.f14,
                             fontFamily: FontFamily.productSans,
                             color: AppColors.black),
                       )

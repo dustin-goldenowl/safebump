@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/medication_state.dart';
@@ -12,6 +11,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
@@ -37,35 +37,36 @@ class _MedicationScreenState extends State<MedicationScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: AppColors.white3,
         body: SafeArea(
-      child: Column(
-        children: [
-          _renderAppBar(context),
-          BlocBuilder<MedicationBloc, MedicationState>(
-            buildWhen: (previous, current) =>
-                previous.status != current.status ||
-                previous.listMedication != current.listMedication,
-            builder: (context, state) {
-              switch (state.status) {
-                case MedicationScreenStatus.fail:
-                  return _renderFailFetchQuestion();
-                case MedicationScreenStatus.success:
-                  return state.listMedication.isEmpty
-                      ? Expanded(
-                          child: SetupMedicationScreen(
-                          setupMedication: (isSuccess) => context
-                              .read<MedicationBloc>()
-                              .reloadPage(context, isSuccess),
-                        ))
-                      : _renderMedicationContent();
-                default:
-                  return const SizedBox.shrink();
-              }
-            },
-          )
-        ],
-      ),
-    ));
+          child: Column(
+            children: [
+              _renderAppBar(context),
+              BlocBuilder<MedicationBloc, MedicationState>(
+                buildWhen: (previous, current) =>
+                    previous.status != current.status ||
+                    previous.listMedication != current.listMedication,
+                builder: (context, state) {
+                  switch (state.status) {
+                    case MedicationScreenStatus.fail:
+                      return _renderFailFetchQuestion();
+                    case MedicationScreenStatus.success:
+                      return state.listMedication.isEmpty
+                          ? Expanded(
+                              child: SetupMedicationScreen(
+                              setupMedication: (isSuccess) => context
+                                  .read<MedicationBloc>()
+                                  .reloadPage(context, isSuccess),
+                            ))
+                          : _renderMedicationContent();
+                    default:
+                      return const SizedBox.shrink();
+                  }
+                },
+              )
+            ],
+          ),
+        ));
   }
 
   Widget _renderFailFetchQuestion() {
@@ -75,25 +76,18 @@ class _MedicationScreenState extends State<MedicationScreen>
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Assets.svg.emptyIllustratiom.svg(),
+          Assets.svg.emptyIllustratiom
+              .svg(width: MediaQuery.of(context).size.width),
           Text(
             S.of(context).someThingWentWrong,
-            style: const TextStyle(
-                fontFamily: FontFamily.abel,
-                fontSize: AppFontSize.f20,
-                color: AppColors.black),
+            style: AppTextStyle.labelStyle,
           ),
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
           XFillButton(
               onPressed: () => context.read<MedicationBloc>().inital(),
               label: Text(
                 S.of(context).tryAgain,
-                style: const TextStyle(
-                  fontFamily: FontFamily.productSans,
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppFontSize.f20,
-                  color: AppColors.white,
-                ),
+                style: AppTextStyle.buttonTextStylePrimary,
               )),
           XPaddingUtils.verticalPadding(height: AppPadding.p45),
         ],
@@ -122,7 +116,6 @@ class _MedicationScreenState extends State<MedicationScreen>
         },
         icon: const Icon(Icons.arrow_back),
       ),
-      isTitleCenter: true,
     );
   }
 
@@ -151,7 +144,9 @@ class _MedicationScreenState extends State<MedicationScreen>
                       state.listMedication[index].copyWith(),
                     ),
                 onDeleteMedication: () {
-                  context.read<MedicationBloc>().deleteMedication(context,state.listMedication[index]);
+                  context
+                      .read<MedicationBloc>()
+                      .deleteMedication(context, state.listMedication[index]);
                 }));
       },
     );
@@ -165,12 +160,7 @@ class _MedicationScreenState extends State<MedicationScreen>
         children: [
           Text(
             S.of(context).medication,
-            textScaler: TextScaler.noScaling,
-            style: const TextStyle(
-                fontFamily: FontFamily.abel,
-                fontWeight: FontWeight.bold,
-                fontSize: AppFontSize.f24,
-                color: AppColors.black),
+            style: AppTextStyle.titleTextStyle,
           ),
           IconButton(
               splashColor: AppColors.subPrimary,

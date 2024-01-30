@@ -10,6 +10,7 @@ import 'package:safebump/src/network/model/articles/articles.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -32,6 +33,7 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white3,
       body: SafeArea(
           child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -52,12 +54,6 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
         },
         icon: const Icon(Icons.arrow_back),
       ),
-      isTitleCenter: true,
-      action: IconButton(
-          onPressed: () {
-            // Todo: Add event
-          },
-          icon: const Icon(Icons.more_vert_rounded)),
     );
   }
 
@@ -114,10 +110,7 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
   Widget _renderTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(
-          fontFamily: FontFamily.abel,
-          fontWeight: FontWeight.bold,
-          fontSize: AppFontSize.f24),
+      style: AppTextStyle.titleTextStyle,
     );
   }
 

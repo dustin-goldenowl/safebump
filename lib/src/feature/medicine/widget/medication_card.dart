@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 
@@ -81,18 +81,12 @@ class XMedicationCard extends StatelessWidget {
       children: [
         Text(
           medicationName,
-          style: const TextStyle(
-              fontFamily: FontFamily.inter,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black),
-          textScaler: TextScaler.noScaling,
+          style: AppTextStyle.labelStyle.copyWith(fontWeight: FontWeight.bold),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p5),
         Text(
           medicationUnit,
-          style: const TextStyle(
-              fontFamily: FontFamily.inter, color: AppColors.hintTextColor),
-          textScaler: TextScaler.noScaling,
+          style: AppTextStyle.hintTextStyle.copyWith(color: AppColors.grey),
         ),
       ],
     );

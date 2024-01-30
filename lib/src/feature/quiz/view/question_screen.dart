@@ -10,6 +10,7 @@ import 'package:safebump/src/feature/quiz/widget/question_page.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -36,6 +37,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white3,
       body: SafeArea(
           child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -60,7 +62,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
             },
             icon: const Icon(Icons.arrow_back),
           ),
-          isTitleCenter: true,
         );
       },
     );
@@ -171,14 +172,12 @@ class _QuestionScreenState extends State<QuestionScreen> {
                 curve: Curves.linear);
             context.read<QuestionBloc>().onPreviousQuestion();
           },
-          bgColor: AppColors.hintTextColor,
+          bgColor: AppColors.white,
+          border: const BorderSide(),
           label: Text(
             S.of(context).previous,
-            style: const TextStyle(
-                fontFamily: FontFamily.productSans,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black),
-            textScaler: TextScaler.noScaling,
+            style: AppTextStyle.buttonTextStylePrimary
+                .copyWith(color: AppColors.black),
           )),
     );
   }
@@ -206,11 +205,7 @@ class _QuestionScreenState extends State<QuestionScreen> {
             state.questionNumber == state.listQuestion.length
                 ? S.of(context).finish
                 : S.of(context).next,
-            style: const TextStyle(
-                fontFamily: FontFamily.productSans,
-                fontWeight: FontWeight.bold,
-                color: AppColors.white),
-            textScaler: TextScaler.noScaling,
+            style: AppTextStyle.buttonTextStylePrimary,
           )),
     );
   }
@@ -230,7 +225,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   fontFamily: FontFamily.productSans,
                   fontWeight: FontWeight.bold,
                   color: AppColors.white),
-              textScaler: TextScaler.noScaling,
             ),
           )),
           XAlertButton(
@@ -246,7 +240,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
                   fontFamily: FontFamily.productSans,
                   fontWeight: FontWeight.bold,
                   color: AppColors.black),
-              textScaler: TextScaler.noScaling,
             ),
           )),
         ]);
@@ -260,7 +253,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
         XPaddingUtils.verticalPadding(height: AppPadding.p15),
         Text(
           S.of(context).testComplete,
-          textScaler: TextScaler.noScaling,
           style: const TextStyle(
               fontFamily: FontFamily.abel,
               fontWeight: FontWeight.bold,
@@ -277,7 +269,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
       children: [
         Text(
           S.of(context).yourResult,
-          textScaler: TextScaler.noScaling,
           style: const TextStyle(
             fontFamily: FontFamily.abel,
             color: AppColors.grey,
@@ -286,7 +277,6 @@ class _QuestionScreenState extends State<QuestionScreen> {
         XPaddingUtils.verticalPadding(height: AppPadding.p10),
         Text(
           "${state.score} / ${state.listQuestion.length}",
-          textScaler: TextScaler.noScaling,
           style: const TextStyle(
               fontFamily: FontFamily.inter,
               fontWeight: FontWeight.bold,

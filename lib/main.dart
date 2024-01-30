@@ -22,28 +22,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final MediaQueryData data = MediaQuery.of(context);
     final appRouter = GetIt.I<AppRouter>();
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => AccountBloc()),
       ],
-      child: MaterialApp.router(
-        title: "SafeBump",
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en', ''),
-        ],
-        onGenerateTitle: (BuildContext context) => S.of(context).safeBump,
-        builder: BotToastInit(),
-        theme: AppTheme.light(),
-        darkTheme: AppTheme.dark(),
-        routerConfig: appRouter.router,
+      child: MediaQuery(
+        data: data.copyWith(textScaler: TextScaler.noScaling),
+        child: MaterialApp.router(
+          title: "SafeBump",
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en', ''),
+          ],
+          onGenerateTitle: (BuildContext context) => S.of(context).safeBump,
+          builder: BotToastInit(),
+          theme: AppTheme.light(),
+          darkTheme: AppTheme.dark(),
+          routerConfig: appRouter.router,
+        ),
       ),
     );
   }

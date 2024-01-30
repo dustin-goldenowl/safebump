@@ -15,6 +15,8 @@ import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
+import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 
@@ -59,6 +61,8 @@ class EditProfileBloc extends Cubit<EditProfileState> {
       pickerType: DateTimePickerType.date,
       options: BoardDateTimeOptions(
         boardTitle: S.of(context).selectDate,
+        boardTitleTextStyle:
+            AppTextStyle.titleTextStyle.copyWith(fontSize: AppFontSize.f16),
         activeColor: AppColors.primary,
       ),
       onChanged: (date) {

@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/forgot_password/logic/state/reset_password_
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
@@ -57,10 +58,7 @@ class VerifyCodeScreen extends StatelessWidget {
   Widget _renderTitle(BuildContext context) {
     return Text(
       S.of(context).resetPassword,
-      style: const TextStyle(
-          fontFamily: FontFamily.productSans,
-          fontSize: AppFontSize.f30,
-          fontWeight: FontWeight.bold),
+      style: AppTextStyle.titleTextStyle,
     );
   }
 
@@ -75,10 +73,8 @@ class VerifyCodeScreen extends StatelessWidget {
                 children: [
                   Text(
                     S.of(context).weJustSentYou,
-                    style: const TextStyle(
-                        color: AppColors.grey2,
-                        fontFamily: FontFamily.productSans,
-                        fontSize: AppFontSize.f16),
+                    style: AppTextStyle.labelStyle
+                        .copyWith(color: AppColors.black2),
                   ),
                   Text(
                     mail,
@@ -86,7 +82,7 @@ class VerifyCodeScreen extends StatelessWidget {
                         color: AppColors.primary,
                         fontFamily: FontFamily.productSans,
                         fontWeight: FontWeight.bold,
-                        fontSize: AppFontSize.f16),
+                        fontSize: AppFontSize.f14),
                   )
                 ],
               ),
@@ -94,10 +90,8 @@ class VerifyCodeScreen extends StatelessWidget {
               Text(
                 S.of(context).pleseCheckYourMail,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                    color: AppColors.grey2,
-                    fontFamily: FontFamily.productSans,
-                    fontSize: AppFontSize.f16),
+                style:
+                    AppTextStyle.labelStyle.copyWith(color: AppColors.black2),
               )
             ],
           );
@@ -111,10 +105,7 @@ class VerifyCodeScreen extends StatelessWidget {
         borderRadius: AppRadius.r10,
         label: Text(
           S.of(context).login,
-          style: const TextStyle(
-              fontSize: AppFontSize.f16,
-              color: AppColors.white,
-              fontFamily: FontFamily.productSans),
+          style: AppTextStyle.buttonTextStylePrimary,
         ));
   }
 
@@ -125,7 +116,7 @@ class VerifyCodeScreen extends StatelessWidget {
       children: [
         Text(
           S.of(context).didntGetTheMail,
-          style: const TextStyle(fontFamily: FontFamily.inter),
+          style: AppTextStyle.labelStyle,
         ),
         BlocBuilder<ResetPasswordBloc, ResetPasswordState>(
           buildWhen: (previous, current) =>

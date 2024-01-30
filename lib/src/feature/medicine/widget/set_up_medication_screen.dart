@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
-import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
@@ -17,8 +16,8 @@ class SetupMedicationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        XPaddingUtils.verticalPadding(height: AppPadding.p100),
         _renderCardContent(context),
       ],
     );
@@ -35,12 +34,7 @@ class SetupMedicationScreen extends StatelessWidget {
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
           Text(
             S.of(context).setupMedication,
-            textScaler: TextScaler.noScaling,
-            style: const TextStyle(
-                fontFamily: FontFamily.inter,
-                fontWeight: FontWeight.bold,
-                fontSize: AppFontSize.f24,
-                color: AppColors.black),
+            style: AppTextStyle.titleTextStyle,
           ),
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
           _renderSetupButton(context),
@@ -68,12 +62,7 @@ class SetupMedicationScreen extends StatelessWidget {
       child: XFillButton(
         label: Text(
           S.of(context).setupNow,
-          textScaler: TextScaler.noScaling,
-          style: const TextStyle(
-              fontFamily: FontFamily.productSans,
-              fontWeight: FontWeight.bold,
-              fontSize: AppFontSize.f16,
-              color: AppColors.white),
+          style: AppTextStyle.buttonTextStylePrimary,
         ),
         onPressed: () async {
           await AppCoordinator.showAddMedication().then((value) {

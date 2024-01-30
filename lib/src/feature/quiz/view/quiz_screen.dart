@@ -8,6 +8,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/quiz/quiz.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -30,6 +31,7 @@ class _QuizScreenState extends State<QuizScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white3,
       body: SafeArea(
           child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -50,7 +52,6 @@ class _QuizScreenState extends State<QuizScreen> {
         },
         icon: const Icon(Icons.arrow_back),
       ),
-      isTitleCenter: true,
     );
   }
 
@@ -81,7 +82,9 @@ class _QuizScreenState extends State<QuizScreen> {
       elevation: 1,
       child: InkWell(
         onTap: () {
-          context.read<QuizBloc>().onTapQuiz(context, id: mQuiz.id, title: mQuiz.title);
+          context
+              .read<QuizBloc>()
+              .onTapQuiz(context, id: mQuiz.id, title: mQuiz.title);
         },
         child: Ink(
           padding: const EdgeInsets.all(AppPadding.p15),
@@ -113,16 +116,9 @@ class _QuizScreenState extends State<QuizScreen> {
   }
 
   Widget _renderTitle(String title) {
-    return Text(
-      title,
-      overflow: TextOverflow.ellipsis,
-      style: const TextStyle(
-        fontFamily: FontFamily.abel,
-        fontWeight: FontWeight.bold,
-        fontSize: AppFontSize.f16,
-      ),
-      textScaler: const TextScaler.linear(1.0),
-    );
+    return Text(title,
+        overflow: TextOverflow.ellipsis,
+        style: AppTextStyle.titleTextStyle.copyWith(fontSize: AppFontSize.f16));
   }
 
   Widget _renderDescription(String summarize) {
@@ -133,11 +129,10 @@ class _QuizScreenState extends State<QuizScreen> {
           fontWeight: FontWeight.bold,
           fontSize: AppFontSize.f12,
           color: AppColors.hintTextColor),
-      textScaler: const TextScaler.linear(1.0),
     );
   }
 
   Widget _renderImageQuiz() {
-    return Assets.images.images.logo.image(width: AppSize.s30);
+    return Assets.images.images.logo.image(width: AppSize.s40);
   }
 }

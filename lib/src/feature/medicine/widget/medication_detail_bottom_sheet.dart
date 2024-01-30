@@ -2,7 +2,6 @@ import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/config/enum/medication_enum.dart';
@@ -12,6 +11,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -161,18 +161,12 @@ class _XMedicationDetailBottomSheetState
       children: [
         Text(
           S.of(context).medicationName,
-          textScaler: TextScaler.noScaling,
-          style: const TextStyle(
-              fontFamily: FontFamily.inter,
-              fontSize: AppFontSize.f14,
-              color: AppColors.black),
+          style: AppTextStyle.labelStyle,
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p8),
         Text(
           context.read<AddMedicationBloc>().state.name,
-          textScaler: TextScaler.noScaling,
-          style: const TextStyle(
-              fontFamily: FontFamily.inter,
+          style: AppTextStyle.labelStyle.copyWith(
               fontWeight: FontWeight.bold,
               fontSize: AppFontSize.f20,
               color: AppColors.primary),
@@ -188,8 +182,6 @@ class _XMedicationDetailBottomSheetState
         Flexible(
           child: XAdjustValueInput(
             title: S.of(context).dose,
-            titleStyle: const TextStyle(
-                fontFamily: FontFamily.inter, fontSize: AppFontSize.f14),
             amount: context.read<AddMedicationBloc>().state.amount,
             onValueChange: ((value) =>
                 context.read<AddMedicationBloc>().setAmount(value)),
@@ -207,10 +199,11 @@ class _XMedicationDetailBottomSheetState
                 isBoldLabel: false,
                 hint: '',
                 textValue: unit?.getText(),
+                contentPadding: const EdgeInsets.all(AppPadding.p14),
                 isEditable: false,
                 trailingIcon: const Icon(
                   Icons.keyboard_arrow_down_outlined,
-                  size: AppSize.s16,
+                  size: AppSize.s24,
                 ),
                 onPressTextField: () {
                   _renderUnitsBottomSheet();
@@ -278,12 +271,8 @@ class _XMedicationDetailBottomSheetState
         Flexible(
           child: Text(
             state.frequency.getValue,
-            style: const TextStyle(
-              fontFamily: FontFamily.inter,
-              fontWeight: FontWeight.bold,
-              color: AppColors.black,
-              fontSize: AppFontSize.f16,
-            ),
+            style:
+                AppTextStyle.titleTextStyle.copyWith(fontSize: AppFontSize.f16),
           ),
         ),
         GestureDetector(
@@ -292,9 +281,7 @@ class _XMedicationDetailBottomSheetState
                 context,
                 title: S.of(context).selectTime,
                 type: DateTimePickerType.time, onChanged: (time) {
-              xLog.e(widget.medication.toString());
               context.read<AddMedicationBloc>().onChangedListRemindTime(time);
-              xLog.e(widget.medication.toString());
             });
           },
           child: Container(
@@ -306,13 +293,9 @@ class _XMedicationDetailBottomSheetState
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  S.of(context).addATime,
-                  textScaler: TextScaler.noScaling,
-                  style: const TextStyle(
-                      fontFamily: FontFamily.productSans,
-                      color: AppColors.primary),
-                ),
+                Text(S.of(context).addATime,
+                    style: AppTextStyle.labelStyle
+                        .copyWith(color: AppColors.primary)),
                 XPaddingUtils.horizontalPadding(width: AppPadding.p6),
                 const Icon(
                   Icons.timer,
@@ -384,11 +367,7 @@ class _XMedicationDetailBottomSheetState
         ? const SizedBox.shrink()
         : Text(
             state.timeError!,
-            textScaler: TextScaler.noScaling,
-            style: const TextStyle(
-                fontFamily: FontFamily.abel,
-                fontSize: AppFontSize.f14,
-                color: AppColors.red),
+            style: AppTextStyle.labelStyle.copyWith(color: AppColors.red),
           );
   }
 }

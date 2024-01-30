@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:safebump/gen/fonts.gen.dart';
 
 import 'colors.dart';
 
 class AppTheme {
-  static const String? fontFamily = null;
+  static const String fontFamily = FontFamily.abel;
 
   static ThemeData light() => ThemeData(
         fontFamily: fontFamily,
         scaffoldBackgroundColor: AppColors.scaffoldBackgroundColor,
+
         /// dialog
         dialogTheme: DialogTheme(
           backgroundColor: Colors.white,

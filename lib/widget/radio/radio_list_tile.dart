@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 
@@ -32,14 +32,13 @@ class XRadioListTile<T> extends StatelessWidget {
           children: [
             _customRadioButton,
             XPaddingUtils.horizontalPadding(width: AppPadding.p12),
-            Text(label,
-                style: TextStyle(
-                  fontFamily: FontFamily.inter,
-                  fontWeight:
-                      value == groupValue ? FontWeight.bold : FontWeight.normal,
-                  color: AppColors.black,
-                  fontSize: AppFontSize.f16,
-                ))
+            Text(
+              label,
+              style: value == groupValue
+                  ? AppTextStyle.labelStyle
+                      .copyWith(fontWeight: FontWeight.bold)
+                  : AppTextStyle.contentTexStyle,
+            )
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/edit_profile/widget/item/base_ruler.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/string_ext.dart';
 
@@ -106,7 +107,8 @@ class _RulerCTState extends State<RulerCT> {
           children: [
             Text(
               _markerText(rulerType, unitType),
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: AppTextStyle.titleTextStyle
+                  .copyWith(fontSize: AppFontSize.f20),
             ),
             const SizedBox(height: 4),
             Container(
@@ -125,7 +127,8 @@ class _RulerCTState extends State<RulerCT> {
           children: [
             Text(
               _markerText(rulerType, unitType),
-              style: Theme.of(context).textTheme.headlineMedium,
+              style: AppTextStyle.titleTextStyle
+                  .copyWith(fontSize: AppFontSize.f20),
             ),
             ClipPath(
               clipper: TriangleClipper(),
@@ -194,7 +197,7 @@ class _RulerCTState extends State<RulerCT> {
                 widget.rulerType.name.toString().capitalize(),
                 style: const TextStyle(
                   fontFamily: FontFamily.inter,
-                  color: AppColors.grey3,
+                  color: AppColors.black,
                   fontSize: AppFontSize.f16,
                 ),
               ),
@@ -209,6 +212,7 @@ class _RulerCTState extends State<RulerCT> {
           ),
         ),
         BaseRulerPicker(
+          rulerScaleTextStyle: AppTextStyle.contentTexStyle,
           width: MediaQuery.of(context).size.width - 32,
           height: 70,
           scale: widget.rulerType == RulerType.height &&

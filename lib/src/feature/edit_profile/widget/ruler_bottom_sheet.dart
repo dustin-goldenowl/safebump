@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/edit_profile/widget/item/ruler.dart';
 import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/demesion_utils.dart';
 import 'package:safebump/src/utils/measurement_utils.dart';
@@ -86,15 +86,9 @@ class _XRulerBottomSheetState extends State<XRulerBottomSheet> {
                             ),
                             side: MaterialStateProperty.all(
                                 const BorderSide(color: AppColors.primary))),
-                        child: Text(
-                          S.of(context).cancel,
-                          style: const TextStyle(
-                            fontFamily: FontFamily.productSans,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primary,
-                            fontSize: AppFontSize.f16,
-                          ),
-                        ),
+                        child: Text(S.of(context).cancel,
+                            style: AppTextStyle.buttonTextStylePrimary
+                                .copyWith(color: AppColors.primary)),
                         onPressed: () {
                           AppCoordinator.pop();
                         },
@@ -105,11 +99,7 @@ class _XRulerBottomSheetState extends State<XRulerBottomSheet> {
                       child: XFillButton(
                         label: Text(
                           S.of(context).done,
-                          style: const TextStyle(
-                              fontFamily: FontFamily.productSans,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.white,
-                              fontSize: AppFontSize.f16),
+                          style: AppTextStyle.buttonTextStylePrimary,
                         ),
                         onPressed: () {
                           AppCoordinator.pop(_currentValue);

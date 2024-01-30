@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 
@@ -8,12 +8,8 @@ class XLabelButton<T> extends StatelessWidget {
   const XLabelButton({
     super.key,
     this.label,
-    this.labelStyle = const TextStyle(
-        fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans),
-    this.hintStyle = const TextStyle(
-        fontSize: AppFontSize.f16,
-        fontFamily: FontFamily.inter,
-        color: AppColors.grey5),
+    this.labelStyle,
+    this.hintStyle,
     this.value,
     required this.onTapped,
     required this.hint,
@@ -21,8 +17,8 @@ class XLabelButton<T> extends StatelessWidget {
   });
   final String? label;
   final String hint;
-  final TextStyle labelStyle;
-  final TextStyle hintStyle;
+  final TextStyle? labelStyle;
+  final TextStyle? hintStyle;
   final Function() onTapped;
   final T? value;
   final IconData? icon;
@@ -41,7 +37,7 @@ class XLabelButton<T> extends StatelessWidget {
   Widget _renderLabel() {
     return StringUtils.isNullOrEmpty(label)
         ? const SizedBox.shrink()
-        : Text(label!, style: labelStyle);
+        : Text(label!, style: labelStyle ?? AppTextStyle.labelStyle);
   }
 
   Widget _renderField() {
@@ -74,7 +70,9 @@ class XLabelButton<T> extends StatelessWidget {
   Widget _renderValue() {
     return Text(
       value == null ? hint : value.toString(),
-      style: value == null ? hintStyle : null,
+      style: value == null
+          ? hintStyle
+          : AppTextStyle.hintTextStyle.copyWith(color: AppColors.black),
       overflow: TextOverflow.clip,
     );
   }

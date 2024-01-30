@@ -4,6 +4,8 @@ import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
@@ -25,14 +27,12 @@ class DailyQuizSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
-      style: const TextStyle(
-          fontFamily: FontFamily.abel,
-          fontSize: AppFontSize.f16,
-          color: AppColors.hintTextColor),
+      style: AppTextStyle.hintTextStyle.copyWith(color: AppColors.primary),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: AppMargin.m20),
         padding: const EdgeInsets.all(AppPadding.p15),
         decoration: BoxDecoration(
+            boxShadow: AppDecorations.shadow,
             borderRadius: BorderRadius.circular(AppRadius.r10),
             color: AppColors.white),
         child: Column(
@@ -86,10 +86,8 @@ class DailyQuizSection extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: AppPadding.p15),
       child: Text(
         quiz.question,
-        style: const TextStyle(
-            fontSize: AppFontSize.f30,
-            fontWeight: FontWeight.bold,
-            color: AppColors.black),
+        style: AppTextStyle.titleTextStyle
+            .copyWith(color: AppColors.black, fontSize: AppFontSize.f20),
       ),
     );
   }
@@ -102,7 +100,7 @@ class DailyQuizSection extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: AppPadding.p10),
             child: XFillButton(
                 onPressed: () => onTapAnswer(quiz.answers[index]),
-                bgColor: AppColors.grey5,
+                bgColor: AppColors.white3,
                 aligmentRowLabel: MainAxisAlignment.start,
                 label: _renderAnswer(index)),
           )
@@ -111,16 +109,10 @@ class DailyQuizSection extends StatelessWidget {
   }
 
   Widget _renderAnswer(int index) {
-    return DefaultTextStyle(
-      style: const TextStyle(
-          fontSize: AppFontSize.f20,
-          fontFamily: FontFamily.abel,
-          color: AppColors.black),
-      child: Row(
-        children: [
-          Text("${String.fromCharCodes([65 + index])}. "),
-          Text(quiz.answers[index])
-        ],
+    return Expanded(
+      child: Text(
+        "${String.fromCharCodes([65 + index])}. ${quiz.answers[index]}",
+        style: AppTextStyle.labelStyle.copyWith(fontSize: AppFontSize.f13),
       ),
     );
   }

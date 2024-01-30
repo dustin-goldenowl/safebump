@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
-import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/widget/button/fill_button.dart';
@@ -37,11 +36,8 @@ class XImagePickerBottomSheet extends StatelessWidget {
             children: [
               Text(
                 S.of(context).editProfilePicture,
-                style: const TextStyle(
-                    fontFamily: FontFamily.inter,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.black,
-                    fontSize: AppFontSize.f20),
+                style: AppTextStyle.titleTextStyle
+                    .copyWith(fontSize: AppFontSize.f20),
               ),
               XPaddingUtils.verticalPadding(height: AppPadding.p16),
               ConstrainedBox(
@@ -64,10 +60,7 @@ class XImagePickerBottomSheet extends StatelessWidget {
                   child: XFillButton(
                       label: Text(
                     S.of(context).cancel,
-                    style: const TextStyle(
-                        fontFamily: FontFamily.inter,
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppFontSize.f16),
+                    style: AppTextStyle.buttonTextStylePrimary,
                   ))),
             ],
           ),
@@ -78,11 +71,7 @@ class XImagePickerBottomSheet extends StatelessWidget {
 
   Widget _renderCell(String value) {
     return ListTile(
-      title: Text(value,
-          style: const TextStyle(
-              fontFamily: FontFamily.inter,
-              color: AppColors.grey2,
-              fontSize: AppFontSize.f20)),
+      title: Text(value, style: AppTextStyle.labelStyle),
       onTap: () {
         onSelectedValue?.call(value);
       },

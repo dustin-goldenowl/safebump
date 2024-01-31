@@ -76,7 +76,6 @@ class AddPreggyScreen extends StatelessWidget {
     return XCircleButton(
         buttonLabelBottom: S.of(context).babysPicture,
         onTapped: () {
-          // TODO: add event
         });
   }
 

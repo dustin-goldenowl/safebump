@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/articles/logic/article_detail_state.dart';
-import 'package:safebump/src/network/data/articles/articles_repository.dart';
+import 'package:safebump/src/local/repo/articles/article_local_repo.dart';
+import 'package:safebump/src/network/model/articles/articles.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class ArticleDetailBloc extends Cubit<ArticleDetailState> {
@@ -29,33 +31,41 @@ class ArticleDetailBloc extends Cubit<ArticleDetailState> {
   Future<void> _getDetailArticle() async {
     try {
       final result =
-          await GetIt.I.get<ArticlesRepository>().getArticle(state.id);
-      if (result.data == null) {
-        emit(state.copyWith(status: ArticleDetailStatus.fail));
-        _hideLoadingScreen();
-        return;
-      }
-      emit(state.copyWith(article: result.data));
-      await _getArticleImage();
-      _hideLoadingScreen();
+          await GetIt.I.get<ArticlesLocalRepo>().getDetail(id: state.id).get();
+      final articleData = ArticlesExt.convertFromEntityData(result);
+      final articleImage = ArticlesExt.getListImage(result);
+      await _getListRelatedArticle(articleData.first.tag);
+      emit(state.copyWith(
+          article: articleData.first,
+          image: articleImage[state.id],
+          status: ArticleDetailStatus.success));
     } catch (e) {
-      emit(state.copyWith(status: ArticleDetailStatus.fail));
       xLog.e(e);
     }
   }
 
-  Future<void> _getArticleImage() async {
+  Future<void> _getListRelatedArticle(List<String> tag) async {
     try {
       final result =
-          await GetIt.I.get<ArticlesRepository>().getArticleImage(state.id);
-      if (result.data == null) {
-        emit(state.copyWith(status: ArticleDetailStatus.fail));
-        return;
+          await GetIt.I.get<ArticlesLocalRepo>().getAllDetails().get();
+      final articlesData = ArticlesExt.convertFromEntityData(result);
+      final articlesImage = ArticlesExt.getListImage(result);
+      List<MArticles> listRelatedArticles = [];
+      Map<String, Uint8List> listRelatedImages = {};
+
+      articlesData.removeWhere((element) => element.id == state.id);
+
+      for (MArticles article in articlesData) {
+        if (article.tag.indexWhere((element) => tag.contains(element)) != -1) {
+          listRelatedArticles.add(article);
+          listRelatedImages.addEntries(
+              {article.id: articlesImage[article.id] ?? Uint8List(0)}.entries);
+        }
       }
       emit(state.copyWith(
-          image: result.data, status: ArticleDetailStatus.success));
+          listRelateArticle: listRelatedArticles,
+          listRelateImage: listRelatedImages));
     } catch (e) {
-      emit(state.copyWith(status: ArticleDetailStatus.fail));
       xLog.e(e);
     }
   }

@@ -46,9 +46,12 @@ class $AssetsSvgGen {
   /// File path: assets/svg/ic_us.svg
   SvgGenImage get icUs => const SvgGenImage('assets/svg/ic_us.svg');
 
+  /// File path: assets/svg/writer.svg
+  SvgGenImage get writer => const SvgGenImage('assets/svg/writer.svg');
+
   /// List of all assets
   List<SvgGenImage> get values =>
-      [emptyIllustratiom, errorInCalendar, icEdit, icUs];
+      [emptyIllustratiom, errorInCalendar, icEdit, icUs, writer];
 }
 
 class $AssetsImagesImagesGen {

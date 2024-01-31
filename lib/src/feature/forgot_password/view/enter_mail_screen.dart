@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/forgot_password/logic/state/enter_mail_stat
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -60,7 +61,7 @@ class EnterMailScreen extends StatelessWidget {
       S.of(context).forgotPasswordUppercase,
       style: const TextStyle(
           fontFamily: FontFamily.productSans,
-          fontSize: AppFontSize.f30,
+          fontSize: AppFontSize.f24,
           fontWeight: FontWeight.bold),
     );
   }
@@ -69,10 +70,7 @@ class EnterMailScreen extends StatelessWidget {
     return Text(
       S.of(context).enterYourEmailWe,
       textAlign: TextAlign.center,
-      style: const TextStyle(
-          color: AppColors.grey2,
-          fontFamily: FontFamily.productSans,
-          fontSize: AppFontSize.f16),
+      style: AppTextStyle.labelStyle.copyWith(color: AppColors.black2),
     );
   }
 
@@ -85,6 +83,7 @@ class EnterMailScreen extends StatelessWidget {
             onChanged: (email) =>
                 context.read<EnterMailBloc>().onEmailChanged(email),
             hintText: S.of(context).yourEmail,
+            hintStyle: AppTextStyle.hintTextStyle,
             errorText: StringUtils.isNullOrEmpty(state.mailValidated)
                 ? null
                 : state.mailValidated,
@@ -108,10 +107,7 @@ class EnterMailScreen extends StatelessWidget {
             isLoading: status == EnterMailStatus.onProcess,
             label: Text(
               S.of(context).sendCode,
-              style: const TextStyle(
-                  fontSize: AppFontSize.f16,
-                  color: AppColors.white,
-                  fontFamily: FontFamily.productSans),
+              style: AppTextStyle.buttonTextStylePrimary,
             ));
       },
     );

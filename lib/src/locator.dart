@@ -1,3 +1,4 @@
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -14,6 +15,8 @@ import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo_impl.dart';
 import 'package:safebump/src/network/data/baby/baby_repo.dart';
 import 'package:safebump/src/network/data/baby/baby_repo_impl.dart';
+import 'package:safebump/src/network/data/medication/medication_repository.dart';
+import 'package:safebump/src/network/data/medication/medication_repository_impl.dart';
 import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/data/note/note_repository_impl.dart';
 import 'package:safebump/src/network/data/quiz/quiz_repository.dart';
@@ -25,6 +28,7 @@ import 'package:safebump/src/network/data/user/user_repository_impl.dart';
 import 'package:safebump/src/network/data/video/video_repository.dart';
 import 'package:safebump/src/network/data/video/video_repository_impl.dart';
 import 'package:safebump/src/router/router.dart';
+import 'package:safebump/src/services/firebase_message.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 
 Future initializeApp() async {
@@ -35,6 +39,8 @@ Future initializeApp() async {
   await Future.wait([
     AppInfo.initialize(),
     UserPrefs.instance.initialize(),
+    XFirebaseMessage.instance.initialize(),
+    AndroidAlarmManager.initialize(),
   ]);
   _locator();
 }
@@ -52,6 +58,8 @@ void _locator() {
       () => ArticlesRepositoryImpl());
   GetIt.I.registerLazySingleton<VideosRepository>(() => VideosRepositoryImpl());
   GetIt.I.registerLazySingleton<QuizRepository>(() => QuizRepositoryImpl());
+  GetIt.I.registerLazySingleton<MedicationRepository>(
+      () => MedicationRepositoryImpl());
 
   GetIt.I.registerLazySingleton<DatabaseApp>((() => DatabaseApp()));
   GetIt.I.registerLazySingleton<BabyInforLocalRepo>(
@@ -61,6 +69,7 @@ void _locator() {
 }
 
 void resetSingleton() {
+  GetIt.I.resetLazySingleton<MedicationRepository>();
   GetIt.I.resetLazySingleton<BabyRepository>();
   GetIt.I.resetLazySingleton<NoteRepository>();
 }

@@ -49,8 +49,9 @@ class AppCoordinator {
   static void showAddPregnancyBabyScreen() =>
       context.pushNamed(AppRouteNames.addPregnancyBaby.name);
 
-  static void showOptionsAddBaby() =>
-      context.pushNamed(AppRouteNames.optionAddBaby.name);
+  static Future<bool> showOptionsAddBaby() async => await context
+      .pushNamed<bool>(AppRouteNames.optionAddBaby.name)
+      .then((value) => value ?? false);
   static void showSyncDataScreen() =>
       context.pushReplacementNamed(AppRouteNames.syncData.name);
 
@@ -73,6 +74,15 @@ class AppCoordinator {
   static void showArticleDetailScreen(String id) => context
       .pushNamed(AppRouteNames.articlesDetail.name, pathParameters: {'id': id});
 
-  static void showQuestionQuizScreen(String title) => context
-      .pushNamed(AppRouteNames.questionQuiz.name, pathParameters: {'id': title});
+  static void showQuestionQuizScreen(String title) =>
+      context.pushNamed(AppRouteNames.questionQuiz.name,
+          pathParameters: {'id': title});
+
+  static Future<bool> showAddMedication() async {
+    bool result = false;
+    await context
+        .pushNamed<bool>(AppRouteNames.addMedication.name)
+        .then((value) => result = value ?? false);
+    return result;
+  }
 }

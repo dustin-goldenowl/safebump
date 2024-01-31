@@ -22,14 +22,12 @@ class MCalendar with _$MCalendar {
 extension MCalendarExt on List<MCalendar> {
   static List<MCalendar> toListMCalendar(List<NotesEntityData> listLocalNotes) {
     List<MCalendar> list = [];
-    for (NotesEntityData item in listLocalNotes) {
-      list.add(
-        MCalendar(
-          date: item.date,
-          notes: NotesModelExt.toListMNote(listLocalNotes),
-        ),
-      );
-    }
+    list.add(
+      MCalendar(
+        date: listLocalNotes.first.date,
+        notes: NotesModelExt.toListMNote(listLocalNotes),
+      ),
+    );
     return list;
   }
 }

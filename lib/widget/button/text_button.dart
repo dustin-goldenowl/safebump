@@ -21,7 +21,8 @@ class XTextButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(AppRadius.r4)))),
       child: Text(
         label,
-        style: const TextStyle(fontFamily: FontFamily.inter),
+        style: const TextStyle(
+            fontFamily: FontFamily.inter, fontSize: AppFontSize.f13),
       ),
     );
   }

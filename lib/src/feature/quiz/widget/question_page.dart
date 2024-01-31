@@ -34,10 +34,16 @@ class _XQuestionPageState extends State<XQuestionPage> {
         _renderQuestionSection(),
         XPaddingUtils.verticalPadding(height: AppPadding.p20),
         _renderAnswerSection(
-            answer: widget.question.firstAnswer, isFirst: true),
+          answer: widget.question.firstAnswer,
+          isFirst: true,
+          isUserAnswer: widget.question.firstAnswer == widget.userAnswer,
+        ),
         XPaddingUtils.verticalPadding(height: AppPadding.p16),
         _renderAnswerSection(
-            answer: widget.question.secondAnswer, isFirst: false),
+          answer: widget.question.secondAnswer,
+          isFirst: false,
+          isUserAnswer: widget.question.secondAnswer == widget.userAnswer,
+        ),
       ],
     );
   }
@@ -66,7 +72,6 @@ class _XQuestionPageState extends State<XQuestionPage> {
                   fontFamily: FontFamily.inter,
                   fontWeight: FontWeight.bold,
                   color: AppColors.white),
-              textScaler: TextScaler.noScaling,
             ),
           ),
           XPaddingUtils.verticalPadding(height: AppPadding.p23),
@@ -78,14 +83,17 @@ class _XQuestionPageState extends State<XQuestionPage> {
               fontSize: AppFontSize.f20,
               color: AppColors.white,
             ),
-            textScaler: TextScaler.noScaling,
           )
         ],
       ),
     );
   }
 
-  Widget _renderAnswerSection({required String answer, required bool isFirst}) {
+  Widget _renderAnswerSection({
+    required String answer,
+    required bool isFirst,
+    required bool isUserAnswer,
+  }) {
     return GestureDetector(
       onTap: () {
         widget.onTapAnswer(answer);
@@ -97,18 +105,16 @@ class _XQuestionPageState extends State<XQuestionPage> {
         decoration: BoxDecoration(
           color: AppColors.white,
           borderRadius: BorderRadius.circular(AppRadius.r10),
-          border: widget.userAnswer == answer
-              ? Border.all(color: AppColors.subPrimary)
+          border: isUserAnswer
+              ? Border.all(color: AppColors.primary, width: AppSize.s2)
               : Border.all(color: AppColors.hintTextColor, width: 0.5),
         ),
         child: Text(
           "${isFirst ? "A." : "B."} $answer",
           style: TextStyle(
               fontFamily: FontFamily.inter,
-              color: widget.userAnswer == answer
-                  ? AppColors.subPrimary
-                  : AppColors.black),
-          textScaler: TextScaler.noScaling,
+              fontWeight: isUserAnswer ? FontWeight.bold : FontWeight.normal,
+              color: isUserAnswer ? AppColors.primary : AppColors.black),
         ),
       ),
     );

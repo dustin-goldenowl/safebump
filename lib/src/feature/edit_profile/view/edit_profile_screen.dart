@@ -1,8 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/config/enum/baby_type_enum.dart';
 import 'package:safebump/src/dialogs/toast_wrapper.dart';
@@ -15,6 +18,7 @@ import 'package:safebump/src/feature/edit_profile/widget/unit_segment.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/measurement_utils.dart';
@@ -84,7 +88,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>
   Widget _renderAppBar() {
     return XAppBarDashboard(
         title: S.of(context).editProfile,
-        isTitleCenter: true,
         leading: IconButton(
             onPressed: () {
               bool isProfileChanged =
@@ -116,26 +119,36 @@ class _EditProfileScreenState extends State<EditProfileScreen>
       child: Column(
         children: [
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
-          XAvatar(
-              key: UniqueKey(),
-              isEditable: true,
-              onEdit: () {
-                pickImagehandler(context, '');
-              }),
+          BlocSelector<EditProfileBloc, EditProfileState, Uint8List?>(
+            selector: (state) {
+              return state.avatar;
+            },
+            builder: (context, avatar) {
+              return XAvatar(
+                  key: UniqueKey(),
+                  isEditable: true,
+                  memoryData: avatar,
+                  name: context.read<EditProfileBloc>().state.name,
+                  imageType: ImageType.memory,
+                  onEdit: () {
+                    pickImagehandler(context, avatar);
+                  });
+            },
+          ),
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
         ],
       ),
     );
   }
 
-  void pickImagehandler(BuildContext context, String? avatar) {
+  void pickImagehandler(BuildContext context, Uint8List? avatar) {
     showCupertinoModalBottomSheet(
         duration: const Duration(milliseconds: 350),
         animationCurve: Curves.easeOut,
         barrierColor: AppColors.black.withOpacity(0.5),
         context: context,
         builder: (_) => XImagePickerBottomSheet(
-            isPhotoExisted: !StringUtils.isNullOrEmpty(avatar),
+            isPhotoExisted: !isNullOrEmpty(avatar),
             onSelectedValue: (value) async {
               AppCoordinator.pop();
               switch (value as String) {
@@ -143,7 +156,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                   try {
                     final image = await PickerImageApp.show(ImageSource.camera);
                     if (image != null) {
-                      // TODO: Save image
+                      context.read<EditProfileBloc>().setAvatar(image.bytes);
                     }
                   } catch (error) {
                     xLog.e("pickImagehandler $error");
@@ -154,7 +167,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                     final image =
                         await PickerImageApp.show(ImageSource.gallery);
                     if (image != null) {
-                      // TODO: Save image
+                      context.read<EditProfileBloc>().setAvatar(image.bytes);
                     }
                   } catch (error) {
                     xLog.e("pickImagehandler $error");
@@ -162,7 +175,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
                   break;
                 case 'Remove photo':
                   try {
-                    // TODO: Remove photo
+                    context.read<EditProfileBloc>().setAvatar(Uint8List(0));
                   } catch (error) {
                     xLog.e("pickImagehandler $error");
                   }
@@ -245,10 +258,6 @@ class _EditProfileScreenState extends State<EditProfileScreen>
           label: S.of(context).dateOfBirth,
           value: state.dateOfBirth?.toMMMdy,
           icon: Icons.calendar_today_outlined,
-          labelStyle: const TextStyle(
-            fontSize: AppFontSize.f16,
-            fontFamily: FontFamily.productSans,
-          ),
         );
       },
     );
@@ -258,9 +267,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(S.of(context).gender,
-            style: const TextStyle(
-                fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans)),
+        Text(S.of(context).gender, style: AppTextStyle.labelStyle),
         XPaddingUtils.verticalPadding(height: AppPadding.p8),
         Container(
             decoration: BoxDecoration(
@@ -316,9 +323,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(S.of(context).bodyMeasurement,
-            style: const TextStyle(
-                fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans)),
+        Text(S.of(context).bodyMeasurement, style: AppTextStyle.labelStyle),
         XPaddingUtils.verticalPadding(height: AppPadding.p8),
         Container(
           decoration: BoxDecoration(
@@ -474,11 +479,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
 
   Widget _renderTextFieldHeightWeight(String value, String title) {
     return TextFormField(
-      style: const TextStyle(
-        fontFamily: FontFamily.inter,
-        color: AppColors.grey,
-        fontSize: AppFontSize.f16,
-      ),
+      style: AppTextStyle.labelStyle,
       decoration: InputDecoration(
         suffixIconConstraints: const BoxConstraints(
           maxWidth: AppSize.s150,
@@ -486,7 +487,10 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         suffixIcon: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Text(value),
+            Text(
+              value,
+              style: AppTextStyle.contentTexStyle,
+            ),
             const IconButton(
               constraints: BoxConstraints(maxWidth: AppSize.s36),
               padding: EdgeInsets.fromLTRB(
@@ -506,14 +510,7 @@ class _EditProfileScreenState extends State<EditProfileScreen>
         ),
         prefixIcon: Container(
           padding: const EdgeInsets.only(left: AppPadding.p12),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontFamily: FontFamily.inter,
-              color: AppColors.grey3,
-              fontSize: AppFontSize.f16,
-            ),
-          ),
+          child: Text(title, style: AppTextStyle.labelStyle),
         ),
         enabled: false,
         border: OutlineInputBorder(

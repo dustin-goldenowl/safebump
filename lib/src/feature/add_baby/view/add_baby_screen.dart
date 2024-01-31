@@ -10,6 +10,7 @@ import 'package:safebump/src/feature/add_baby/logic/state/add_baby_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -27,6 +28,7 @@ class AddBabyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.white3,
       body: DismissKeyBoard(
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -70,13 +72,13 @@ class AddBabyScreen extends StatelessWidget {
           style: const TextStyle(
               fontFamily: FontFamily.inter,
               fontWeight: FontWeight.w700,
-              fontSize: AppFontSize.f30),
+              fontSize: AppFontSize.f24),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p10),
         Text(
           S.of(context).tellMeMoreAbout,
           style: const TextStyle(
-              fontFamily: FontFamily.inter, fontSize: AppFontSize.f16),
+              fontFamily: FontFamily.inter, fontSize: AppFontSize.f14),
         )
       ],
     );
@@ -98,14 +100,8 @@ class AddBabyScreen extends StatelessWidget {
             previous.errorBabyName != current.errorBabyName,
         builder: (context, state) {
           return XTextFieldWithLabel(
-              labelStyle: const TextStyle(
-                  fontSize: AppFontSize.f16,
-                  fontFamily: FontFamily.productSans,
-                  color: AppColors.grey2),
-              hintStyle: const TextStyle(
-                  fontSize: AppFontSize.f14,
-                  fontFamily: FontFamily.inter,
-                  color: AppColors.grey4),
+              labelStyle: AppTextStyle.labelStyle,
+              hintStyle: AppTextStyle.hintTextStyle,
               errorText: StringUtils.isNullOrEmpty(state.errorBabyName)
                   ? null
                   : state.errorBabyName,
@@ -126,10 +122,7 @@ class AddBabyScreen extends StatelessWidget {
           selector: (state) => state.gender,
           builder: (context, gender) {
             return XDropdownButton<Gender>(
-                labelStyle: const TextStyle(
-                    fontSize: AppFontSize.f16,
-                    fontFamily: FontFamily.productSans,
-                    color: AppColors.grey2),
+                labelStyle: AppTextStyle.labelStyle,
                 label: S.of(context).gender,
                 value: gender,
                 items: AppConstant.getListGender(context),
@@ -190,15 +183,13 @@ class AddBabyScreen extends StatelessWidget {
                     .onChangedBabyBirthDate(babyBirthDate));
           },
           hint: S.of(context).selectDate,
+          hintStyle: AppTextStyle.hintTextStyle,
           label: S.of(context).dateOfBirth,
           value: isNullOrEmpty(state.babyBirthDate)
               ? null
               : state.babyBirthDate!.toMMMdy,
           icon: Icons.calendar_today_outlined,
-          labelStyle: const TextStyle(
-              fontSize: AppFontSize.f16,
-              fontFamily: FontFamily.productSans,
-              color: AppColors.grey2),
+          labelStyle: AppTextStyle.labelStyle,
         );
       },
     ));
@@ -221,15 +212,13 @@ class AddBabyScreen extends StatelessWidget {
                     .onChangedBabyBirthTime(babyBirthTime));
           },
           hint: S.of(context).selectTime,
+          hintStyle: AppTextStyle.hintTextStyle,
           label: S.of(context).timeOfBirth,
           icon: Icons.access_time,
           value: isNullOrEmpty(state.babyBirthTime)
               ? null
-              : state.babyBirthTime!.toHHm,
-          labelStyle: const TextStyle(
-              fontSize: AppFontSize.f16,
-              fontFamily: FontFamily.productSans,
-              color: AppColors.grey2),
+              : state.babyBirthTime!.toHHmm,
+          labelStyle: AppTextStyle.labelStyle,
         );
       },
     ));
@@ -256,15 +245,9 @@ class AddBabyScreen extends StatelessWidget {
         builder: (context, state) {
           return XTextFieldWithLabel(
             label: S.of(context).birthWeight,
-            labelStyle: const TextStyle(
-                fontSize: AppFontSize.f16,
-                fontFamily: FontFamily.productSans,
-                color: AppColors.grey2),
+            labelStyle: AppTextStyle.labelStyle,
             hintText: S.of(context).birthWeight,
-            hintStyle: const TextStyle(
-                fontSize: AppFontSize.f14,
-                fontFamily: FontFamily.inter,
-                color: AppColors.grey4),
+            hintStyle: AppTextStyle.hintTextStyle,
             errorText: StringUtils.isNullOrEmpty(state.errorBirthWeight)
                 ? null
                 : state.errorBirthWeight,
@@ -290,15 +273,9 @@ class AddBabyScreen extends StatelessWidget {
           return XTextFieldWithLabel(
             keyboardType: TextInputType.number,
             label: S.of(context).birthHeight,
-            labelStyle: const TextStyle(
-                fontSize: AppFontSize.f16,
-                fontFamily: FontFamily.productSans,
-                color: AppColors.grey2),
+            labelStyle: AppTextStyle.labelStyle,
             hintText: S.of(context).birthHeight,
-            hintStyle: const TextStyle(
-                fontSize: AppFontSize.f14,
-                fontFamily: FontFamily.inter,
-                color: AppColors.grey4),
+            hintStyle: AppTextStyle.hintTextStyle,
             errorText: StringUtils.isNullOrEmpty(state.errorBirthHeight)
                 ? null
                 : state.errorBirthHeight,
@@ -321,8 +298,7 @@ class AddBabyScreen extends StatelessWidget {
       children: [
         Text(
           unit,
-          style: const TextStyle(
-              fontFamily: FontFamily.inter, fontSize: AppFontSize.f16),
+          style: AppTextStyle.labelStyle,
           textAlign: TextAlign.center,
         ),
       ],
@@ -333,10 +309,7 @@ class AddBabyScreen extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppPadding.p16),
         child: XDropdownButton(
-            labelStyle: const TextStyle(
-                fontSize: AppFontSize.f16,
-                fontFamily: FontFamily.productSans,
-                color: AppColors.grey2),
+            labelStyle: AppTextStyle.labelStyle,
             label: S.of(context).birthExperience,
             items: [DropdownMenuItem(child: Text(S.of(context).cSection))],
             onChanged: (value) {}));

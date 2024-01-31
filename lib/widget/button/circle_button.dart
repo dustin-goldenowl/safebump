@@ -11,7 +11,7 @@ class XCircleButton extends StatelessWidget {
       this.buttonLabelBottom,
       required this.onTapped,
       this.icon = Icons.add_circle_outline_rounded,
-      this.buttonSize = AppSize.s123,
+      this.buttonSize = AppSize.s100,
       this.iconColor = AppColors.grey2,
       this.color = AppColors.grey6});
   final String? buttonLabelBottom;
@@ -65,7 +65,7 @@ class XCircleButton extends StatelessWidget {
             buttonLabelBottom!,
             style: const TextStyle(
                 fontFamily: FontFamily.inter,
-                fontSize: AppFontSize.f16,
+                fontSize: AppFontSize.f12,
                 color: AppColors.grey2),
           );
   }

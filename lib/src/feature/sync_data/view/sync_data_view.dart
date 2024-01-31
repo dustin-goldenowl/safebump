@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -76,6 +77,7 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
   Future<void> _syncDataFromFirebase() async {
     await GetIt.I.get<DatabaseApp>().deleteAll();
     await _syncingUserData();
+    await _syncingUserAvatar();
     await _syncingBabyData();
     await _syncingNotesData();
   }
@@ -117,5 +119,20 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
 
   Future<void> _syncingNotesData() async {
     await GetIt.I.get<NoteRepository>().getNotes();
+  }
+
+  Future<void> _syncingUserAvatar() async {
+    var sharePrefUserAvatar = UserPrefs.I.getUserAvatar();
+    var sharePrefUser = UserPrefs.I.getUser();
+    if (sharePrefUserAvatar.isEmpty) {
+      try {
+        sharePrefUserAvatar = await GetIt.I<UserRepository>()
+            .getImage(sharePrefUser?.id ?? '')
+            .then((value) => value.data ?? Uint8List(0));
+        UserPrefs.I.setUserAvatar(sharePrefUserAvatar);
+      } catch (e) {
+        xLog.e(e);
+      }
+    }
   }
 }

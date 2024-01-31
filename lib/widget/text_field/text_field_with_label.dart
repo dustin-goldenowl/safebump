@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 
@@ -8,13 +8,9 @@ class XTextFieldWithLabel extends StatelessWidget {
   const XTextFieldWithLabel({
     super.key,
     this.label,
-    this.labelStyle = const TextStyle(
-        fontSize: AppFontSize.f16, fontFamily: FontFamily.productSans),
+    this.labelStyle,
     required this.hintText,
-    this.hintStyle = const TextStyle(
-        fontSize: AppFontSize.f14,
-        fontFamily: FontFamily.inter,
-        color: AppColors.hintTextColor),
+    this.hintStyle,
     this.errorText,
     this.initText,
     this.isObscureText = false,
@@ -27,6 +23,8 @@ class XTextFieldWithLabel extends StatelessWidget {
     this.keyboardType,
     this.isEnable = true,
     this.maxLines = 1,
+    this.minLines = 1,
+    this.textInputAction,
   });
   final String? label;
   final TextStyle? labelStyle;
@@ -44,6 +42,8 @@ class XTextFieldWithLabel extends StatelessWidget {
   final bool isEnable;
   final void Function(String) onChanged;
   final int maxLines;
+  final int minLines;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +52,16 @@ class XTextFieldWithLabel extends StatelessWidget {
       children: [
         StringUtils.isNullOrEmpty(label)
             ? const SizedBox.shrink()
-            : Text(label!, style: labelStyle),
+            : Text(label!, style: labelStyle ?? AppTextStyle.labelStyle),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.p10),
           child: TextField(
             enabled: isEnable,
+            style: AppTextStyle.hintTextStyle.copyWith(color: AppColors.black),
             maxLines: maxLines,
+            minLines: minLines,
             keyboardType: keyboardType,
-            textInputAction: TextInputAction.next,
+            textInputAction: textInputAction,
             onChanged: (value) => onChanged(value),
             obscureText: isObscureText,
             controller: StringUtils.isNullOrEmpty(initText)
@@ -83,8 +85,10 @@ class XTextFieldWithLabel extends StatelessWidget {
                 prefixIcon: prefix,
                 suffixIcon: suffix,
                 hintText: hintText,
-                hintStyle: hintStyle,
+                hintStyle: hintStyle ?? AppTextStyle.hintTextStyle,
                 errorText: errorText,
+                errorStyle: errorStyle ??
+                    AppTextStyle.hintTextStyle.copyWith(color: AppColors.red),
                 focusColor: AppColors.primary,
                 contentPadding: const EdgeInsets.symmetric(
                     horizontal: AppPadding.p20, vertical: AppPadding.p10)),

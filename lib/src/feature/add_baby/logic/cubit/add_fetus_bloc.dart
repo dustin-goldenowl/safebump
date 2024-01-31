@@ -8,6 +8,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/baby/baby_repo.dart';
 import 'package:safebump/src/network/model/baby/baby.dart';
 import 'package:safebump/src/router/coordinator.dart';
+import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 
@@ -50,8 +51,10 @@ class AddFetusBloc extends Cubit<AddFetusState> {
           date: fetus.date));
       if (result.data != null) {
         emit(state.copyWith(status: AddFetusScreenStatus.success));
+        xLog.e(state.fetusDueDate);
+        UserPrefs.I.setPergnancyDay(state.fetusDueDate ?? DateTime.now());
         AppCoordinator.pop();
-        AppCoordinator.pop();
+        AppCoordinator.pop(true);
       }
     } catch (e) {
       xLog.e(e);

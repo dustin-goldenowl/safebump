@@ -74,6 +74,10 @@ class $AssetsImagesImagesGen {
   AssetGenImage get logo =>
       const AssetGenImage('assets/images/images/logo.png');
 
+  /// File path: assets/images/images/medicine.png
+  AssetGenImage get medicine =>
+      const AssetGenImage('assets/images/images/medicine.png');
+
   /// File path: assets/images/images/provice_educational.png
   AssetGenImage get proviceEducational =>
       const AssetGenImage('assets/images/images/provice_educational.png');
@@ -101,6 +105,7 @@ class $AssetsImagesImagesGen {
         icCorrect,
         icWrong,
         logo,
+        medicine,
         proviceEducational,
         provideCommunity,
         provideTracking,

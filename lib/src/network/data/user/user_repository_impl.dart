@@ -1,11 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:safebump/src/network/data/user/user_reference.dart';
+import 'package:safebump/src/network/data/user/user_reference_storage.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
 import 'package:safebump/src/network/model/common/result.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final usersRef = UserReference();
+  final usersRefStorage = UsersStorageReference();
   @override
   Future<MResult<MUser>> getUser() async {
     try {
@@ -39,5 +42,20 @@ class UserRepositoryImpl extends UserRepository {
   @override
   Future<MResult<bool>> deleteUser(MUser user) {
     return usersRef.deleteUser(user);
+  }
+
+  @override
+  Future<MResult<Uint8List>> getImage(String id) async {
+    return await usersRefStorage.getUserAvatar(id);
+  }
+
+  @override
+  Future<MResult<bool>> addImage(String id, Uint8List data) async {
+    return await usersRefStorage.upsertUserAvatar(id, data);
+  }
+
+  @override
+  Future<MResult<bool>> deleteImage(String id) async {
+    return await usersRefStorage.deleteUserAvatar(id);
   }
 }

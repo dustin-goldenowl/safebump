@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "276870058509-745cgp2cqt0lilo9807aotkrm8uhg8g8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lance.safebump",
+            "certificate_hash": "60488eeaa0e7ae7274b34f23fe70acecd075dcca"
+          }
+        },
+        {
           "client_id": "276870058509-neqd6pgt9tckc6e3ve40tn0ln3jgf1a5.apps.googleusercontent.com",
           "client_type": 3
         }

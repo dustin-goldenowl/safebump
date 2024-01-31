@@ -45,7 +45,6 @@ class DateTimeUtils {
         date.year, date.month, date.day, time.hour, time.minute, time.second);
   }
 
-
   static bool isSameDay(DateTime? a, DateTime? b) {
     if (a == null || b == null) {
       return false;
@@ -55,6 +54,10 @@ class DateTimeUtils {
 
   static DateTime fromyMMMd(String dateText) {
     return DateFormat("MMM d, y").parse(dateText);
+  }
+
+  static DateTime fromHHmm(String dateText) {
+    return DateFormat("HH : mm").parse(dateText);
   }
 
   static String calculateAge(BuildContext context, DateTime? birthDate) {
@@ -73,5 +76,20 @@ class DateTimeUtils {
       }
     }
     return age.toString();
+  }
+
+  static int calculateWeekNumberOfPregnancy(DateTime pregnancyStartDay) {
+    int weekNumber;
+    final today = DateTime.now();
+    if (today.year == pregnancyStartDay.year) {
+      weekNumber = DateTimeUtils.weekNumber(today) -
+          DateTimeUtils.weekNumber(pregnancyStartDay);
+    } else {
+      final numberWeekOfYear =
+          DateTimeUtils.numOfWeeksOfYear(pregnancyStartDay.year);
+      weekNumber = DateTimeUtils.weekNumber(today) +
+          (numberWeekOfYear - DateTimeUtils.weekNumber(pregnancyStartDay));
+    }
+    return weekNumber;
   }
 }

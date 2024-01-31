@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/note/note.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/calendar/month_calendar.dart';
 
 class XNoteItem extends StatefulWidget {
@@ -76,8 +77,8 @@ class _XNoteItemState extends State<XNoteItem> {
       padding: const EdgeInsets.symmetric(horizontal: AppPadding.p10),
       child: Text(
         widget.note.title,
-        style: const TextStyle(
-            fontFamily: FontFamily.abel, fontWeight: FontWeight.bold),
+        style:
+            AppTextStyle.contentTexStyleBold.copyWith(color: AppColors.black),
       ),
     ));
   }
@@ -103,8 +104,11 @@ class _XNoteItemState extends State<XNoteItem> {
   Widget _renderBodyNote() {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.r10),
+        color: AppColors.grey7,
+      ),
       width: double.infinity,
-      color: AppColors.grey7,
       child: _isExpand
           ? switch (_type) {
               NoteType.appointment => _renderAppointmentBody(),
@@ -126,38 +130,38 @@ class _XNoteItemState extends State<XNoteItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.note.detail ?? '',
-                style: const TextStyle(
-                    fontFamily: FontFamily.abel,
-                    color: AppColors.hintTextColor),
-              ),
-              XPaddingUtils.verticalPadding(height: AppPadding.p8),
+              StringUtils.isNullOrEmpty(widget.note.detail)
+                  ? const SizedBox.shrink()
+                  : Text(
+                      widget.note.detail!,
+                      style: AppTextStyle.contentTexStyle,
+                    ),
+              StringUtils.isNullOrEmpty(widget.note.detail)
+                  ? const SizedBox.shrink()
+                  : XPaddingUtils.verticalPadding(height: AppPadding.p8),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
                     S.of(context).time,
-                    style: const TextStyle(fontFamily: FontFamily.abel),
+                    style: AppTextStyle.labelStyle
+                        .copyWith(fontSize: AppFontSize.f12),
                   ),
                   Text(
-                    (widget.note.time ?? DateTime.now()).toHHm,
-                    style: const TextStyle(
-                        fontFamily: FontFamily.abel,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.bold),
+                    (widget.note.time ?? DateTime.now()).toHHmm,
+                    style: AppTextStyle.contentTexStyleBold
+                        .copyWith(color: AppColors.black),
                   ),
                   Text(
                     S.of(context).hospital,
-                    style: const TextStyle(fontFamily: FontFamily.abel),
+                    style: AppTextStyle.labelStyle
+                        .copyWith(fontSize: AppFontSize.f12),
                   ),
                   Text(
                     widget.note.hospital ?? '',
-                    style: const TextStyle(
-                        fontFamily: FontFamily.abel,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.bold),
+                    style: AppTextStyle.contentTexStyleBold
+                        .copyWith(color: AppColors.black),
                   ),
                 ],
               )
@@ -179,38 +183,40 @@ class _XNoteItemState extends State<XNoteItem> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                widget.note.detail ?? '',
-                style: const TextStyle(
-                    fontFamily: FontFamily.abel,
-                    color: AppColors.hintTextColor),
-              ),
-              XPaddingUtils.verticalPadding(height: AppPadding.p8),
+              StringUtils.isNullOrEmpty(widget.note.detail)
+                  ? const SizedBox.shrink()
+                  : Center(
+                      child: Text(
+                        widget.note.detail!,
+                        style: AppTextStyle.contentTexStyle,
+                      ),
+                    ),
+              StringUtils.isNullOrEmpty(widget.note.detail)
+                  ? const SizedBox.shrink()
+                  : XPaddingUtils.verticalPadding(height: AppPadding.p8),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
                     S.of(context).time,
-                    style: const TextStyle(fontFamily: FontFamily.abel),
+                    style: AppTextStyle.labelStyle
+                        .copyWith(fontSize: AppFontSize.f12),
                   ),
                   Text(
-                    (widget.note.time ?? DateTime.now()).toHHm,
-                    style: const TextStyle(
-                        fontFamily: FontFamily.abel,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.bold),
+                    (widget.note.time ?? DateTime.now()).toHHmm,
+                    style: AppTextStyle.contentTexStyleBold
+                        .copyWith(color: AppColors.black),
                   ),
                   Text(
                     S.of(context).medicine,
-                    style: const TextStyle(fontFamily: FontFamily.abel),
+                    style: AppTextStyle.labelStyle
+                        .copyWith(fontSize: AppFontSize.f12),
                   ),
                   Text(
                     widget.note.medicine ?? '',
-                    style: const TextStyle(
-                        fontFamily: FontFamily.abel,
-                        color: AppColors.black,
-                        fontWeight: FontWeight.bold),
+                    style: AppTextStyle.contentTexStyleBold
+                        .copyWith(color: AppColors.black),
                   ),
                 ],
               )
@@ -231,8 +237,7 @@ class _XNoteItemState extends State<XNoteItem> {
         Expanded(
           child: Text(
             widget.note.detail ?? '',
-            style: const TextStyle(
-                fontFamily: FontFamily.abel, color: AppColors.hintTextColor),
+            style: AppTextStyle.contentTexStyle,
           ),
         ),
         _renderDeleteIcon(),

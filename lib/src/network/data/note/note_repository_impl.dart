@@ -26,7 +26,8 @@ class NoteRepositoryImpl extends NoteRepository {
     final result = await notesRef.getNotes();
     if (result.data != null) {
       for (MCalendar day in result.data!) {
-        for (NotesEntityData note in day.notes.toListNotesEntityData(day.date)) {
+        for (NotesEntityData note
+            in day.notes.toListNotesEntityData(day.date)) {
           GetIt.I.get<NotesLocalRepo>().upsert(note);
         }
       }
@@ -36,7 +37,7 @@ class NoteRepositoryImpl extends NoteRepository {
   }
 
   @override
-  Future<MResult<bool>> deleteDay(MCalendar day) async{
+  Future<MResult<bool>> deleteDay(MCalendar day) async {
     return notesRef.deleteNote(day);
   }
 }

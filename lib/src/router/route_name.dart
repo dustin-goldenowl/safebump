@@ -21,7 +21,9 @@ enum AppRouteNames {
   setting(path: '/setting'),
   aboutApp(path: '/aboutApp'),
   quiz(path: '/quiz'),
-  questionQuiz(path: 'questionQuiz', param: 'id');
+  questionQuiz(path: 'questionQuiz', param: 'id'),
+  medication(path: '/medication'),
+  addMedication(path: '/addMedication');
 
   const AppRouteNames({
     required this.path,

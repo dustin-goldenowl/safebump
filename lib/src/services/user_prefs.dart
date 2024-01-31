@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:safebump/src/config/enum/language_enum.dart';
@@ -22,6 +23,7 @@ class _keys {
   static const String bodyMeasurementUnitType = 'bodyMeasurementUnitType';
   static const String language = 'language';
   static const String selectedQuizId = "selectedQuizId";
+  static const String userAvatar = "userAvatar";
 }
 
 class UserPrefs {
@@ -199,5 +201,19 @@ class UserPrefs {
 
   Future<void> setSelectedQuizId(String id) async {
     await _prefs.setString(_keys.selectedQuizId, id);
+  }
+
+  Uint8List getUserAvatar() {
+    try {
+      final userPref = _prefs.getStringList(_keys.userAvatar) ?? [];
+      List<int> data = userPref.map((e) => int.parse(e)).toList();
+      return Uint8List.fromList(data);
+    } catch (_) {}
+    return Uint8List(0);
+  }
+
+  Future<void> setUserAvatar(Uint8List avatar) async {
+    await _prefs.setStringList(_keys.userAvatar,
+        avatar.toList().map((e) => e.toString()).toList());
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/src/config/enum/baby_type_enum.dart';
+import 'package:safebump/src/config/enum/medication_enum.dart';
 import 'package:safebump/src/network/model/baby_fact_model.dart';
 import 'package:safebump/src/network/model/extension_model.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
@@ -42,12 +43,8 @@ class AppConstant {
   static List<ExtensionModel> getListExtensionData(BuildContext context) => [
         ExtensionModel(
             label: S.of(context).medicines,
-            routeName: AppRouteNames.dashboard.name,
+            routeName: AppRouteNames.medication.name,
             icon: Icons.medical_information),
-        ExtensionModel(
-            label: S.of(context).exercises,
-            routeName: AppRouteNames.dashboard.name,
-            icon: Icons.pregnant_woman_outlined),
         ExtensionModel(
             label: S.of(context).quiz,
             routeName: AppRouteNames.quiz.name,
@@ -60,24 +57,38 @@ class AppConstant {
             label: S.of(context).videos,
             routeName: AppRouteNames.videos.name,
             icon: Icons.video_collection_rounded),
-        ExtensionModel(
-            label: S.of(context).food,
-            routeName: AppRouteNames.dashboard.name,
-            icon: Icons.food_bank)
       ];
 
   static Map<DateTime, BabyFactModel> getBabyFactsData() {
     final pergnancyDate =
         DateTimeUtils.convertToStartedDay(UserPrefs.I.getPergnancyDay());
     Map<DateTime, BabyFactModel> babyFacts = {};
-    for (int i = 0; i < 7; i++) {
-      babyFacts.addEntries({
-        pergnancyDate.add(Duration(days: i)): BabyFactModel(
+    for (int week = 1; week <= 42; week++) {
+      for (int dayInWeek = 1; dayInWeek <= 7; dayInWeek++) {
+        if (week < 8) {
+          babyFacts.addEntries({
+            pergnancyDate.subtract(
+                    Duration(days: 295 - ((week - 1) * 7 + dayInWeek))):
+                BabyFactModel(
+              fact: S.text.yourFetalInformationCannot,
+              height: 0,
+              weight: 0,
+              daysLeft: 295 - ((week - 1) * 7 + dayInWeek),
+            ),
+          }.entries);
+          continue;
+        }
+        babyFacts.addEntries({
+          pergnancyDate
+                  .subtract(Duration(days: 295 - ((week - 1) * 7 + dayInWeek))):
+              BabyFactModel(
             fact: S.text.yourBabySizeofpear,
-            height: 105 - i + 17,
-            weight: 105 - i + 110,
-            daysLeft: 280 - i),
-      }.entries);
+            height: dayInWeek * week,
+            weight: dayInWeek * week,
+            daysLeft: 295 - ((week - 1) * 7 + dayInWeek),
+          )
+        }.entries);
+      }
     }
     return babyFacts;
   }
@@ -96,4 +107,23 @@ class AppConstant {
           ),
         ),
       ];
+
+  static final List<DoseType> medicationUnitList = [
+    DoseType.spoon,
+    DoseType.cap,
+    DoseType.drop,
+    DoseType.application,
+    DoseType.patch,
+    DoseType.spray,
+    DoseType.puff,
+    DoseType.suppository,
+    DoseType.pill,
+    DoseType.packet,
+    DoseType.injection,
+    DoseType.gram,
+    DoseType.miligram,
+    DoseType.mililiter,
+    DoseType.unit,
+    DoseType.piece,
+  ];
 }

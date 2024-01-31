@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 
@@ -40,7 +41,7 @@ class XDayOfWeekListView extends StatelessWidget {
       style: const TextStyle(
           fontFamily: FontFamily.abel,
           fontWeight: FontWeight.bold,
-          fontSize: AppFontSize.f30,
+          fontSize: AppFontSize.f20,
           color: AppColors.black),
       child: Row(
         children: [
@@ -77,6 +78,7 @@ class XDayOfWeekListView extends StatelessWidget {
           padding: const EdgeInsets.all(AppPadding.p10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.r5),
+            boxShadow: AppDecorations.shadow,
             color: isToday
                 ? AppColors.primary
                 : isSelected
@@ -88,7 +90,7 @@ class XDayOfWeekListView extends StatelessWidget {
               Text(
                 DateFormat("EEE").format(day),
                 style: const TextStyle(
-                    fontFamily: FontFamily.inter, fontSize: AppFontSize.f10),
+                    fontFamily: FontFamily.inter, fontSize: AppFontSize.f9),
               ),
               XPaddingUtils.verticalPadding(height: AppPadding.p8),
               Text(

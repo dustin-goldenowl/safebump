@@ -1,6 +1,5 @@
-import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
@@ -8,13 +7,14 @@ import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 
-enum ImageType { none, network, assest, file }
+enum ImageType { none, network, assest, file, memory }
 
 class XAvatar extends StatefulWidget {
   final String? url;
   final ImageType imageType;
   final bool isEditable;
   final String? name;
+  final Uint8List? memoryData;
   final VoidCallback? onEdit;
   final TextStyle? textStyle;
   final double? borderWidth;
@@ -26,6 +26,7 @@ class XAvatar extends StatefulWidget {
     this.onEdit,
     this.imageType = ImageType.network,
     this.textStyle,
+    this.memoryData,
     this.name,
     this.borderWidth,
     this.imageSize,
@@ -61,15 +62,11 @@ class _XAvatarState extends State<XAvatar> {
     return nameAvatar.toUpperCase();
   }
 
-  Widget _renderImage(ImageType type, String? url) {
-    if (StringUtils.isNullOrEmpty(url)) {
-      return _renderDefaultImage();
-    }
+  Widget _renderImage(ImageType type) {
+    if (widget.memoryData == null) return _renderDefaultImage();
     switch (type) {
-      case ImageType.file:
-        return _renderFileAvatar(url!);
-      case ImageType.network:
-        return _renderNetworkAvatar(url);
+      case ImageType.memory:
+        return _renderMemoryImage(widget.memoryData ?? Uint8List(0));
       default:
         return _renderDefaultImage();
     }
@@ -108,29 +105,41 @@ class _XAvatarState extends State<XAvatar> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        isValidUrl(widget.url)
-            ? _renderImage(_imageType, widget.url)
-            : _renderImage(ImageType.none, widget.url),
+        _renderImage(_imageType),
         widget.isEditable
             ? Positioned(
                 bottom: 0,
                 right: 0,
-                child: IconButton(
-                  onPressed: () {
-                    widget.onEdit?.call();
-                  },
-                  icon: Assets.svg.icEdit.svg(),
-                  alignment: Alignment.bottomRight,
-                  padding: const EdgeInsets.only(
-                    left: AppPadding.p10,
-                    top: AppPadding.p10,
+                child: Container(
+                  padding: const EdgeInsets.all(AppPadding.p5),
+                  decoration: BoxDecoration(
+                      color: AppColors.greenLight,
+                      borderRadius: BorderRadius.circular(AppRadius.r20)),
+                  child: IconButton(
+                    onPressed: () {
+                      widget.onEdit?.call();
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      minimumSize: MaterialStateProperty.all(Size.zero),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      iconColor: MaterialStateProperty.all(AppColors.white),
+                      foregroundColor:
+                          MaterialStateProperty.all(AppColors.white),
+                    ),
+                    icon: Assets.svg.icEdit.svg(
+                        width: AppSize.s16,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.white, BlendMode.srcIn)),
+                    color: AppColors.white,
+                    alignment: Alignment.bottomRight,
+                    constraints: const BoxConstraints(
+                      minWidth: AppSize.s20,
+                      minHeight: AppSize.s20,
+                    ),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                   ),
-                  constraints: const BoxConstraints(
-                    minWidth: AppSize.s20,
-                    minHeight: AppSize.s20,
-                  ),
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
                 ),
               )
             : const SizedBox.shrink(),
@@ -138,20 +147,22 @@ class _XAvatarState extends State<XAvatar> {
     );
   }
 
-  Widget _renderFileAvatar(String url) {
+  Widget _renderMemoryImage(Uint8List memoryData) {
     return Container(
       width: widget.imageSize ?? AppSize.s70,
       height: widget.imageSize ?? AppSize.s70,
       decoration: BoxDecoration(
         color: AppColors.subPrimary,
         image: DecorationImage(
-          image: FileImage(File(url)),
+          image: MemoryImage(memoryData),
           fit: BoxFit.cover,
           onError: (exception, stackTrace) async {
             await Future.delayed(const Duration(milliseconds: 500));
-            setState(() {
-              _imageType = ImageType.none;
-            });
+            if (mounted) {
+              setState(() {
+                _imageType = ImageType.none;
+              });
+            }
           },
         ),
         borderRadius: BorderRadius.all(
@@ -163,40 +174,6 @@ class _XAvatarState extends State<XAvatar> {
         ),
       ),
       child: null,
-    );
-  }
-
-  Widget _renderNetworkAvatar(String? url) {
-    return SizedBox(
-      width: widget.imageSize ?? AppSize.s70,
-      height: widget.imageSize ?? AppSize.s70,
-      child: CachedNetworkImage(
-        imageUrl: url ?? '',
-        imageBuilder: (context, imageProvider) {
-          return Container(
-            decoration: BoxDecoration(
-              color: AppColors.subPrimary,
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.all(
-                Radius.circular((widget.imageSize ?? AppSize.s70) / 2),
-              ),
-              border: Border.all(
-                color: AppColors.primary,
-                width: widget.borderWidth ?? AppSize.s4,
-              ),
-            ),
-          );
-        },
-        placeholder: (context, url) {
-          return _renderDefaultImage();
-        },
-        errorWidget: (context, url, error) {
-          return _renderDefaultImage();
-        },
-      ),
     );
   }
 }

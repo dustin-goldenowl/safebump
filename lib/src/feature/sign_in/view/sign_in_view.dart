@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/sign_in/logic/sign_in_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -37,7 +38,7 @@ class SignInView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: AppPadding.p23),
                 child: Text(
                   S.of(context).or.toUpperCase(),
-                  style: const TextStyle(fontFamily: FontFamily.inter),
+                  style: AppTextStyle.labelStyle,
                 ),
               ),
               _renderSocialSignInSection(context),
@@ -142,9 +143,7 @@ class SignInView extends StatelessWidget {
                   )
                 : Text(
                     S.of(context).login,
-                    style: const TextStyle(
-                        color: AppColors.white,
-                        fontFamily: FontFamily.productSans),
+                    style: AppTextStyle.buttonTextStylePrimary,
                   ));
       },
     );
@@ -157,7 +156,7 @@ class SignInView extends StatelessWidget {
       children: [
         Text(
           S.of(context).dontHaveAccount,
-          style: const TextStyle(fontFamily: FontFamily.inter),
+          style: AppTextStyle.labelStyle,
         ),
         XTextButton(
           callback: () => AppCoordinator.showSignUpScreen(),
@@ -203,7 +202,7 @@ class SignInView extends StatelessWidget {
                       Text(
                         S.of(context).signUpWithGG,
                         style: const TextStyle(
-                            fontSize: AppFontSize.f16,
+                            fontSize: AppFontSize.f14,
                             fontFamily: FontFamily.productSans,
                             color: AppColors.black),
                       )

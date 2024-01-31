@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:safebump/gen/assets.gen.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
@@ -160,10 +160,8 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
         XPaddingUtils.verticalPadding(height: AppPadding.p23),
         Text(
           S.of(context).someThingWentWrong,
-          style: const TextStyle(
-              color: AppColors.hintTextColor,
-              fontSize: AppFontSize.f16,
-              fontFamily: FontFamily.inter),
+          style: AppTextStyle.labelStyle
+              .copyWith(fontSize: AppFontSize.f16, color: AppColors.black3),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p16),
         Padding(
@@ -171,11 +169,7 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
           child: XFillButton(
             label: Text(
               S.of(context).tryAgain,
-              style: const TextStyle(
-                  color: AppColors.white,
-                  fontFamily: FontFamily.productSans,
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppFontSize.f20),
+              style: AppTextStyle.buttonTextStylePrimary,
             ),
           ),
         ),
@@ -223,12 +217,8 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
         Text(
           _selectingMonth.toMMMy,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: AppFontSize.f20,
-            fontWeight: FontWeight.bold,
-            fontFamily: FontFamily.abel,
-            color: AppColors.primary,
-          ),
+          style: AppTextStyle.titleTextStyle
+              .copyWith(color: AppColors.primary, fontSize: AppFontSize.f20),
         ),
         Container(
           margin: const EdgeInsets.only(right: AppMargin.m20),
@@ -274,12 +264,9 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
           navigationDirection: MonthNavigationDirection.horizontal,
           showTrailingAndLeadingDates: false,
         ),
-        viewHeaderStyle: const ViewHeaderStyle(
-          dayTextStyle: TextStyle(
-              fontSize: AppFontSize.f16,
-              fontWeight: FontWeight.bold,
-              fontFamily: FontFamily.abel,
-              color: AppColors.hintTextColor),
+        viewHeaderStyle: ViewHeaderStyle(
+          dayTextStyle: AppTextStyle.contentTexStyleBold
+              .copyWith(color: AppColors.black, fontSize: AppFontSize.f16),
         ),
         // Hide default header, use the _renderCalendarHeader()
         headerHeight: 0,
@@ -371,11 +358,8 @@ class _XMonthCalendarState extends State<XMonthCalendar> {
     );
   }
 
-  // Days mustn't be future day & before account creation day.
   bool _isValidDay(DateTime time) {
-    final now = DateTime.now();
-    final currentDate = DateTime(now.year, now.month, now.day);
-    if (time.difference(currentDate).inDays > 0 ||
+    if (time.difference(_maxDate).inDays > 0 ||
         time.difference(widget.minDate).inDays < 0) {
       return false;
     }

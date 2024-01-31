@@ -3,6 +3,7 @@ import 'package:safebump/src/network/model/articles/articles.dart';
 import 'package:safebump/src/network/model/baby/baby.dart';
 import 'package:safebump/src/network/model/calendar/calendar.dart';
 import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
+import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/network/model/quiz/question.dart';
 import 'package:safebump/src/network/model/quiz/quiz.dart';
 import 'package:safebump/src/network/model/user/user.dart';
@@ -75,4 +76,14 @@ class XCollection {
                 MQuestion.fromJson(snapshot.data() as Map<String, dynamic>),
             toFirestore: (chatRoom, _) => chatRoom.toJson(),
           );
+
+  static CollectionReference<MMedication> get medications => FirebaseFirestore
+      .instance
+      .collection(
+          'users/${(UserPrefs.I.getUser() ?? MUser.empty()).id}/medications')
+      .withConverter<MMedication>(
+        fromFirestore: (snapshot, options) =>
+            MMedication.fromJson(snapshot.data() as Map<String, dynamic>),
+        toFirestore: (chatRoom, _) => chatRoom.toJson(),
+      );
 }

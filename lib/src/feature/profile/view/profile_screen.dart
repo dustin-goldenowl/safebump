@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
@@ -10,6 +11,7 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/measurement_utils.dart';
@@ -112,9 +114,8 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   Widget _renderAppbar(BuildContext context) {
     return XAppBarDashboard(
-      leading: Assets.images.images.logo.image(width: AppSize.s20),
+      leading: Assets.images.images.logo.image(height: AppSize.s30),
       title: S.of(context).profile,
-      isTitleCenter: true,
     );
   }
 
@@ -233,23 +234,12 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget _renderAgeRowItem({required String value, required String title}) {
     return Column(
       children: [
-        Text(
-          value,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            color: AppColors.black,
-            fontSize: AppFontSize.f20,
-            fontFamily: FontFamily.abel,
-          ),
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-            color: AppColors.hintTextColor,
-            fontSize: AppFontSize.f16,
-            fontFamily: FontFamily.abel,
-          ),
-        ),
+        Text(value,
+            style: AppTextStyle.titleTextStyle
+                .copyWith(fontSize: AppFontSize.f16)),
+        Text(title,
+            style:
+                AppTextStyle.hintTextStyle.copyWith(color: AppColors.black3)),
       ],
     );
   }
@@ -321,9 +311,18 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _renderAvatar({String? img, required String name}) {
-    return XAvatar(
-      key: UniqueKey(),
-      name: name,
+    return BlocSelector<ProfileBloc, ProfileState, Uint8List?>(
+      selector: (state) {
+        return state.avatar;
+      },
+      builder: (context, avatar) {
+        return XAvatar(
+          key: UniqueKey(),
+          imageType: ImageType.memory,
+          name: name,
+          memoryData: avatar,
+        );
+      },
     );
   }
 
@@ -364,12 +363,8 @@ class _ProfileScreenState extends State<ProfileScreen>
       {String userName = ''}) {
     return Text(
       userName,
-      style: const TextStyle(
-        color: AppColors.primary,
-        fontFamily: FontFamily.inter,
-        fontWeight: FontWeight.bold,
-        fontSize: AppFontSize.f20,
-      ),
+      style: AppTextStyle.titleTextStyle
+          .copyWith(color: AppColors.primary, fontSize: AppFontSize.f24),
       overflow: TextOverflow.ellipsis,
     );
   }
@@ -402,11 +397,7 @@ class _ProfileScreenState extends State<ProfileScreen>
   Widget _renderEmailUser({required String email}) {
     return Text(
       email,
-      style: const TextStyle(
-        color: AppColors.hintTextColor,
-        fontFamily: FontFamily.inter,
-        fontSize: AppFontSize.f16,
-      ),
+      style: AppTextStyle.contentTexStyleBold,
       textAlign: TextAlign.left,
       overflow: TextOverflow.ellipsis,
     );

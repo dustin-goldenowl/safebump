@@ -16,6 +16,8 @@ import 'package:safebump/src/network/data/baby/baby_repo.dart';
 import 'package:safebump/src/network/data/baby/baby_repo_impl.dart';
 import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/data/note/note_repository_impl.dart';
+import 'package:safebump/src/network/data/quiz/quiz_repository.dart';
+import 'package:safebump/src/network/data/quiz/quiz_repository_impl.dart';
 import 'package:safebump/src/network/data/sign/sign_repository.dart';
 import 'package:safebump/src/network/data/sign/sign_repository_impl.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
@@ -49,6 +51,7 @@ void _locator() {
   GetIt.I.registerLazySingleton<ArticlesRepository>(
       () => ArticlesRepositoryImpl());
   GetIt.I.registerLazySingleton<VideosRepository>(() => VideosRepositoryImpl());
+  GetIt.I.registerLazySingleton<QuizRepository>(() => QuizRepositoryImpl());
 
   GetIt.I.registerLazySingleton<DatabaseApp>((() => DatabaseApp()));
   GetIt.I.registerLazySingleton<BabyInforLocalRepo>(

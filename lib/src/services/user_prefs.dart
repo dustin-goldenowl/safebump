@@ -21,6 +21,7 @@ class _keys {
   static const String percentCorrectDailyQuiz = 'percentCorrectDailyQuiz';
   static const String bodyMeasurementUnitType = 'bodyMeasurementUnitType';
   static const String language = 'language';
+  static const String selectedQuizId = "selectedQuizId";
 }
 
 class UserPrefs {
@@ -187,5 +188,16 @@ class UserPrefs {
 
   Future<void> setLanguage(LanguageEnum language) async {
     await _prefs.setString(_keys.language, language.getText());
+  }
+
+  String getSelectedQuizId() {
+    try {
+      return _prefs.getString(_keys.selectedQuizId) ?? '';
+    } catch (_) {}
+    return '';
+  }
+
+  Future<void> setSelectedQuizId(String id) async {
+    await _prefs.setString(_keys.selectedQuizId, id);
   }
 }

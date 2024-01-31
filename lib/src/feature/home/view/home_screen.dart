@@ -79,7 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _renderNotyIcon() {
     return IconButton(
         onPressed: () {
-          // TODO: event action
         },
         icon: const Icon(
           Icons.notifications_active_outlined,

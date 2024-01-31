@@ -92,6 +92,7 @@ dependencies:
   firebase_core: 2.24.2
   firebase_storage: 11.6.0
   firebase_messaging: 14.7.10
+  firebase_crashlytics: 3.4.9
 
   ## Local database
   drift: 2.14.1
@@ -114,6 +115,9 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   freezed: 2.4.6
   flutter_launcher_icons: 0.13.1
+  test: 1.24.9
+  mockito: 5.4.4
+  bloc_test: 9.1.5
 
 flutter_launcher_icons:
   android: "launcher_icon"

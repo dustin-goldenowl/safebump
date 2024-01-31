@@ -27,13 +27,11 @@ class DailyQuizRepositoryImpl extends DailyQuizRepository {
 
   @override
   Future<MResult<bool>> createNewDailyQuiz(DailyQuiz quiz) {
-    // TODO: Admin only
     throw Exception();
   }
 
   @override
   Future<MResult> removeDailyQuiz(String quizId) {
-    // TODO: Admin only
     throw Exception();
   }
 }

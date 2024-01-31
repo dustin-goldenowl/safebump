@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/utils.dart';
 
@@ -49,12 +49,7 @@ class _XAdjustValueInputState extends State<XAdjustValueInput> {
                 margin: const EdgeInsets.only(bottom: AppMargin.m8),
                 child: Text(
                   widget.title!,
-                  textScaler: TextScaler.noScaling,
-                  style: widget.titleStyle ??
-                      const TextStyle(
-                          fontFamily: FontFamily.inter,
-                          fontSize: AppFontSize.f16,
-                          color: AppColors.black),
+                  style: widget.titleStyle ?? AppTextStyle.labelStyle,
                 ),
               )
             : const SizedBox.shrink(),
@@ -96,8 +91,9 @@ class _XAdjustValueInputState extends State<XAdjustValueInput> {
                       text: Utils.formatDecimalNumber(_amount)),
                   enabled: false,
                   textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                    fillColor: widget.backgroundColor ?? AppColors.grey5,
+                  style: AppTextStyle.labelStyle,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
                   ),
                 ),
               ),

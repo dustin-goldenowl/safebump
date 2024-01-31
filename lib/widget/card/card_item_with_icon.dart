@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 
 class XCardItemWithIcon extends StatelessWidget {
@@ -71,7 +71,7 @@ class XCardItemWithIcon extends StatelessWidget {
         iconPath != null
             ? Icon(
                 iconPath!,
-                size: AppSize.s10,
+                size: AppSize.s16,
               )
             : const SizedBox.shrink(),
       ],
@@ -79,14 +79,8 @@ class XCardItemWithIcon extends StatelessWidget {
   }
 
   Widget _renderText() {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontFamily: FontFamily.abel,
-        fontWeight: FontWeight.w500,
-        color: AppColors.grey,
-        fontSize: AppFontSize.f16,
-      ),
-    );
+    return Text(text,
+        style:
+            AppTextStyle.contentTexStyleBold.copyWith(color: AppColors.black2));
   }
 }

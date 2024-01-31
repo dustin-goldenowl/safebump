@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/dialogs/toast_wrapper.dart';
 import 'package:safebump/src/feature/articles/logic/article_detail_bloc.dart';
 import 'package:safebump/src/feature/articles/logic/article_detail_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
@@ -55,7 +55,6 @@ class _ArticlesDetailScreenState extends State<ArticlesDetailScreen> {
           flexibleSpace: FlexibleSpaceBar(
             background: _renderSliverAppBar(),
             stretchModes: const [StretchMode.zoomBackground],
-            title: _renderTitle(),
           ),
           pinned: true,
           expandedHeight: 200,
@@ -72,17 +71,14 @@ class _ArticlesDetailScreenState extends State<ArticlesDetailScreen> {
                   topLeft: Radius.circular(AppRadius.r10),
                   topRight: Radius.circular(AppRadius.r10)),
             ),
-            child: DefaultTextStyle(
-              style: const TextStyle(fontFamily: FontFamily.abel),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _renderTitleArticle(),
-                  XPaddingUtils.verticalPadding(height: AppPadding.p20),
-                  _renderContentArticle(),
-                ],
-              ),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _renderTitleArticle(),
+                XPaddingUtils.verticalPadding(height: AppPadding.p20),
+                _renderContentArticle(),
+              ],
             ),
           ),
         ),
@@ -100,33 +96,15 @@ class _ArticlesDetailScreenState extends State<ArticlesDetailScreen> {
               ));
   }
 
-  Widget _renderTitle() {
-    return BlocBuilder<ArticleDetailBloc, ArticleDetailState>(
-      buildWhen: (previous, current) => previous.article != current.article,
-      builder: (context, state) {
-        return Text(
-          state.article?.title ?? "",
-          style: const TextStyle(
-              color: Colors.black,
-              fontFamily: FontFamily.inter,
-              letterSpacing: 2,
-              fontSize: AppFontSize.f20,
-              fontWeight: FontWeight.w700),
-        );
-      },
-    );
-  }
-
   Widget _renderTitleArticle() {
     return BlocBuilder<ArticleDetailBloc, ArticleDetailState>(
       buildWhen: (previous, current) => previous.article != current.article,
       builder: (context, state) {
         return Text(
           state.article?.title ?? '',
-          style: const TextStyle(
-              color: AppColors.primary,
-              fontSize: AppFontSize.f30,
-              fontWeight: FontWeight.bold),
+          style: AppTextStyle.titleTextStyle.copyWith(
+            color: AppColors.primary,
+          ),
         );
       },
     );
@@ -154,25 +132,18 @@ class _ArticlesDetailScreenState extends State<ArticlesDetailScreen> {
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Assets.svg.emptyIllustratiom.svg(),
+          Assets.svg.emptyIllustratiom
+              .svg(width: MediaQuery.of(context).size.width),
           Text(
             S.of(context).someThingWentWrong,
-            style: const TextStyle(
-                fontFamily: FontFamily.abel,
-                fontSize: AppFontSize.f20,
-                color: AppColors.black),
+            style: AppTextStyle.labelStyle,
           ),
           XPaddingUtils.verticalPadding(height: AppPadding.p16),
           XFillButton(
               onPressed: () => AppCoordinator.pop(),
               label: Text(
                 S.of(context).back,
-                style: const TextStyle(
-                  fontFamily: FontFamily.productSans,
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppFontSize.f20,
-                  color: AppColors.white,
-                ),
+                style: AppTextStyle.buttonTextStylePrimary,
               )),
           XPaddingUtils.verticalPadding(height: AppPadding.p45),
         ],

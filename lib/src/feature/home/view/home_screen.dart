@@ -13,6 +13,7 @@ import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/decorations.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -69,10 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _renderAppbar(BuildContext context) {
     return XAppBarDashboard(
-      leading: Assets.images.images.logo.image(width: AppSize.s20),
+      leading: Assets.images.images.logo.image(height: AppSize.s30),
       action: _renderNotyIcon(),
       title: S.of(context).home,
-      isTitleCenter: true,
     );
   }
 
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
             "${S.of(context).hello} ${state?.name}",
             style: const TextStyle(
                 fontFamily: FontFamily.productSans,
-                fontSize: AppFontSize.f14,
+                fontSize: AppFontSize.f12,
                 color: AppColors.hintTextColor),
           ),
         );
@@ -131,7 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTextStyle(
       style: const TextStyle(
           fontFamily: FontFamily.abel,
-          fontSize: AppFontSize.f16,
+          fontSize: AppFontSize.f14,
           color: AppColors.hintTextColor),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) =>
@@ -141,6 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
             margin: const EdgeInsets.symmetric(vertical: AppMargin.m20),
             padding: const EdgeInsets.all(AppPadding.p15),
             decoration: BoxDecoration(
+                boxShadow: AppDecorations.shadow,
                 borderRadius: BorderRadius.circular(AppRadius.r10),
                 color: AppColors.white),
             child: Column(
@@ -218,14 +219,20 @@ class _HomeScreenState extends State<HomeScreen> {
       required int dataInfor,
       required String unit}) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Text(titleInfor),
+        Text(
+          titleInfor,
+          style: const TextStyle(fontSize: AppFontSize.f12),
+        ),
         Text(
           StringUtils.createDataWithUnit(
               data: dataInfor.toString(), unit: unit),
+          textAlign: TextAlign.center,
           style: const TextStyle(
-              color: AppColors.black, fontWeight: FontWeight.w700),
+            color: AppColors.black,
+            fontWeight: FontWeight.w700,
+          ),
         )
       ],
     );
@@ -260,6 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Container(
         height: AppSize.s123,
         decoration: BoxDecoration(
+          boxShadow: AppDecorations.shadow,
           color: AppColors.white,
           borderRadius: BorderRadius.circular(AppRadius.r10),
         ),
@@ -287,13 +295,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTextStyle(
       style: const TextStyle(
           fontFamily: FontFamily.abel,
-          fontSize: AppFontSize.f16,
+          fontSize: AppFontSize.f14,
           color: AppColors.hintTextColor),
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: AppMargin.m20),
         padding: const EdgeInsets.all(AppPadding.p15),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadius.r10),
+            boxShadow: AppDecorations.shadow,
             color: AppColors.white),
         child: Row(
           children: [
@@ -317,12 +326,12 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       color: AppColors.subPrimary,
       iconColor: AppColors.primary,
-      buttonSize: AppSize.s60,
+      buttonSize: AppSize.s48,
     );
   }
 
   Widget _renderAddBabyText(BuildContext context) {
-    return Text(S.of(context).pleaseAddYourBaby);
+    return Expanded(child: Text(S.of(context).pleaseAddYourBaby));
   }
 
   Widget _renderDailyQuizSection(BuildContext context) {

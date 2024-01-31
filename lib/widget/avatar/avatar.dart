@@ -110,22 +110,36 @@ class _XAvatarState extends State<XAvatar> {
             ? Positioned(
                 bottom: 0,
                 right: 0,
-                child: IconButton(
-                  onPressed: () {
-                    widget.onEdit?.call();
-                  },
-                  icon: Assets.svg.icEdit.svg(),
-                  alignment: Alignment.bottomRight,
-                  padding: const EdgeInsets.only(
-                    left: AppPadding.p10,
-                    top: AppPadding.p10,
+                child: Container(
+                  padding: const EdgeInsets.all(AppPadding.p5),
+                  decoration: BoxDecoration(
+                      color: AppColors.greenLight,
+                      borderRadius: BorderRadius.circular(AppRadius.r20)),
+                  child: IconButton(
+                    onPressed: () {
+                      widget.onEdit?.call();
+                    },
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all(EdgeInsets.zero),
+                      minimumSize: MaterialStateProperty.all(Size.zero),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      iconColor: MaterialStateProperty.all(AppColors.white),
+                      foregroundColor:
+                          MaterialStateProperty.all(AppColors.white),
+                    ),
+                    icon: Assets.svg.icEdit.svg(
+                        width: AppSize.s16,
+                        colorFilter: const ColorFilter.mode(
+                            AppColors.white, BlendMode.srcIn)),
+                    color: AppColors.white,
+                    alignment: Alignment.bottomRight,
+                    constraints: const BoxConstraints(
+                      minWidth: AppSize.s20,
+                      minHeight: AppSize.s20,
+                    ),
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
                   ),
-                  constraints: const BoxConstraints(
-                    minWidth: AppSize.s20,
-                    minHeight: AppSize.s20,
-                  ),
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
                 ),
               )
             : const SizedBox.shrink(),
@@ -144,9 +158,11 @@ class _XAvatarState extends State<XAvatar> {
           fit: BoxFit.cover,
           onError: (exception, stackTrace) async {
             await Future.delayed(const Duration(milliseconds: 500));
-            setState(() {
-              _imageType = ImageType.none;
-            });
+            if (mounted) {
+              setState(() {
+                _imageType = ImageType.none;
+              });
+            }
           },
         ),
         borderRadius: BorderRadius.all(

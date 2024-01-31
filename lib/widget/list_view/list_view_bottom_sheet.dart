@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/widget/button/fill_button.dart';
 import 'package:safebump/widget/separator/solid_separator.dart';
@@ -58,12 +58,8 @@ class _XListViewBottomSheetState extends State<XListViewBottomSheet> {
                   margin: const EdgeInsets.only(bottom: AppMargin.m16),
                   child: Text(
                     widget.title!,
-                    textScaler: TextScaler.noScaling,
-                    style: const TextStyle(
-                        fontFamily: FontFamily.inter,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.grey,
-                        fontSize: AppFontSize.f16),
+                    style: AppTextStyle.titleTextStyle
+                        .copyWith(fontSize: AppFontSize.f16),
                   ),
                 ),
               ConstrainedBox(
@@ -77,6 +73,7 @@ class _XListViewBottomSheetState extends State<XListViewBottomSheet> {
                   itemCount: widget.data.length,
                   separatorBuilder: (context, index) {
                     return const XSolidSeparator(
+                      height: 0.25,
                       color: AppColors.grey4,
                     );
                   },
@@ -91,12 +88,7 @@ class _XListViewBottomSheetState extends State<XListViewBottomSheet> {
                   child: XFillButton(
                     label: Text(
                       widget.buttonName ?? S.of(context).select,
-                      textScaler: TextScaler.noScaling,
-                      style: const TextStyle(
-                          fontFamily: FontFamily.productSans,
-                          fontSize: AppFontSize.f16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white),
+                      style: AppTextStyle.buttonTextStylePrimary,
                     ),
                     onPressed: () {
                       widget.onPressDone(_currentValue);
@@ -115,17 +107,9 @@ class _XListViewBottomSheetState extends State<XListViewBottomSheet> {
     return ListTile(
       title: Text(
         value,
-        textScaler: TextScaler.noScaling,
         style: _currentValue == value
-            ? const TextStyle(
-                fontFamily: FontFamily.abel,
-                fontSize: AppFontSize.f16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.black)
-            : const TextStyle(
-                fontFamily: FontFamily.abel,
-                fontSize: AppFontSize.f16,
-                color: AppColors.black),
+            ? AppTextStyle.labelStyle.copyWith(fontWeight: FontWeight.bold)
+            : AppTextStyle.labelStyle,
       ),
       trailing: _currentValue == value
           ? const Icon(Icons.check, color: AppColors.green)

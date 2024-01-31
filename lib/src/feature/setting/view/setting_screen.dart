@@ -72,7 +72,6 @@ class _SettingsScreenState extends State<SettingsScreen>
   Widget _renderAppBar() {
     return XAppBarDashboard(
       title: S.of(context).settings,
-      isTitleCenter: true,
       leading: IconButton(
           onPressed: () {
             context.read<SettingsBloc>().saveSharedPref();

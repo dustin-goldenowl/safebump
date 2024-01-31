@@ -8,6 +8,7 @@ import 'package:safebump/src/feature/add_baby/logic/state/add_fetus_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
@@ -59,13 +60,13 @@ class AddPreggyScreen extends StatelessWidget {
           style: const TextStyle(
               fontFamily: FontFamily.inter,
               fontWeight: FontWeight.w700,
-              fontSize: AppFontSize.f30),
+              fontSize: AppFontSize.f24),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p10),
         Text(
           S.of(context).tellMeMoreAbout,
           style: const TextStyle(
-              fontFamily: FontFamily.inter, fontSize: AppFontSize.f16),
+              fontFamily: FontFamily.inter, fontSize: AppFontSize.f14),
         )
       ],
     );
@@ -87,14 +88,8 @@ class AddPreggyScreen extends StatelessWidget {
             previous.errorFetusName != current.errorFetusName,
         builder: (context, state) {
           return XTextFieldWithLabel(
-              labelStyle: const TextStyle(
-                  fontSize: AppFontSize.f16,
-                  fontFamily: FontFamily.productSans,
-                  color: AppColors.grey2),
-              hintStyle: const TextStyle(
-                  fontSize: AppFontSize.f14,
-                  fontFamily: FontFamily.inter,
-                  color: AppColors.grey4),
+              labelStyle: AppTextStyle.labelStyle,
+              hintStyle: AppTextStyle.hintTextStyle,
               errorText: StringUtils.isNullOrEmpty(state.errorFetusName)
                   ? null
                   : state.errorFetusName,
@@ -122,19 +117,13 @@ class AddPreggyScreen extends StatelessWidget {
               _showDateTimeBottomSheet(context,
                   fetusDueDate: state.fetusDueDate);
             },
-            hint: S.of(context).dueDate,
+            hint: S.of(context).addDueDate,
             value: isNullOrEmpty(state.fetusDueDate)
                 ? null
                 : state.fetusDueDate!.toMMMdy,
-            labelStyle: const TextStyle(
-                fontSize: AppFontSize.f16,
-                fontFamily: FontFamily.productSans,
-                color: AppColors.grey2),
-            hintStyle: const TextStyle(
-                fontSize: AppFontSize.f14,
-                fontFamily: FontFamily.inter,
-                color: AppColors.grey4),
-            label: S.of(context).addDueDate,
+            labelStyle: AppTextStyle.labelStyle,
+            hintStyle: AppTextStyle.hintTextStyle,
+            label: S.of(context).dueDate,
             icon: Icons.calendar_today_outlined,
           );
         },

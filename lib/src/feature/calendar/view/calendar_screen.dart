@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:safebump/gen/assets.gen.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/package/dismiss_keyboard/dismiss_keyboard.dart';
 import 'package:safebump/src/dialogs/alert_wrapper.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
@@ -12,6 +11,7 @@ import 'package:safebump/src/network/model/note/note.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -58,10 +58,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
   Widget _renderAppbar(BuildContext context) {
     return XAppBarDashboard(
-      leading: Assets.images.images.logo.image(width: AppSize.s20),
+      leading: Assets.images.images.logo.image(height: AppSize.s30),
       action: _renderAddIcon(),
       title: S.of(context).calendar,
-      isTitleCenter: true,
     );
   }
 
@@ -80,8 +79,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
     XAlert.showCustomAlert(
       title: Text(
         S.of(context).addYourNote,
-        style: const TextStyle(
-            fontFamily: FontFamily.abel, fontWeight: FontWeight.bold),
+        style: AppTextStyle.titleTextStyle,
       ),
       body: BlocProvider.value(
         value: BlocProvider.of<CalendarBloc>(context),
@@ -200,13 +198,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
   }
 
   Widget _renderHeaderNote(BuildContext context) {
-    return Text(
-      S.of(context).notesCreated,
-      style: const TextStyle(
-        fontFamily: FontFamily.abel,
-        fontSize: AppFontSize.f20,
-      ),
-    );
+    return Text(S.of(context).notesCreated,
+        style: AppTextStyle.titleTextStyle.copyWith(fontSize: AppFontSize.f16));
   }
 
   List<Widget> _renderListNoteItem(List<MNote> listNotes) {

@@ -39,9 +39,12 @@ class XDropdownButton<T> extends StatelessWidget {
                       Border.all(color: AppColors.hintTextColor, width: 0.5)),
               child: DropdownButton(
                 items: items,
+                style: labelStyle,
                 value: value,
                 hint: hint,
+                dropdownColor: AppColors.white3,
                 isExpanded: true,
+                borderRadius: BorderRadius.circular(AppRadius.r10),
                 underline: const SizedBox.shrink(),
                 icon: const Icon(Icons.keyboard_arrow_down_outlined),
                 onChanged: (value) => onChanged.call(value),

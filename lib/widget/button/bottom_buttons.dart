@@ -52,7 +52,8 @@ class XBottomButtons extends StatelessWidget {
             child: Text(
               cancelButtonText,
               style: const TextStyle(
-                  fontFamily: FontFamily.abel,
+                  fontFamily: FontFamily.inter,
+                  fontWeight: FontWeight.bold,
                   fontSize: AppFontSize.f16,
                   color: AppColors.black),
             ),
@@ -76,7 +77,8 @@ class XBottomButtons extends StatelessWidget {
                 : Text(
                     positiveButtonText,
                     style: const TextStyle(
-                        fontFamily: FontFamily.abel,
+                        fontFamily: FontFamily.inter,
+                        fontWeight: FontWeight.bold,
                         fontSize: AppFontSize.f16,
                         color: AppColors.white),
                   ),

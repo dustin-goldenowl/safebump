@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/medicine/logic/add_medication_bloc.dart';
 import 'package:safebump/src/feature/medicine/logic/add_medication_state.dart';
 import 'package:safebump/src/feature/medicine/widget/medication_detail_bottom_sheet.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/text_field/text_field_with_label.dart';
@@ -68,10 +68,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
                       children: [
                         Text(
                           S.of(context).whatMedicationWillYouTake,
-                          textScaler: TextScaler.noScaling,
-                          style: const TextStyle(
-                              fontFamily: FontFamily.abel,
-                              color: AppColors.black),
+                          style: AppTextStyle.labelStyle,
                         ),
                         _renderSearchInput(),
                       ],
@@ -95,12 +92,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
       ),
       child: Text(
         S.of(context).addAMedication,
-        textScaler: TextScaler.noScaling,
-        style: const TextStyle(
-            fontFamily: FontFamily.inter,
-            fontWeight: FontWeight.bold,
-            fontSize: AppFontSize.f24,
-            color: AppColors.black),
+        style: AppTextStyle.titleTextStyle,
       ),
     );
   }
@@ -168,7 +160,9 @@ class _AddMedicationScreenState extends State<AddMedicationScreen>
             backgroundColor: Colors.transparent,
             body: BlocProvider.value(
               value: BlocProvider.of<AddMedicationBloc>(context),
-              child: const XMedicationDetailBottomSheet(isEdit: false,),
+              child: const XMedicationDetailBottomSheet(
+                isEdit: false,
+              ),
             )),
       ),
       isScrollControlled: true,

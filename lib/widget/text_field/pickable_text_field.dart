@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
+import 'package:safebump/src/utils/string_utils.dart';
 
 class XPickableTextField extends StatelessWidget {
   final String? label;
@@ -19,6 +20,7 @@ class XPickableTextField extends StatelessWidget {
   final VoidCallback? onPressTextField;
   final TextEditingController? controller;
   final bool isDisable;
+  final EdgeInsetsGeometry? contentPadding;
 
   const XPickableTextField({
     Key? key,
@@ -37,6 +39,7 @@ class XPickableTextField extends StatelessWidget {
     this.controller,
     this.isDisable = false,
     this.isRequired = false,
+    this.contentPadding,
   }) : super(key: key);
 
   @override
@@ -51,22 +54,10 @@ class XPickableTextField extends StatelessWidget {
                   bottom: AppSize.s8,
                 ),
                 child: RichText(
-                  textScaler: TextScaler.noScaling,
                   textAlign: TextAlign.start,
                   text: TextSpan(
                     text: label,
-                    style: isBoldLabel
-                        ? TextStyle(
-                            fontFamily: FontFamily.abel,
-                            color: AppColors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: labelFontSize!,
-                          )
-                        : TextStyle(
-                            fontFamily: FontFamily.abel,
-                            color: AppColors.black,
-                            fontSize: labelFontSize!,
-                          ),
+                    style: AppTextStyle.labelStyle,
                     children: isRequired
                         ? [
                             const TextSpan(
@@ -85,7 +76,6 @@ class XPickableTextField extends StatelessWidget {
         Column(
           children: [
             GestureDetector(
-              
               onTap: isDisable
                   ? null
                   : !isEditable
@@ -102,6 +92,7 @@ class XPickableTextField extends StatelessWidget {
                 onFieldSubmitted: onSubmitted,
                 controller: controller,
                 isDisable: isDisable,
+                contentPadding: contentPadding,
               ),
             ),
           ],
@@ -121,6 +112,7 @@ class _TextFormField extends StatelessWidget {
   final Function(String)? onTextChanged;
   final ValueChanged<String>? onFieldSubmitted;
   final TextEditingController? controller;
+  final EdgeInsetsGeometry? contentPadding;
   final bool isDisable;
   const _TextFormField({
     Key? key,
@@ -132,6 +124,7 @@ class _TextFormField extends StatelessWidget {
     required this.textInputAction,
     required this.onTextChanged,
     required this.isDisable,
+    this.contentPadding,
     this.onFieldSubmitted,
     this.controller,
   }) : super(key: key);
@@ -141,22 +134,20 @@ class _TextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       initialValue: textValue,
-      style: TextStyle(
-        fontFamily: FontFamily.abel,
-        color: isDisable ? AppColors.grey3 : AppColors.grey,
-        fontSize: AppFontSize.f16,
+      style: AppTextStyle.labelStyle.copyWith(
+        color: isDisable ? AppColors.grey3 : AppColors.black,
       ),
       decoration: InputDecoration(
         filled: true,
         hintText: hint,
+        contentPadding: contentPadding,
         errorText: null,
-        errorStyle: errorText != null && errorText!.isNotEmpty == true
+        errorStyle: !StringUtils.isNullOrEmpty(errorText)
             ? Theme.of(context).inputDecorationTheme.errorStyle
             : const TextStyle(height: 0),
         suffixIconConstraints: const BoxConstraints(
-          minWidth: AppSize.s20,
+          minWidth: AppSize.s30,
         ),
-        // isCollapsed: true,
         isDense: true,
         suffixIcon: trailingIcon ?? const SizedBox.shrink(),
         fillColor: AppColors.grey6,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/utils.dart';
 
@@ -50,12 +50,9 @@ class XWarningChip extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: AppMargin.m4),
               child: Text(
                 title,
-                style: TextStyle(
-                  fontFamily: FontFamily.abel,
-                  color: textColor ?? AppColors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: AppFontSize.f14,
-                ),
+                style: AppTextStyle.labelStyle.copyWith(
+                    color: textColor ?? AppColors.black,
+                    fontSize: AppFontSize.f12),
                 overflow: TextOverflow.ellipsis,
               ),
             ),

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart' as tzInit;
+import 'package:timezone/data/latest.dart' as tz_init;
 import 'package:timezone/timezone.dart' as tz;
 
 import '../utils/utils.dart';
@@ -169,7 +169,7 @@ class XFirebaseMessage {
       String? body,
       String? payload,
       required DateTime time}) async {
-    tzInit.initializeTimeZones();
+    tz_init.initializeTimeZones();
     return _localNoti.zonedSchedule(
       id,
       title,

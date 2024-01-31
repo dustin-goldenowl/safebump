@@ -9,7 +9,6 @@ import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/router/route_name.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
-import 'package:safebump/src/utils/utils.dart';
 
 class AppConstant {
   static List<OnBoardingModel> getListDataOfOnBoarding(BuildContext context) =>
@@ -91,7 +90,6 @@ class AppConstant {
         }.entries);
       }
     }
-    xLog.e(babyFacts);
     return babyFacts;
   }
 

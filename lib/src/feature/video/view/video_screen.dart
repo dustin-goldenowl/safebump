@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/video/logic/video_bloc.dart';
 import 'package:safebump/src/feature/video/logic/video_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
@@ -12,6 +11,7 @@ import 'package:safebump/src/network/model/video/video.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -51,14 +51,13 @@ class _VideoScreenState extends State<VideoScreen> {
 
   Widget _renderAppBar(BuildContext context) {
     return XAppBarDashboard(
-      title: S.of(context).articles,
+      title: S.of(context).videos,
       leading: IconButton(
         onPressed: () {
           AppCoordinator.pop();
         },
         icon: const Icon(Icons.arrow_back),
       ),
-      isTitleCenter: true,
     );
   }
 
@@ -77,14 +76,14 @@ class _VideoScreenState extends State<VideoScreen> {
                 itemBuilder: (context, index) => Container(
                       margin: const EdgeInsets.symmetric(
                           vertical: AppMargin.m10, horizontal: AppMargin.m16),
-                      child: _renderArticleCard(context, state.videos![index],
+                      child: _renderVideoCard(context, state.videos![index],
                           state.listThumbnail![state.videos![index].id]),
                     ));
       },
     ));
   }
 
-  Widget _renderArticleCard(
+  Widget _renderVideoCard(
       BuildContext context, MVideo mVideos, Uint8List? image) {
     return Material(
       child: InkWell(
@@ -152,20 +151,11 @@ class _VideoScreenState extends State<VideoScreen> {
   Widget _renderTitle(String title) {
     return Text(
       title,
-      style: const TextStyle(
-          fontFamily: FontFamily.abel,
-          fontWeight: FontWeight.bold,
-          fontSize: AppFontSize.f24),
+      style: AppTextStyle.titleTextStyle,
     );
   }
 
   Widget _renderSummary(String summarize) {
-    return Text(
-      summarize,
-      style: const TextStyle(
-          fontFamily: FontFamily.abel,
-          fontWeight: FontWeight.bold,
-          color: AppColors.hintTextColor),
-    );
+    return Text(summarize, style: AppTextStyle.contentTexStyleBold);
   }
 }

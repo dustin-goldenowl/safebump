@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/model/on_boarding_model.dart';
@@ -62,10 +63,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         secondTitle: _listOnBoardingData[index].secondTitle,
         firstStyle: const TextStyle(
             color: AppColors.black,
+            fontFamily: FontFamily.productSans,
             fontWeight: FontWeight.bold,
             fontSize: AppFontSize.f30),
         secondStyle: const TextStyle(
             color: AppColors.primary,
+            fontFamily: FontFamily.productSans,
             fontWeight: FontWeight.bold,
             fontSize: AppFontSize.f30),
         hasImage: true,
@@ -91,13 +94,17 @@ class _OnBoardingViewState extends State<OnBoardingView> {
       children: [
         Text(
           S.of(context).welcome,
-          style: const TextStyle(fontSize: AppFontSize.f20),
+          style: const TextStyle(
+              fontSize: AppFontSize.f20,
+              fontFamily: FontFamily.productSans,
+              fontWeight: FontWeight.bold),
         ),
         XPaddingUtils.verticalPadding(height: AppPadding.p15),
         Text(
           _listOnBoardingData[0].content,
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: AppFontSize.f14),
+          style: const TextStyle(
+              fontSize: AppFontSize.f14, fontFamily: FontFamily.productSans),
         )
       ],
     );
@@ -123,7 +130,11 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             onPressed: () => AppCoordinator.showSignInScreen(),
             label: Text(
               S.of(context).getStarted,
-              style: const TextStyle(color: AppColors.white),
+              style: const TextStyle(
+                  color: AppColors.white,
+                  fontSize: AppFontSize.f16,
+                  fontFamily: FontFamily.abel,
+                  fontWeight: FontWeight.bold),
             )));
   }
 
@@ -131,7 +142,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Text(
       _listOnBoardingData[pageNumber].content,
       textAlign: TextAlign.center,
-      style: const TextStyle(fontSize: AppFontSize.f14),
+      style: const TextStyle(
+          fontSize: AppFontSize.f14, fontFamily: FontFamily.productSans),
     );
   }
 
@@ -153,7 +165,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         child: Text(
           S.of(context).skip.toUpperCase(),
           style: const TextStyle(
-              fontSize: AppFontSize.f20, color: AppColors.black),
+              fontSize: AppFontSize.f16,
+              color: AppColors.black,
+              fontFamily: FontFamily.productSans),
         ));
   }
 
@@ -183,7 +197,9 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         child: Text(
           S.of(context).next.toUpperCase(),
           style: const TextStyle(
-              fontSize: AppFontSize.f20, color: AppColors.black),
+              fontSize: AppFontSize.f16,
+              color: AppColors.black,
+              fontFamily: FontFamily.productSans),
         ));
   }
 }

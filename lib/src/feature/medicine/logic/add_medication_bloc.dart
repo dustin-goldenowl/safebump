@@ -15,6 +15,8 @@ import 'package:safebump/src/network/model/medications/medication.dart';
 import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/services/alarm_noti.dart';
 import 'package:safebump/src/theme/colors.dart';
+import 'package:safebump/src/theme/styles.dart';
+import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_ext.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
@@ -127,6 +129,8 @@ class AddMedicationBloc extends Cubit<AddMedicationState> {
       options: BoardDateTimeOptions(
         showDateButton: false,
         boardTitle: title,
+        boardTitleTextStyle:
+            AppTextStyle.titleTextStyle.copyWith(fontSize: AppFontSize.f16),
         activeColor: AppColors.primary,
       ),
     ).then((value) {

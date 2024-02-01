@@ -10,7 +10,9 @@ import 'package:safebump/src/feature/add_baby/view/add_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/add_pregnancy_baby_screen.dart';
 import 'package:safebump/src/feature/add_baby/view/select_option_add_screen.dart';
 import 'package:safebump/src/feature/articles/logic/article_detail_bloc.dart';
+import 'package:safebump/src/feature/articles/logic/article_search_bloc.dart';
 import 'package:safebump/src/feature/articles/view/article_detail_screen.dart';
+import 'package:safebump/src/feature/articles/view/article_search_screen.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
 import 'package:safebump/src/feature/calendar/view/calendar_screen.dart';
 import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
@@ -122,6 +124,17 @@ class AppRouter {
                           return BlocProvider(
                             create: (context) => ArticleDetailBloc(id: id),
                             child: const ArticlesDetailScreen(),
+                          );
+                        },
+                      ),
+                      GoRoute(
+                        parentNavigatorKey: AppCoordinator.navigatorKey,
+                        path: AppRouteNames.articlesSearch.subPath,
+                        name: AppRouteNames.articlesSearch.name,
+                        builder: (_, __) {
+                          return BlocProvider(
+                            create: (context) => ArticlesSearchBloc(),
+                            child: const ArticleSearchScreen(),
                           );
                         },
                       ),

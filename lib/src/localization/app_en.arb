@@ -205,5 +205,10 @@
     "spray": "Spray",
     "suppository": "Suppository",
     "pleaseAddRemindTime": "Please add remind time.",
-    "yourFetalInformationCannot": "Your fetal information cannot be determined"
+    "yourFetalInformationCannot": "Your fetal information cannot be determined",
+    "by": "by",
+    "readFull": "Read full",
+    "relatedArticles": "Related articles",
+    "enterArticlesName": "Enter articles name",
+    "noArticlesFound": "No articles found"
 }

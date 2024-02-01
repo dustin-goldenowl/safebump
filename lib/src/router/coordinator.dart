@@ -85,4 +85,7 @@ class AppCoordinator {
         .then((value) => result = value ?? false);
     return result;
   }
+
+  static void showArticlesSearchScreen() =>
+      context.pushNamed(AppRouteNames.articlesSearch.name);
 }

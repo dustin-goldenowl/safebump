@@ -63,7 +63,7 @@ platform :android do
       skip_upload_screenshots: true,
       package_name: "com.lance.safebump",
       aab: '../build/app/outputs/bundle/release/app-release.aab', 
-      json_key: '../play_cer.json',
+      json_key: 'play_config.json',
       root_url: "https://androidpublisher.googleapis.com/",
     )
   end

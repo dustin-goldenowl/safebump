@@ -69,7 +69,7 @@ jobs:
       - name: Create Google Play Config file
         env:
           PLAY_CONFIG_JSON: ${{ secrets.PLAY_CONFIG_JSON }}
-          PLAY_PATH: "./android/play_cer.json"
+          PLAY_PATH: "./android/play_config.json"
         run : |
           echo "$PLAY_CONFIG_JSON" | base64 -d > ${{env.PLAY_PATH}}
 

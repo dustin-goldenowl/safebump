@@ -15,6 +15,7 @@ enum AppRouteNames {
   addBaby(path: '/addBaby'),
   addPregnancyBaby(path: '/addPregnancyBaby'),
   articles(path: '/articles'),
+  articlesSearch(path: '/articlesSearch'),
   articlesDetail(path: 'articlesDetail', param: 'id'),
   videos(path: '/videos'),
   editProfile(path: '/editProfile'),

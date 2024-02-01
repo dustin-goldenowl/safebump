@@ -75,7 +75,6 @@ class _AboutSafeBumpScreenState extends State<AboutSafeBumpScreen> {
         );
         break;
       case 2:
-        //TODO: Add link to rating app CHPLAY
         break;
       default:
     }

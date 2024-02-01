@@ -813,15 +813,418 @@ class NotesEntityCompanion extends UpdateCompanion<NotesEntityData> {
   }
 }
 
+class $ArticlesEntityTable extends ArticlesEntity
+    with TableInfo<$ArticlesEntityTable, ArticlesEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ArticlesEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _titleMeta = const VerificationMeta('title');
+  @override
+  late final GeneratedColumn<String> title = GeneratedColumn<String>(
+      'title', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _summarizeMeta =
+      const VerificationMeta('summarize');
+  @override
+  late final GeneratedColumn<String> summarize = GeneratedColumn<String>(
+      'summarize', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _contentMeta =
+      const VerificationMeta('content');
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+      'content', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _tagMeta = const VerificationMeta('tag');
+  @override
+  late final GeneratedColumn<String> tag = GeneratedColumn<String>(
+      'tag', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _authorMeta = const VerificationMeta('author');
+  @override
+  late final GeneratedColumn<String> author = GeneratedColumn<String>(
+      'author', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _linkMeta = const VerificationMeta('link');
+  @override
+  late final GeneratedColumn<String> link = GeneratedColumn<String>(
+      'link', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+      'image', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, title, summarize, content, tag, author, link, image];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'articles_entity';
+  @override
+  VerificationContext validateIntegrity(Insertable<ArticlesEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('title')) {
+      context.handle(
+          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
+    } else if (isInserting) {
+      context.missing(_titleMeta);
+    }
+    if (data.containsKey('summarize')) {
+      context.handle(_summarizeMeta,
+          summarize.isAcceptableOrUnknown(data['summarize']!, _summarizeMeta));
+    } else if (isInserting) {
+      context.missing(_summarizeMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(_contentMeta,
+          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    if (data.containsKey('tag')) {
+      context.handle(
+          _tagMeta, tag.isAcceptableOrUnknown(data['tag']!, _tagMeta));
+    }
+    if (data.containsKey('author')) {
+      context.handle(_authorMeta,
+          author.isAcceptableOrUnknown(data['author']!, _authorMeta));
+    }
+    if (data.containsKey('link')) {
+      context.handle(
+          _linkMeta, link.isAcceptableOrUnknown(data['link']!, _linkMeta));
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ArticlesEntityData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ArticlesEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      title: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
+      summarize: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}summarize'])!,
+      content: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
+      tag: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}tag']),
+      author: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}author']),
+      link: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}link']),
+      image: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}image']),
+    );
+  }
+
+  @override
+  $ArticlesEntityTable createAlias(String alias) {
+    return $ArticlesEntityTable(attachedDatabase, alias);
+  }
+}
+
+class ArticlesEntityData extends DataClass
+    implements Insertable<ArticlesEntityData> {
+  final String id;
+  final String title;
+  final String summarize;
+  final String content;
+  final String? tag;
+  final String? author;
+  final String? link;
+  final String? image;
+  const ArticlesEntityData(
+      {required this.id,
+      required this.title,
+      required this.summarize,
+      required this.content,
+      this.tag,
+      this.author,
+      this.link,
+      this.image});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['title'] = Variable<String>(title);
+    map['summarize'] = Variable<String>(summarize);
+    map['content'] = Variable<String>(content);
+    if (!nullToAbsent || tag != null) {
+      map['tag'] = Variable<String>(tag);
+    }
+    if (!nullToAbsent || author != null) {
+      map['author'] = Variable<String>(author);
+    }
+    if (!nullToAbsent || link != null) {
+      map['link'] = Variable<String>(link);
+    }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String>(image);
+    }
+    return map;
+  }
+
+  ArticlesEntityCompanion toCompanion(bool nullToAbsent) {
+    return ArticlesEntityCompanion(
+      id: Value(id),
+      title: Value(title),
+      summarize: Value(summarize),
+      content: Value(content),
+      tag: tag == null && nullToAbsent ? const Value.absent() : Value(tag),
+      author:
+          author == null && nullToAbsent ? const Value.absent() : Value(author),
+      link: link == null && nullToAbsent ? const Value.absent() : Value(link),
+      image:
+          image == null && nullToAbsent ? const Value.absent() : Value(image),
+    );
+  }
+
+  factory ArticlesEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ArticlesEntityData(
+      id: serializer.fromJson<String>(json['id']),
+      title: serializer.fromJson<String>(json['title']),
+      summarize: serializer.fromJson<String>(json['summarize']),
+      content: serializer.fromJson<String>(json['content']),
+      tag: serializer.fromJson<String?>(json['tag']),
+      author: serializer.fromJson<String?>(json['author']),
+      link: serializer.fromJson<String?>(json['link']),
+      image: serializer.fromJson<String?>(json['image']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'title': serializer.toJson<String>(title),
+      'summarize': serializer.toJson<String>(summarize),
+      'content': serializer.toJson<String>(content),
+      'tag': serializer.toJson<String?>(tag),
+      'author': serializer.toJson<String?>(author),
+      'link': serializer.toJson<String?>(link),
+      'image': serializer.toJson<String?>(image),
+    };
+  }
+
+  ArticlesEntityData copyWith(
+          {String? id,
+          String? title,
+          String? summarize,
+          String? content,
+          Value<String?> tag = const Value.absent(),
+          Value<String?> author = const Value.absent(),
+          Value<String?> link = const Value.absent(),
+          Value<String?> image = const Value.absent()}) =>
+      ArticlesEntityData(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        summarize: summarize ?? this.summarize,
+        content: content ?? this.content,
+        tag: tag.present ? tag.value : this.tag,
+        author: author.present ? author.value : this.author,
+        link: link.present ? link.value : this.link,
+        image: image.present ? image.value : this.image,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('ArticlesEntityData(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('summarize: $summarize, ')
+          ..write('content: $content, ')
+          ..write('tag: $tag, ')
+          ..write('author: $author, ')
+          ..write('link: $link, ')
+          ..write('image: $image')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(id, title, summarize, content, tag, author, link, image);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ArticlesEntityData &&
+          other.id == this.id &&
+          other.title == this.title &&
+          other.summarize == this.summarize &&
+          other.content == this.content &&
+          other.tag == this.tag &&
+          other.author == this.author &&
+          other.link == this.link &&
+          other.image == this.image);
+}
+
+class ArticlesEntityCompanion extends UpdateCompanion<ArticlesEntityData> {
+  final Value<String> id;
+  final Value<String> title;
+  final Value<String> summarize;
+  final Value<String> content;
+  final Value<String?> tag;
+  final Value<String?> author;
+  final Value<String?> link;
+  final Value<String?> image;
+  final Value<int> rowid;
+  const ArticlesEntityCompanion({
+    this.id = const Value.absent(),
+    this.title = const Value.absent(),
+    this.summarize = const Value.absent(),
+    this.content = const Value.absent(),
+    this.tag = const Value.absent(),
+    this.author = const Value.absent(),
+    this.link = const Value.absent(),
+    this.image = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ArticlesEntityCompanion.insert({
+    required String id,
+    required String title,
+    required String summarize,
+    required String content,
+    this.tag = const Value.absent(),
+    this.author = const Value.absent(),
+    this.link = const Value.absent(),
+    this.image = const Value.absent(),
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        title = Value(title),
+        summarize = Value(summarize),
+        content = Value(content);
+  static Insertable<ArticlesEntityData> custom({
+    Expression<String>? id,
+    Expression<String>? title,
+    Expression<String>? summarize,
+    Expression<String>? content,
+    Expression<String>? tag,
+    Expression<String>? author,
+    Expression<String>? link,
+    Expression<String>? image,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (title != null) 'title': title,
+      if (summarize != null) 'summarize': summarize,
+      if (content != null) 'content': content,
+      if (tag != null) 'tag': tag,
+      if (author != null) 'author': author,
+      if (link != null) 'link': link,
+      if (image != null) 'image': image,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ArticlesEntityCompanion copyWith(
+      {Value<String>? id,
+      Value<String>? title,
+      Value<String>? summarize,
+      Value<String>? content,
+      Value<String?>? tag,
+      Value<String?>? author,
+      Value<String?>? link,
+      Value<String?>? image,
+      Value<int>? rowid}) {
+    return ArticlesEntityCompanion(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      summarize: summarize ?? this.summarize,
+      content: content ?? this.content,
+      tag: tag ?? this.tag,
+      author: author ?? this.author,
+      link: link ?? this.link,
+      image: image ?? this.image,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (title.present) {
+      map['title'] = Variable<String>(title.value);
+    }
+    if (summarize.present) {
+      map['summarize'] = Variable<String>(summarize.value);
+    }
+    if (content.present) {
+      map['content'] = Variable<String>(content.value);
+    }
+    if (tag.present) {
+      map['tag'] = Variable<String>(tag.value);
+    }
+    if (author.present) {
+      map['author'] = Variable<String>(author.value);
+    }
+    if (link.present) {
+      map['link'] = Variable<String>(link.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ArticlesEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('title: $title, ')
+          ..write('summarize: $summarize, ')
+          ..write('content: $content, ')
+          ..write('tag: $tag, ')
+          ..write('author: $author, ')
+          ..write('link: $link, ')
+          ..write('image: $image, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseApp extends GeneratedDatabase {
   _$DatabaseApp(QueryExecutor e) : super(e);
   late final $BabyInforEntityTable babyInforEntity =
       $BabyInforEntityTable(this);
   late final $NotesEntityTable notesEntity = $NotesEntityTable(this);
+  late final $ArticlesEntityTable articlesEntity = $ArticlesEntityTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [babyInforEntity, notesEntity];
+      [babyInforEntity, notesEntity, articlesEntity];
 }

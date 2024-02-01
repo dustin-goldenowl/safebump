@@ -1,9 +1,13 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/firebase_options.dart';
 import 'package:safebump/src/config/device/app_info.dart';
+import 'package:safebump/src/local/repo/articles/article_local_repo.dart';
+import 'package:safebump/src/local/repo/articles/article_local_repo_impl.dart';
 import 'package:safebump/src/local/repo/notes/notes_local_repo.dart';
 import 'package:safebump/src/local/repo/notes/notes_local_repo_impl.dart';
 import 'package:safebump/src/network/data/articles/articles_repository.dart';
@@ -36,6 +40,17 @@ Future initializeApp() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  // catch error
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
+
   await Future.wait([
     AppInfo.initialize(),
     UserPrefs.instance.initialize(),
@@ -66,6 +81,8 @@ void _locator() {
       () => BabyInforLocalRepoImpl(GetIt.I()));
   GetIt.I.registerLazySingleton<NotesLocalRepo>(
       () => NotesLocalRepoImpl(GetIt.I()));
+  GetIt.I.registerLazySingleton<ArticlesLocalRepo>(
+      () => ArticlesLocalRepoImpl(GetIt.I()));
 }
 
 void resetSingleton() {

@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/gen/fonts.gen.dart';
 import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
 import 'package:safebump/src/feature/articles/logic/articles_state.dart';
@@ -54,6 +55,10 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
         },
         icon: const Icon(Icons.arrow_back),
       ),
+      action: IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () => AppCoordinator.showArticlesSearchScreen(),
+      ),
     );
   }
 
@@ -97,6 +102,8 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
             _renderTitle(mArticles.title),
             XPaddingUtils.verticalPadding(height: AppPadding.p10),
             _renderSummary(mArticles.summarize),
+            XPaddingUtils.verticalPadding(height: AppPadding.p10),
+            _renderAuthor(mArticles.author),
           ],
         ),
       ),
@@ -118,9 +125,31 @@ class _ArticlesScreenState extends State<ArticlesScreen> {
     return Text(
       summarize,
       style: const TextStyle(
-          fontFamily: FontFamily.abel,
-          fontWeight: FontWeight.bold,
-          color: AppColors.hintTextColor),
+        fontFamily: FontFamily.abel,
+        fontWeight: FontWeight.bold,
+        color: AppColors.hintTextColor,
+      ),
+    );
+  }
+
+  Widget _renderAuthor(String author) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Assets.svg.writer.svg(width: AppSize.s20),
+        XPaddingUtils.horizontalPadding(width: AppPadding.p6),
+        Text(
+          S.of(context).by,
+          style: AppTextStyle.hintTextStyle.copyWith(color: AppColors.black),
+        ),
+        XPaddingUtils.horizontalPadding(width: AppPadding.p2),
+        Text(
+          author,
+          style: AppTextStyle.contentTexStyleBold
+              .copyWith(color: AppColors.primary, fontSize: AppFontSize.f13),
+        )
+      ],
     );
   }
 }

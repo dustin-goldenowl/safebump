@@ -6,9 +6,11 @@ class HomeState with EquatableMixin {
   final DateTime selectedDate;
   final double? height;
   final double? weight;
+  final String? babyFact;
   final bool hasBaby;
   final MBaby? baby;
   final String? weekCounter;
+  final int? weekNumber;
   final bool isAnswerDailyQuiz;
   final DailyQuiz? quiz;
   final bool isAnswerCorrect;
@@ -19,6 +21,8 @@ class HomeState with EquatableMixin {
       this.height,
       this.weight,
       this.baby,
+      this.babyFact,
+      this.weekNumber,
       this.isAnswerDailyQuiz = false,
       this.quiz,
       this.weekCounter,
@@ -31,9 +35,11 @@ class HomeState with EquatableMixin {
       double? height,
       double? weight,
       MBaby? baby,
+      String? babyFact,
       String? weekCounter,
       bool? isAnswerDailyQuiz,
       bool? isAnswerCorrect,
+      int? weekNumber,
       DailyQuiz? quiz,
       int? correctPercent,
       bool? hasBaby}) {
@@ -44,10 +50,12 @@ class HomeState with EquatableMixin {
       weekCounter: weekCounter ?? this.weekCounter,
       isAnswerDailyQuiz: isAnswerDailyQuiz ?? this.isAnswerDailyQuiz,
       quiz: quiz ?? this.quiz,
+      weekNumber: weekNumber ?? this.weekNumber,
       correctPercent: correctPercent ?? this.correctPercent,
       isAnswerCorrect: isAnswerCorrect ?? this.isAnswerCorrect,
       height: height ?? this.height,
       weight: weight ?? this.weight,
+      babyFact: babyFact ?? this.babyFact,
     );
   }
 
@@ -58,6 +66,7 @@ class HomeState with EquatableMixin {
         weight,
         hasBaby,
         baby,
+        babyFact,
         weekCounter,
         isAnswerDailyQuiz,
         quiz,

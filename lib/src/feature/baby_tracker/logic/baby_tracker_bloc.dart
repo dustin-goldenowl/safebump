@@ -41,21 +41,22 @@ class PregnancyTrackerBloc extends Cubit<PregnancyTrackerState> {
         return;
       }
       final babyInfor = BabyInforExt.convertFromEntityData(result);
-      // final babyInforImage = BabyInforExt.getListImage(result);
+      final babyInforImage = result.first.image;
       emit(state.copyWith(
           babyInfor: babyInfor.first,
-          // babyInforImage: babyInforImage[state.selectedWeek.toString()],
+          babyInforImage: babyInforImage,
           status: PregnancyTrackerStatus.success));
     } catch (e) {
       xLog.e(e);
     }
   }
 
-  void onChangeWeek(int week) {
+  Future<void> onChangeWeek(int week) async {
     if (state.selectedWeek == week) return;
     emit(state.copyWith(selectedWeek: week));
     _createLoadingScreen();
-    _initBabyInforData(week);
+    await Future.delayed(const Duration(milliseconds: 500));
+    await _initBabyInforData(week);
     _hideLoadingScreen();
   }
 

@@ -11,6 +11,7 @@ MBabyInfor _$MBabyInforFromJson(Map<String, dynamic> json) => MBabyInfor(
       week: json['week'] as int,
       data: Map<String, String>.from(json['data'] as Map),
       height: (json['height'] as num?)?.toDouble(),
+      fact: json['fact'] as String?,
       weight: (json['weight'] as num?)?.toDouble(),
     );
 
@@ -21,4 +22,5 @@ Map<String, dynamic> _$MBabyInforToJson(MBabyInfor instance) =>
       'height': instance.height,
       'weight': instance.weight,
       'data': instance.data,
+      'fact': instance.fact,
     };

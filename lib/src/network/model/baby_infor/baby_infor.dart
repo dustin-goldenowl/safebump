@@ -11,6 +11,7 @@ class MBabyInfor {
       required this.week,
       required this.data,
       this.height,
+      this.fact,
       this.weight});
 
   String id;
@@ -18,15 +19,18 @@ class MBabyInfor {
   double? height;
   double? weight;
   Map<String, String> data;
+  String? fact;
   MBabyInfor copyWith(
       {String? id,
       int? week,
       double? height,
       double? weight,
+      String? fact,
       Map<String, String>? data}) {
     return MBabyInfor(
         id: id ?? this.id,
         week: week ?? this.week,
+        fact: fact ?? this.fact,
         height: height ?? this.height,
         weight: weight ?? this.weight,
         data: data ?? this.data);
@@ -34,7 +38,7 @@ class MBabyInfor {
 
   @override
   String toString() {
-    return 'MBabyInfor{id=$id, week=$week, height=$height, weight=$weight, data=$data}';
+    return 'MBabyInfor{id=$id, week=$week, height=$height, weight=$weight, data=$data, fact=$fact}';
   }
 
   Map<String, dynamic> toJson() => _$MBabyInforToJson(this);
@@ -71,6 +75,7 @@ extension BabyInforExt on List<MBabyInfor> {
             'yourBody': data.yourBody,
             'thingsToRemember': data.thingsToRemember,
           },
+          fact: data.fact,
           height: data.height,
           weight: data.weight));
     }

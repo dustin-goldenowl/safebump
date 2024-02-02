@@ -33,7 +33,7 @@ class BabyInforFactLocalRepoImpl extends BabyInforFactLocalRepo {
   @override
   Future<void> deleteAll() async {
     try {
-      await database.delete(database.babyInforEntity).go();
+      await database.delete(database.babyInforFactEntity).go();
     } catch (error) {
       xLog.w("[error][delete-table] $error");
     }

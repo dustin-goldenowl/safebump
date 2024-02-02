@@ -1264,9 +1264,23 @@ class $BabyInforFactEntityTable extends BabyInforFactEntity
   late final GeneratedColumn<String> thingsToRemember = GeneratedColumn<String>(
       'things_to_remember', aliasedName, false,
       type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _factMeta = const VerificationMeta('fact');
   @override
-  List<GeneratedColumn> get $columns =>
-      [id, week, weight, height, image, yourBaby, yourBody, thingsToRemember];
+  late final GeneratedColumn<String> fact = GeneratedColumn<String>(
+      'fact', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  @override
+  List<GeneratedColumn> get $columns => [
+        id,
+        week,
+        weight,
+        height,
+        image,
+        yourBaby,
+        yourBody,
+        thingsToRemember,
+        fact
+      ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -1321,6 +1335,10 @@ class $BabyInforFactEntityTable extends BabyInforFactEntity
     } else if (isInserting) {
       context.missing(_thingsToRememberMeta);
     }
+    if (data.containsKey('fact')) {
+      context.handle(
+          _factMeta, fact.isAcceptableOrUnknown(data['fact']!, _factMeta));
+    }
     return context;
   }
 
@@ -1347,6 +1365,8 @@ class $BabyInforFactEntityTable extends BabyInforFactEntity
           .read(DriftSqlType.string, data['${effectivePrefix}your_body'])!,
       thingsToRemember: attachedDatabase.typeMapping.read(
           DriftSqlType.string, data['${effectivePrefix}things_to_remember'])!,
+      fact: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}fact']),
     );
   }
 
@@ -1366,6 +1386,7 @@ class BabyInforFactEntityData extends DataClass
   final String yourBaby;
   final String yourBody;
   final String thingsToRemember;
+  final String? fact;
   const BabyInforFactEntityData(
       {required this.id,
       required this.week,
@@ -1374,7 +1395,8 @@ class BabyInforFactEntityData extends DataClass
       this.image,
       required this.yourBaby,
       required this.yourBody,
-      required this.thingsToRemember});
+      required this.thingsToRemember,
+      this.fact});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1392,6 +1414,9 @@ class BabyInforFactEntityData extends DataClass
     map['your_baby'] = Variable<String>(yourBaby);
     map['your_body'] = Variable<String>(yourBody);
     map['things_to_remember'] = Variable<String>(thingsToRemember);
+    if (!nullToAbsent || fact != null) {
+      map['fact'] = Variable<String>(fact);
+    }
     return map;
   }
 
@@ -1408,6 +1433,7 @@ class BabyInforFactEntityData extends DataClass
       yourBaby: Value(yourBaby),
       yourBody: Value(yourBody),
       thingsToRemember: Value(thingsToRemember),
+      fact: fact == null && nullToAbsent ? const Value.absent() : Value(fact),
     );
   }
 
@@ -1423,6 +1449,7 @@ class BabyInforFactEntityData extends DataClass
       yourBaby: serializer.fromJson<String>(json['yourBaby']),
       yourBody: serializer.fromJson<String>(json['yourBody']),
       thingsToRemember: serializer.fromJson<String>(json['thingsToRemember']),
+      fact: serializer.fromJson<String?>(json['fact']),
     );
   }
   @override
@@ -1437,6 +1464,7 @@ class BabyInforFactEntityData extends DataClass
       'yourBaby': serializer.toJson<String>(yourBaby),
       'yourBody': serializer.toJson<String>(yourBody),
       'thingsToRemember': serializer.toJson<String>(thingsToRemember),
+      'fact': serializer.toJson<String?>(fact),
     };
   }
 
@@ -1448,7 +1476,8 @@ class BabyInforFactEntityData extends DataClass
           Value<Uint8List?> image = const Value.absent(),
           String? yourBaby,
           String? yourBody,
-          String? thingsToRemember}) =>
+          String? thingsToRemember,
+          Value<String?> fact = const Value.absent()}) =>
       BabyInforFactEntityData(
         id: id ?? this.id,
         week: week ?? this.week,
@@ -1458,25 +1487,35 @@ class BabyInforFactEntityData extends DataClass
         yourBaby: yourBaby ?? this.yourBaby,
         yourBody: yourBody ?? this.yourBody,
         thingsToRemember: thingsToRemember ?? this.thingsToRemember,
+        fact: fact.present ? fact.value : this.fact,
       );
   @override
   String toString() {
     return (StringBuffer('BabyInforFactEntityData(')
           ..write('id: $id, ')
+          ..write('fact: $fact')
           ..write('week: $week, ')
           ..write('weight: $weight, ')
           ..write('height: $height, ')
           ..write('image: $image, ')
           ..write('yourBaby: $yourBaby, ')
           ..write('yourBody: $yourBody, ')
-          ..write('thingsToRemember: $thingsToRemember')
+          ..write('thingsToRemember: $thingsToRemember, ')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, week, weight, height,
-      $driftBlobEquality.hash(image), yourBaby, yourBody, thingsToRemember);
+  int get hashCode => Object.hash(
+      id,
+      week,
+      weight,
+      height,
+      $driftBlobEquality.hash(image),
+      yourBaby,
+      yourBody,
+      thingsToRemember,
+      fact);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1488,7 +1527,8 @@ class BabyInforFactEntityData extends DataClass
           $driftBlobEquality.equals(other.image, this.image) &&
           other.yourBaby == this.yourBaby &&
           other.yourBody == this.yourBody &&
-          other.thingsToRemember == this.thingsToRemember);
+          other.thingsToRemember == this.thingsToRemember &&
+          other.fact == this.fact);
 }
 
 class BabyInforFactEntityCompanion
@@ -1501,6 +1541,7 @@ class BabyInforFactEntityCompanion
   final Value<String> yourBaby;
   final Value<String> yourBody;
   final Value<String> thingsToRemember;
+  final Value<String?> fact;
   final Value<int> rowid;
   const BabyInforFactEntityCompanion({
     this.id = const Value.absent(),
@@ -1511,6 +1552,7 @@ class BabyInforFactEntityCompanion
     this.yourBaby = const Value.absent(),
     this.yourBody = const Value.absent(),
     this.thingsToRemember = const Value.absent(),
+    this.fact = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   BabyInforFactEntityCompanion.insert({
@@ -1522,6 +1564,7 @@ class BabyInforFactEntityCompanion
     required String yourBaby,
     required String yourBody,
     required String thingsToRemember,
+    this.fact = const Value.absent(),
     this.rowid = const Value.absent(),
   })  : id = Value(id),
         week = Value(week),
@@ -1537,6 +1580,7 @@ class BabyInforFactEntityCompanion
     Expression<String>? yourBaby,
     Expression<String>? yourBody,
     Expression<String>? thingsToRemember,
+    Expression<String>? fact,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -1548,6 +1592,7 @@ class BabyInforFactEntityCompanion
       if (yourBaby != null) 'your_baby': yourBaby,
       if (yourBody != null) 'your_body': yourBody,
       if (thingsToRemember != null) 'things_to_remember': thingsToRemember,
+      if (fact != null) 'fact': fact,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -1561,6 +1606,7 @@ class BabyInforFactEntityCompanion
       Value<String>? yourBaby,
       Value<String>? yourBody,
       Value<String>? thingsToRemember,
+      Value<String?>? fact,
       Value<int>? rowid}) {
     return BabyInforFactEntityCompanion(
       id: id ?? this.id,
@@ -1571,6 +1617,7 @@ class BabyInforFactEntityCompanion
       yourBaby: yourBaby ?? this.yourBaby,
       yourBody: yourBody ?? this.yourBody,
       thingsToRemember: thingsToRemember ?? this.thingsToRemember,
+      fact: fact ?? this.fact,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -1602,6 +1649,9 @@ class BabyInforFactEntityCompanion
     if (thingsToRemember.present) {
       map['things_to_remember'] = Variable<String>(thingsToRemember.value);
     }
+    if (fact.present) {
+      map['fact'] = Variable<String>(fact.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -1619,6 +1669,7 @@ class BabyInforFactEntityCompanion
           ..write('yourBaby: $yourBaby, ')
           ..write('yourBody: $yourBody, ')
           ..write('thingsToRemember: $thingsToRemember, ')
+          ..write('fact: $fact, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();

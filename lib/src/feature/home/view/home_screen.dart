@@ -136,6 +136,9 @@ class _HomeScreenState extends State<HomeScreen> {
           color: AppColors.hintTextColor),
       child: BlocBuilder<HomeBloc, HomeState>(
         buildWhen: (previous, current) =>
+            previous.babyFact != current.babyFact ||
+            previous.height != current.height ||
+            previous.weight != current.weight ||
             previous.selectedDate.compareTo(current.selectedDate) != 0,
         builder: (context, state) {
           return Container(
@@ -147,8 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: AppColors.white),
             child: Column(
               children: [
-                _renderBabyFact(
-                    context, ''),
+                _renderBabyFact(context, state.babyFact),
                 XPaddingUtils.verticalPadding(height: AppPadding.p20),
                 _renderBabyInfor(
                   context,
@@ -373,7 +375,8 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         XFillButton(
           borderRadius: AppRadius.r30,
-          onPressed: () => AppCoordinator.showBabyTrackerScreen('1'),
+          onPressed: () => AppCoordinator.showBabyTrackerScreen(
+              (context.read<HomeBloc>().state.weekNumber ?? 2).toString()),
           label: Row(mainAxisSize: MainAxisSize.min, children: [
             Text(
               S.of(context).pregnancyTracker,

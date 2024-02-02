@@ -11,6 +11,7 @@ class BabyInforFactEntity extends Table {
   TextColumn get yourBaby => text()();
   TextColumn get yourBody => text()();
   TextColumn get thingsToRemember => text()();
+  TextColumn get fact => text().nullable()();
 
   @override
   Set<Column> get primaryKey => {id, week};

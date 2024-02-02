@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:safebump/gen/assets.gen.dart';
 import 'package:safebump/src/feature/baby_tracker/logic/baby_tracker_bloc.dart';
 import 'package:safebump/src/feature/baby_tracker/logic/baby_tracker_state.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
@@ -54,12 +54,13 @@ class _PregnancyTrackerScreenState extends State<PregnancyTrackerScreen> {
   }
 
   Widget _renderListWeek() {
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(bottom: AppMargin.m10),
       height: 40,
       child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 42,
+          itemCount: 40,
           itemBuilder: (context, index) => _renderWeekButton(index + 1)),
     );
   }
@@ -111,7 +112,25 @@ class _PregnancyTrackerScreenState extends State<PregnancyTrackerScreen> {
   }
 
   Widget _renderImage() {
-    return Assets.images.images.proviceEducational.image();
+    return BlocBuilder<PregnancyTrackerBloc, PregnancyTrackerState>(
+      buildWhen: (previous, current) =>
+          previous.babyInforImage != current.babyInforImage,
+      builder: (context, state) {
+        return state.babyInforImage == null ||
+                state.babyInforImage == Uint8List(0)
+            ? const SizedBox.shrink()
+            : Padding(
+                padding: const EdgeInsets.all(AppPadding.p16),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppRadius.r16),
+                  child: Image.memory(
+                    state.babyInforImage!,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              );
+      },
+    );
   }
 
   Widget _renderYourBabyText() {

@@ -68,7 +68,7 @@ class HomeBloc extends Cubit<HomeState> {
       default:
         weekCounter = "${weekNumber}th ";
     }
-    emit(state.copyWith(weekCounter: weekCounter));
+    emit(state.copyWith(weekCounter: weekCounter, weekNumber: weekNumber));
     _getBabyFact(weekNumber);
   }
 
@@ -157,6 +157,7 @@ class HomeBloc extends Cubit<HomeState> {
           .get();
       if (isNullOrEmpty(babyFactInWeek)) return;
       emit(state.copyWith(
+          babyFact: babyFactInWeek.first.fact,
           height: babyFactInWeek.first.height,
           weight: babyFactInWeek.first.weight));
     } catch (e) {

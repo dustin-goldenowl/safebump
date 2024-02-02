@@ -12,6 +12,7 @@ import 'package:safebump/src/local/database_app.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/localization/localization_utils.dart';
 import 'package:safebump/src/network/data/baby/baby_repo.dart';
+import 'package:safebump/src/network/data/baby_infor/baby_infor_repository.dart';
 import 'package:safebump/src/network/data/note/note_repository.dart';
 import 'package:safebump/src/network/data/user/user_repository.dart';
 import 'package:safebump/src/network/model/user/user.dart';
@@ -80,6 +81,7 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
     await _syncingUserAvatar();
     await _syncingBabyData();
     await _syncingNotesData();
+    await _syncingBabyInforData();
   }
 
   Future<void> _syncingUserData() async {
@@ -134,5 +136,9 @@ class _SyncDataScreenState extends State<SyncDataScreen> {
         xLog.e(e);
       }
     }
+  }
+  
+  Future<void> _syncingBabyInforData() async {
+    await GetIt.I.get<BabyInforRepository>().getAllBabyInfor();
   }
 }

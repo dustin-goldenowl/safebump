@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:safebump/src/network/model/articles/articles.dart';
 import 'package:safebump/src/network/model/baby/baby.dart';
+import 'package:safebump/src/network/model/baby_infor/baby_infor.dart';
 import 'package:safebump/src/network/model/calendar/calendar.dart';
 import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 import 'package:safebump/src/network/model/medications/medication.dart';
@@ -86,4 +87,11 @@ class XCollection {
             MMedication.fromJson(snapshot.data() as Map<String, dynamic>),
         toFirestore: (chatRoom, _) => chatRoom.toJson(),
       );
+
+  static CollectionReference<MBabyInfor> get babyInfor =>
+      FirebaseFirestore.instance.collection('baby_infor').withConverter<MBabyInfor>(
+            fromFirestore: (snapshot, options) =>
+                MBabyInfor.fromJson(snapshot.data() as Map<String, dynamic>),
+            toFirestore: (chatRoom, _) => chatRoom.toJson(),
+          );
 }

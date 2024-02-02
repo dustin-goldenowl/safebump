@@ -3,20 +3,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safebump/src/feature/home/logic/home_state.dart';
 import 'package:safebump/src/local/database_app.dart';
+import 'package:safebump/src/local/repo/baby_infor_fact/baby_infor_fact_local_repo.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/network/data/daily_quiz/daily_quiz_repository.dart';
 import 'package:safebump/src/network/model/baby/baby.dart';
-import 'package:safebump/src/network/model/baby_fact_model.dart';
 import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 import 'package:safebump/src/services/user_prefs.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/utils.dart';
 
 class HomeBloc extends Cubit<HomeState> {
-  HomeBloc(Map<DateTime, BabyFactModel> babyFacts)
+  HomeBloc()
       : super(HomeState(
-            selectedDate: DateTimeUtils.convertToStartedDay(DateTime.now()),
-            babyFacts: babyFacts));
+            selectedDate: DateTimeUtils.convertToStartedDay(DateTime.now())));
 
   void initData(BuildContext context) {
     _hasBabyInfor();
@@ -69,7 +68,8 @@ class HomeBloc extends Cubit<HomeState> {
       default:
         weekCounter = "${weekNumber}th ";
     }
-    emit(state.copyWith(weekCounter: weekCounter));
+    emit(state.copyWith(weekCounter: weekCounter, weekNumber: weekNumber));
+    _getBabyFact(weekNumber);
   }
 
   Future<void> _checkDailyQuiz() async {
@@ -147,5 +147,21 @@ class HomeBloc extends Cubit<HomeState> {
     UserPrefs.I.setDoDailyQuiz(true);
     UserPrefs.I.setIsUserCorrect(state.isAnswerCorrect);
     UserPrefs.I.setPercentCorrectDailyQuiz(state.correctPercent);
+  }
+
+  Future<void> _getBabyFact(int weekNumber) async {
+    try {
+      final babyFactInWeek = await GetIt.I
+          .get<BabyInforFactLocalRepo>()
+          .getDetailFollowWeek(week: weekNumber)
+          .get();
+      if (isNullOrEmpty(babyFactInWeek)) return;
+      emit(state.copyWith(
+          babyFact: babyFactInWeek.first.fact,
+          height: babyFactInWeek.first.height,
+          weight: babyFactInWeek.first.weight));
+    } catch (e) {
+      xLog.e(e);
+    }
   }
 }

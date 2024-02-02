@@ -7,6 +7,6 @@ class XStorageCollection {
   static Reference get video => FirebaseStorage.instance.ref().child('videos');
   static Reference get videoThumbnail =>
       FirebaseStorage.instance.ref().child('videos/images');
-  static Reference get users =>
-      FirebaseStorage.instance.ref().child('user');
+  static Reference get users => FirebaseStorage.instance.ref().child('user');
+  static Reference get babyInfor => FirebaseStorage.instance.ref().child('babyInfor');
 }

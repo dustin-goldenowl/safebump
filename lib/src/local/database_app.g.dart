@@ -1215,16 +1215,428 @@ class ArticlesEntityCompanion extends UpdateCompanion<ArticlesEntityData> {
   }
 }
 
+class $BabyInforFactEntityTable extends BabyInforFactEntity
+    with TableInfo<$BabyInforFactEntityTable, BabyInforFactEntityData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BabyInforFactEntityTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _weekMeta = const VerificationMeta('week');
+  @override
+  late final GeneratedColumn<int> week = GeneratedColumn<int>(
+      'week', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _weightMeta = const VerificationMeta('weight');
+  @override
+  late final GeneratedColumn<double> weight = GeneratedColumn<double>(
+      'weight', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _heightMeta = const VerificationMeta('height');
+  @override
+  late final GeneratedColumn<double> height = GeneratedColumn<double>(
+      'height', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<Uint8List> image = GeneratedColumn<Uint8List>(
+      'image', aliasedName, true,
+      type: DriftSqlType.blob, requiredDuringInsert: false);
+  static const VerificationMeta _yourBabyMeta =
+      const VerificationMeta('yourBaby');
+  @override
+  late final GeneratedColumn<String> yourBaby = GeneratedColumn<String>(
+      'your_baby', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _yourBodyMeta =
+      const VerificationMeta('yourBody');
+  @override
+  late final GeneratedColumn<String> yourBody = GeneratedColumn<String>(
+      'your_body', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _thingsToRememberMeta =
+      const VerificationMeta('thingsToRemember');
+  @override
+  late final GeneratedColumn<String> thingsToRemember = GeneratedColumn<String>(
+      'things_to_remember', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, week, weight, height, image, yourBaby, yourBody, thingsToRemember];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'baby_infor_fact_entity';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<BabyInforFactEntityData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('week')) {
+      context.handle(
+          _weekMeta, week.isAcceptableOrUnknown(data['week']!, _weekMeta));
+    } else if (isInserting) {
+      context.missing(_weekMeta);
+    }
+    if (data.containsKey('weight')) {
+      context.handle(_weightMeta,
+          weight.isAcceptableOrUnknown(data['weight']!, _weightMeta));
+    }
+    if (data.containsKey('height')) {
+      context.handle(_heightMeta,
+          height.isAcceptableOrUnknown(data['height']!, _heightMeta));
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+          _imageMeta, image.isAcceptableOrUnknown(data['image']!, _imageMeta));
+    }
+    if (data.containsKey('your_baby')) {
+      context.handle(_yourBabyMeta,
+          yourBaby.isAcceptableOrUnknown(data['your_baby']!, _yourBabyMeta));
+    } else if (isInserting) {
+      context.missing(_yourBabyMeta);
+    }
+    if (data.containsKey('your_body')) {
+      context.handle(_yourBodyMeta,
+          yourBody.isAcceptableOrUnknown(data['your_body']!, _yourBodyMeta));
+    } else if (isInserting) {
+      context.missing(_yourBodyMeta);
+    }
+    if (data.containsKey('things_to_remember')) {
+      context.handle(
+          _thingsToRememberMeta,
+          thingsToRemember.isAcceptableOrUnknown(
+              data['things_to_remember']!, _thingsToRememberMeta));
+    } else if (isInserting) {
+      context.missing(_thingsToRememberMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id, week};
+  @override
+  BabyInforFactEntityData map(Map<String, dynamic> data,
+      {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BabyInforFactEntityData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      week: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}week'])!,
+      weight: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}weight']),
+      height: attachedDatabase.typeMapping
+          .read(DriftSqlType.double, data['${effectivePrefix}height']),
+      image: attachedDatabase.typeMapping
+          .read(DriftSqlType.blob, data['${effectivePrefix}image']),
+      yourBaby: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}your_baby'])!,
+      yourBody: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}your_body'])!,
+      thingsToRemember: attachedDatabase.typeMapping.read(
+          DriftSqlType.string, data['${effectivePrefix}things_to_remember'])!,
+    );
+  }
+
+  @override
+  $BabyInforFactEntityTable createAlias(String alias) {
+    return $BabyInforFactEntityTable(attachedDatabase, alias);
+  }
+}
+
+class BabyInforFactEntityData extends DataClass
+    implements Insertable<BabyInforFactEntityData> {
+  final String id;
+  final int week;
+  final double? weight;
+  final double? height;
+  final Uint8List? image;
+  final String yourBaby;
+  final String yourBody;
+  final String thingsToRemember;
+  const BabyInforFactEntityData(
+      {required this.id,
+      required this.week,
+      this.weight,
+      this.height,
+      this.image,
+      required this.yourBaby,
+      required this.yourBody,
+      required this.thingsToRemember});
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['week'] = Variable<int>(week);
+    if (!nullToAbsent || weight != null) {
+      map['weight'] = Variable<double>(weight);
+    }
+    if (!nullToAbsent || height != null) {
+      map['height'] = Variable<double>(height);
+    }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<Uint8List>(image);
+    }
+    map['your_baby'] = Variable<String>(yourBaby);
+    map['your_body'] = Variable<String>(yourBody);
+    map['things_to_remember'] = Variable<String>(thingsToRemember);
+    return map;
+  }
+
+  BabyInforFactEntityCompanion toCompanion(bool nullToAbsent) {
+    return BabyInforFactEntityCompanion(
+      id: Value(id),
+      week: Value(week),
+      weight:
+          weight == null && nullToAbsent ? const Value.absent() : Value(weight),
+      height:
+          height == null && nullToAbsent ? const Value.absent() : Value(height),
+      image:
+          image == null && nullToAbsent ? const Value.absent() : Value(image),
+      yourBaby: Value(yourBaby),
+      yourBody: Value(yourBody),
+      thingsToRemember: Value(thingsToRemember),
+    );
+  }
+
+  factory BabyInforFactEntityData.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BabyInforFactEntityData(
+      id: serializer.fromJson<String>(json['id']),
+      week: serializer.fromJson<int>(json['week']),
+      weight: serializer.fromJson<double?>(json['weight']),
+      height: serializer.fromJson<double?>(json['height']),
+      image: serializer.fromJson<Uint8List?>(json['image']),
+      yourBaby: serializer.fromJson<String>(json['yourBaby']),
+      yourBody: serializer.fromJson<String>(json['yourBody']),
+      thingsToRemember: serializer.fromJson<String>(json['thingsToRemember']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'week': serializer.toJson<int>(week),
+      'weight': serializer.toJson<double?>(weight),
+      'height': serializer.toJson<double?>(height),
+      'image': serializer.toJson<Uint8List?>(image),
+      'yourBaby': serializer.toJson<String>(yourBaby),
+      'yourBody': serializer.toJson<String>(yourBody),
+      'thingsToRemember': serializer.toJson<String>(thingsToRemember),
+    };
+  }
+
+  BabyInforFactEntityData copyWith(
+          {String? id,
+          int? week,
+          Value<double?> weight = const Value.absent(),
+          Value<double?> height = const Value.absent(),
+          Value<Uint8List?> image = const Value.absent(),
+          String? yourBaby,
+          String? yourBody,
+          String? thingsToRemember}) =>
+      BabyInforFactEntityData(
+        id: id ?? this.id,
+        week: week ?? this.week,
+        weight: weight.present ? weight.value : this.weight,
+        height: height.present ? height.value : this.height,
+        image: image.present ? image.value : this.image,
+        yourBaby: yourBaby ?? this.yourBaby,
+        yourBody: yourBody ?? this.yourBody,
+        thingsToRemember: thingsToRemember ?? this.thingsToRemember,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('BabyInforFactEntityData(')
+          ..write('id: $id, ')
+          ..write('week: $week, ')
+          ..write('weight: $weight, ')
+          ..write('height: $height, ')
+          ..write('image: $image, ')
+          ..write('yourBaby: $yourBaby, ')
+          ..write('yourBody: $yourBody, ')
+          ..write('thingsToRemember: $thingsToRemember')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(id, week, weight, height,
+      $driftBlobEquality.hash(image), yourBaby, yourBody, thingsToRemember);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BabyInforFactEntityData &&
+          other.id == this.id &&
+          other.week == this.week &&
+          other.weight == this.weight &&
+          other.height == this.height &&
+          $driftBlobEquality.equals(other.image, this.image) &&
+          other.yourBaby == this.yourBaby &&
+          other.yourBody == this.yourBody &&
+          other.thingsToRemember == this.thingsToRemember);
+}
+
+class BabyInforFactEntityCompanion
+    extends UpdateCompanion<BabyInforFactEntityData> {
+  final Value<String> id;
+  final Value<int> week;
+  final Value<double?> weight;
+  final Value<double?> height;
+  final Value<Uint8List?> image;
+  final Value<String> yourBaby;
+  final Value<String> yourBody;
+  final Value<String> thingsToRemember;
+  final Value<int> rowid;
+  const BabyInforFactEntityCompanion({
+    this.id = const Value.absent(),
+    this.week = const Value.absent(),
+    this.weight = const Value.absent(),
+    this.height = const Value.absent(),
+    this.image = const Value.absent(),
+    this.yourBaby = const Value.absent(),
+    this.yourBody = const Value.absent(),
+    this.thingsToRemember = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BabyInforFactEntityCompanion.insert({
+    required String id,
+    required int week,
+    this.weight = const Value.absent(),
+    this.height = const Value.absent(),
+    this.image = const Value.absent(),
+    required String yourBaby,
+    required String yourBody,
+    required String thingsToRemember,
+    this.rowid = const Value.absent(),
+  })  : id = Value(id),
+        week = Value(week),
+        yourBaby = Value(yourBaby),
+        yourBody = Value(yourBody),
+        thingsToRemember = Value(thingsToRemember);
+  static Insertable<BabyInforFactEntityData> custom({
+    Expression<String>? id,
+    Expression<int>? week,
+    Expression<double>? weight,
+    Expression<double>? height,
+    Expression<Uint8List>? image,
+    Expression<String>? yourBaby,
+    Expression<String>? yourBody,
+    Expression<String>? thingsToRemember,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (week != null) 'week': week,
+      if (weight != null) 'weight': weight,
+      if (height != null) 'height': height,
+      if (image != null) 'image': image,
+      if (yourBaby != null) 'your_baby': yourBaby,
+      if (yourBody != null) 'your_body': yourBody,
+      if (thingsToRemember != null) 'things_to_remember': thingsToRemember,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BabyInforFactEntityCompanion copyWith(
+      {Value<String>? id,
+      Value<int>? week,
+      Value<double?>? weight,
+      Value<double?>? height,
+      Value<Uint8List?>? image,
+      Value<String>? yourBaby,
+      Value<String>? yourBody,
+      Value<String>? thingsToRemember,
+      Value<int>? rowid}) {
+    return BabyInforFactEntityCompanion(
+      id: id ?? this.id,
+      week: week ?? this.week,
+      weight: weight ?? this.weight,
+      height: height ?? this.height,
+      image: image ?? this.image,
+      yourBaby: yourBaby ?? this.yourBaby,
+      yourBody: yourBody ?? this.yourBody,
+      thingsToRemember: thingsToRemember ?? this.thingsToRemember,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (week.present) {
+      map['week'] = Variable<int>(week.value);
+    }
+    if (weight.present) {
+      map['weight'] = Variable<double>(weight.value);
+    }
+    if (height.present) {
+      map['height'] = Variable<double>(height.value);
+    }
+    if (image.present) {
+      map['image'] = Variable<Uint8List>(image.value);
+    }
+    if (yourBaby.present) {
+      map['your_baby'] = Variable<String>(yourBaby.value);
+    }
+    if (yourBody.present) {
+      map['your_body'] = Variable<String>(yourBody.value);
+    }
+    if (thingsToRemember.present) {
+      map['things_to_remember'] = Variable<String>(thingsToRemember.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BabyInforFactEntityCompanion(')
+          ..write('id: $id, ')
+          ..write('week: $week, ')
+          ..write('weight: $weight, ')
+          ..write('height: $height, ')
+          ..write('image: $image, ')
+          ..write('yourBaby: $yourBaby, ')
+          ..write('yourBody: $yourBody, ')
+          ..write('thingsToRemember: $thingsToRemember, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 abstract class _$DatabaseApp extends GeneratedDatabase {
   _$DatabaseApp(QueryExecutor e) : super(e);
   late final $BabyInforEntityTable babyInforEntity =
       $BabyInforEntityTable(this);
   late final $NotesEntityTable notesEntity = $NotesEntityTable(this);
   late final $ArticlesEntityTable articlesEntity = $ArticlesEntityTable(this);
+  late final $BabyInforFactEntityTable babyInforFactEntity =
+      $BabyInforFactEntityTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [babyInforEntity, notesEntity, articlesEntity];
+      [babyInforEntity, notesEntity, articlesEntity, babyInforFactEntity];
 }

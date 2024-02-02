@@ -88,4 +88,8 @@ class AppCoordinator {
 
   static void showArticlesSearchScreen() =>
       context.pushNamed(AppRouteNames.articlesSearch.name);
+
+  static void showBabyTrackerScreen(String week) =>
+      context.pushNamed(AppRouteNames.babyTracker.name,
+          pathParameters: {'week': week});
 }

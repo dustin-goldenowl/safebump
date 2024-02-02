@@ -210,5 +210,10 @@
     "readFull": "Read full",
     "relatedArticles": "Related articles",
     "enterArticlesName": "Enter articles name",
-    "noArticlesFound": "No articles found"
+    "noArticlesFound": "No articles found",
+    "pregnancyTracker": "Pregnancy Tracker",
+    "yourBaby": "Your baby",
+    "yourBody": "Your body",
+    "thingsToRemember": "Things to remember",
+    "week": "Week"
 }

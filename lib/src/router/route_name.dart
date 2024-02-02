@@ -13,6 +13,7 @@ enum AppRouteNames {
   resetPassword(path: '/resetPassword'),
   optionAddBaby(path: '/optionAddBaby'),
   addBaby(path: '/addBaby'),
+  babyTracker(path: 'babyTracker', param: "week"),
   addPregnancyBaby(path: '/addPregnancyBaby'),
   articles(path: '/articles'),
   articlesSearch(path: '/articlesSearch'),

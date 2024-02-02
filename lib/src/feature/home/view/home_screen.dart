@@ -14,13 +14,16 @@ import 'package:safebump/src/router/coordinator.dart';
 import 'package:safebump/src/network/model/user/user.dart';
 import 'package:safebump/src/theme/colors.dart';
 import 'package:safebump/src/theme/decorations.dart';
+import 'package:safebump/src/theme/styles.dart';
 import 'package:safebump/src/theme/value.dart';
 import 'package:safebump/src/utils/datetime_utils.dart';
 import 'package:safebump/src/utils/padding_utils.dart';
 import 'package:safebump/src/utils/string_utils.dart';
 import 'package:safebump/widget/appbar/appbar_dashboard.dart';
 import 'package:safebump/widget/button/circle_button.dart';
+import 'package:safebump/widget/button/fill_button.dart';
 import 'package:safebump/widget/list_view/day_of_week_list_view.dart';
+import 'package:safebump/widget/separator/solid_separator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -78,8 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _renderNotyIcon() {
     return IconButton(
-        onPressed: () {
-        },
+        onPressed: () {},
         icon: const Icon(
           Icons.notifications_active_outlined,
           size: AppSize.s20,
@@ -146,14 +148,24 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 _renderBabyFact(
-                    context, state.babyFacts[state.selectedDate]?.fact),
+                    context, ''),
                 XPaddingUtils.verticalPadding(height: AppPadding.p20),
                 _renderBabyInfor(
                   context,
-                  height: state.babyFacts[state.selectedDate]?.height,
-                  weight: state.babyFacts[state.selectedDate]?.weight,
-                  daysLeft: state.babyFacts[state.selectedDate]?.daysLeft,
+                  height: state.height,
+                  weight: state.weight,
+                  daysLeft: state.selectedDate
+                      .difference(state.baby?.date ?? DateTime.now())
+                      .inDays
+                      .abs(),
                 ),
+                XPaddingUtils.verticalPadding(height: AppPadding.p8),
+                const XSolidSeparator(
+                  color: AppColors.grey5,
+                  height: 0.5,
+                ),
+                XPaddingUtils.verticalPadding(height: AppPadding.p8),
+                _renderBabyTrackerButton(),
               ],
             ),
           );
@@ -192,22 +204,22 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _renderBabyInfor(BuildContext context,
-      {int? height, int? weight, int? daysLeft}) {
+      {double? height, double? weight, int? daysLeft}) {
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _renderInforData(context,
             titleInfor: S.of(context).babyHeight,
-            dataInfor: height ?? 0,
+            dataInfor: height ?? 0.0,
             unit: S.of(context).cm),
         _renderInforData(context,
             titleInfor: S.of(context).babyWeight,
-            dataInfor: weight ?? 0,
+            dataInfor: weight ?? 0.0,
             unit: S.of(context).gr),
         _renderInforData(context,
             titleInfor: S.of(context).daysLeft,
-            dataInfor: daysLeft ?? 0,
+            dataInfor: daysLeft ?? 0.0,
             unit: S.of(context).days),
       ],
     );
@@ -215,7 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _renderInforData(BuildContext context,
       {required String titleInfor,
-      required int dataInfor,
+      required dynamic dataInfor,
       required String unit}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -351,6 +363,32 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         );
       },
+    );
+  }
+
+  Widget _renderBabyTrackerButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        XFillButton(
+          borderRadius: AppRadius.r30,
+          onPressed: () => AppCoordinator.showBabyTrackerScreen('1'),
+          label: Row(mainAxisSize: MainAxisSize.min, children: [
+            Text(
+              S.of(context).pregnancyTracker,
+              style: AppTextStyle.buttonTextStylePrimary
+                  .copyWith(fontSize: AppFontSize.f13),
+            ),
+            XPaddingUtils.horizontalPadding(width: AppPadding.p5),
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: AppColors.white,
+              size: AppSize.s16,
+            )
+          ]),
+        ),
+      ],
     );
   }
 }

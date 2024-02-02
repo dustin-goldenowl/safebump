@@ -7,8 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:safebump/src/local/entities/articles_entity.dart';
 import 'package:safebump/src/local/entities/baby_infor_entity.dart';
+import 'package:safebump/src/local/entities/baby_infor_fact_entity.dart';
 import 'package:safebump/src/local/entities/notes_entity.dart';
-import 'package:safebump/src/local/repo/articles/article_local_repo.dart';
 import 'package:safebump/src/local/repo/baby_infor_local_repo.dart';
 import 'package:safebump/src/local/repo/notes/notes_local_repo.dart';
 part 'database_app.g.dart';
@@ -19,6 +19,7 @@ part 'database_app.g.dart';
   BabyInforEntity,
   NotesEntity,
   ArticlesEntity,
+  BabyInforFactEntity,
 ])
 class DatabaseApp extends _$DatabaseApp {
   DatabaseApp() : super(_openConnection());
@@ -28,7 +29,6 @@ class DatabaseApp extends _$DatabaseApp {
   Future<void> deleteAll() async {
     await GetIt.I.get<BabyInforLocalRepo>().deleteAll();
     await GetIt.I.get<NotesLocalRepo>().deleteAll();
-    await GetIt.I.get<ArticlesLocalRepo>().deleteAll();
   }
 }
 

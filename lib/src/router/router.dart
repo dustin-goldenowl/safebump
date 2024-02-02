@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:safebump/src/config/constant/app_constant.dart';
 import 'package:safebump/src/feature/about_safebump/view/about_safebump_screen.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_baby_bloc.dart';
 import 'package:safebump/src/feature/add_baby/logic/cubit/add_fetus_bloc.dart';
@@ -13,6 +12,8 @@ import 'package:safebump/src/feature/articles/logic/article_detail_bloc.dart';
 import 'package:safebump/src/feature/articles/logic/article_search_bloc.dart';
 import 'package:safebump/src/feature/articles/view/article_detail_screen.dart';
 import 'package:safebump/src/feature/articles/view/article_search_screen.dart';
+import 'package:safebump/src/feature/baby_tracker/logic/baby_tracker_bloc.dart';
+import 'package:safebump/src/feature/baby_tracker/screen/baby_tracker_screen.dart';
 import 'package:safebump/src/feature/calendar/logic/calendar_bloc.dart';
 import 'package:safebump/src/feature/calendar/view/calendar_screen.dart';
 import 'package:safebump/src/feature/articles/logic/articles_bloc.dart';
@@ -99,12 +100,24 @@ class AppRouter {
               name: AppRouteNames.home.name,
               pageBuilder: (context, state) => NoTransitionPage(
                     child: BlocProvider(
-                      create: (context) =>
-                          HomeBloc(AppConstant.getBabyFactsData()),
+                      create: (context) => HomeBloc(),
                       child: const HomeScreen(),
                     ),
                   ),
               routes: <RouteBase>[
+                GoRoute(
+                    parentNavigatorKey: AppCoordinator.navigatorKey,
+                    path: AppRouteNames.babyTracker.buildSubPathParam,
+                    name: AppRouteNames.babyTracker.name,
+                    builder: (__, state) {
+                      final week = state
+                          .pathParameters[AppRouteNames.babyTracker.param]!;
+                      return BlocProvider(
+                        create: (context) =>
+                            PregnancyTrackerBloc(int.parse(week)),
+                        child: const PregnancyTrackerScreen(),
+                      );
+                    }),
                 GoRoute(
                     parentNavigatorKey: AppCoordinator.navigatorKey,
                     path: AppRouteNames.articles.subPath,

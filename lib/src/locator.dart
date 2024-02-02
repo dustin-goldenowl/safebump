@@ -8,10 +8,14 @@ import 'package:safebump/firebase_options.dart';
 import 'package:safebump/src/config/device/app_info.dart';
 import 'package:safebump/src/local/repo/articles/article_local_repo.dart';
 import 'package:safebump/src/local/repo/articles/article_local_repo_impl.dart';
+import 'package:safebump/src/local/repo/baby_infor_fact/baby_infor_fact_local_repo.dart';
+import 'package:safebump/src/local/repo/baby_infor_fact/baby_infor_fact_local_repo_impl.dart';
 import 'package:safebump/src/local/repo/notes/notes_local_repo.dart';
 import 'package:safebump/src/local/repo/notes/notes_local_repo_impl.dart';
 import 'package:safebump/src/network/data/articles/articles_repository.dart';
 import 'package:safebump/src/network/data/articles/articles_repository_impl.dart';
+import 'package:safebump/src/network/data/baby_infor/baby_infor_repository.dart';
+import 'package:safebump/src/network/data/baby_infor/baby_infor_repository_impl.dart';
 import 'package:safebump/src/network/data/daily_quiz/daily_quiz_repository.dart';
 import 'package:safebump/src/network/data/daily_quiz/daily_quiz_repository_impl.dart';
 import 'package:safebump/src/local/database_app.dart';
@@ -75,6 +79,8 @@ void _locator() {
   GetIt.I.registerLazySingleton<QuizRepository>(() => QuizRepositoryImpl());
   GetIt.I.registerLazySingleton<MedicationRepository>(
       () => MedicationRepositoryImpl());
+  GetIt.I.registerLazySingleton<BabyInforRepository>(
+      () => BabyInforRepositoryImpl());
 
   GetIt.I.registerLazySingleton<DatabaseApp>((() => DatabaseApp()));
   GetIt.I.registerLazySingleton<BabyInforLocalRepo>(
@@ -83,6 +89,8 @@ void _locator() {
       () => NotesLocalRepoImpl(GetIt.I()));
   GetIt.I.registerLazySingleton<ArticlesLocalRepo>(
       () => ArticlesLocalRepoImpl(GetIt.I()));
+  GetIt.I.registerLazySingleton<BabyInforFactLocalRepo>(
+      () => BabyInforFactLocalRepoImpl(GetIt.I()));
 }
 
 void resetSingleton() {

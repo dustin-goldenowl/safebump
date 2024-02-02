@@ -1,11 +1,11 @@
 import 'package:equatable/equatable.dart';
 import 'package:safebump/src/network/model/baby/baby.dart';
-import 'package:safebump/src/network/model/baby_fact_model.dart';
 import 'package:safebump/src/network/model/daily_quiz.dart/daily_quiz.dart';
 
 class HomeState with EquatableMixin {
   final DateTime selectedDate;
-  final Map<DateTime, BabyFactModel> babyFacts;
+  final double? height;
+  final double? weight;
   final bool hasBaby;
   final MBaby? baby;
   final String? weekCounter;
@@ -16,7 +16,8 @@ class HomeState with EquatableMixin {
 
   HomeState(
       {required this.selectedDate,
-      required this.babyFacts,
+      this.height,
+      this.weight,
       this.baby,
       this.isAnswerDailyQuiz = false,
       this.quiz,
@@ -27,7 +28,8 @@ class HomeState with EquatableMixin {
 
   HomeState copyWith(
       {DateTime? selectedDate,
-      Map<DateTime, BabyFactModel>? babyFacts,
+      double? height,
+      double? weight,
       MBaby? baby,
       String? weekCounter,
       bool? isAnswerDailyQuiz,
@@ -36,21 +38,24 @@ class HomeState with EquatableMixin {
       int? correctPercent,
       bool? hasBaby}) {
     return HomeState(
-        selectedDate: selectedDate ?? this.selectedDate,
-        hasBaby: hasBaby ?? this.hasBaby,
-        baby: baby ?? this.baby,
-        weekCounter: weekCounter ?? this.weekCounter,
-        isAnswerDailyQuiz: isAnswerDailyQuiz ?? this.isAnswerDailyQuiz,
-        quiz: quiz ?? this.quiz,
-        correctPercent: correctPercent ?? this.correctPercent,
-        isAnswerCorrect: isAnswerCorrect ?? this.isAnswerCorrect,
-        babyFacts: babyFacts ?? this.babyFacts);
+      selectedDate: selectedDate ?? this.selectedDate,
+      hasBaby: hasBaby ?? this.hasBaby,
+      baby: baby ?? this.baby,
+      weekCounter: weekCounter ?? this.weekCounter,
+      isAnswerDailyQuiz: isAnswerDailyQuiz ?? this.isAnswerDailyQuiz,
+      quiz: quiz ?? this.quiz,
+      correctPercent: correctPercent ?? this.correctPercent,
+      isAnswerCorrect: isAnswerCorrect ?? this.isAnswerCorrect,
+      height: height ?? this.height,
+      weight: weight ?? this.weight,
+    );
   }
 
   @override
   List<Object?> get props => [
         selectedDate,
-        babyFacts,
+        height,
+        weight,
         hasBaby,
         baby,
         weekCounter,
